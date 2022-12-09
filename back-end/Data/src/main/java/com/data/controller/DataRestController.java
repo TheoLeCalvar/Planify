@@ -37,4 +37,5 @@ public class DataRestController {
 	public void deletePhoto(@PathVariable("id") String id) {
 		service.delete(id);
 	}
+	
 }

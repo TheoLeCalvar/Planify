@@ -1,8 +1,10 @@
 # Spring properties
 spring:
   application:
-     name: data.com       # Service registers under this name 
-  data:    mongodb:      uri: mongodb://localhost:27017/cliente
+    name: data.com       # Service registers under this name
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/data
 
 # HTTP Server
 server:
