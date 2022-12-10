@@ -3,7 +3,7 @@ version: "3.9"
 services:
   data:
     container_name: data
-    build: ./data/
+    build: ./Data/
     restart: always # voir si c'est necessaire dans ce cas
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/data
