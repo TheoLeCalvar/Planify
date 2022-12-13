@@ -18,7 +18,7 @@ import com.data.service.DataService;
 @CrossOrigin
 @RestController
 @RequestMapping("/data")
-public class DataRestController {
+public class DataController {
 
 	@Autowired
 	private DataService service;
