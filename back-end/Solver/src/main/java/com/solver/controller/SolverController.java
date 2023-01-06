@@ -20,7 +20,8 @@ public class SolverController {
 	
 	@GetMapping(path = "", produces = "application/json")
 	public ResponseEntity<String> listPhotos() {
-		service.solver();
+		// TODO: prendre les donnees a partir de la requete
+		service.solver(14, 3, 3, 3);
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	
