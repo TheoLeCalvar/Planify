@@ -8,3 +8,6 @@ hr {
     height:3px;
     background-color: #00b8de;
 }
+.w-25 {
+    width: 15% !important;
+}
