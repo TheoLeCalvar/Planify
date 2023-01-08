@@ -1,34 +1,31 @@
-package com.data.model;
+package com.solver.model;
 
 import java.util.ArrayList;
 
-import org.springframework.data.annotation.Id;
-
-public class Data {
-
-	@Id
-	private String id;
+public class Request {
+	
 	private int weeksNumber;
 	private ArrayList<Module> modulesUeA;
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
 	private ArrayList<String> unavailable;
 	
-	public String getId() {
-		return id;
-	}
 	public int getWeeksNumber() {
 		return weeksNumber;
 	}
+
 	public ArrayList<Module> getModulesUeA() {
 		return modulesUeA;
 	}
+
 	public ArrayList<Module> getModulesUeB() {
 		return modulesUeB;
 	}
+
 	public ArrayList<Module> getModulesUeC() {
 		return modulesUeC;
 	}
+
 	public ArrayList<String> getUnavailable() {
 		return unavailable;
 	}
