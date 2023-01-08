@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
+import { Data } from '../Models/Data';
 import { Module } from '../Models/Module';
+import { DataService } from '../Services/data.service';
 
 
 
@@ -8,7 +10,7 @@ import { Module } from '../Models/Module';
   templateUrl: './rtaf-form.component.html',
   styleUrls: ['./rtaf-form.component.css']
 })
-export class RtafFormComponent {
+export class RtafFormComponent implements OnInit {
     selectedNumberWeek: number =0 ;
     selectedNumberModuleUEA : number =0;
     selectedNumberModuleUEB : number =0;
@@ -17,6 +19,12 @@ export class RtafFormComponent {
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
     modulesUEC: Module[] = [];
+
+    unavailable: string []; 
+
+    constructor(private  service: DataService) { }
+
+    ngOnInit(): void {}
 
     selectWeekChange() {
         console.log(this.selectedNumberWeek);
@@ -64,6 +72,23 @@ export class RtafFormComponent {
         console.log("modules UEA",this.modulesUEA);
         console.log("modules UEB",this.modulesUEB);
         console.log("modules UEC",this.modulesUEC);
+
+        let data : Data = {
+            weeksNumber : this.selectedNumberWeek,
+            modulesUeA : this.modulesUEA,
+            modulesUeB : this.modulesUEB,
+            modulesUeC : this.modulesUEC,
+            unavailable: this.unavailable
+        }
+
+        this.service.addData(data).subscribe(
+            dataForm => {
+              console.log(dataForm)
+            },
+            erreur =>{
+              console.log(erreur)
+            }
+          )  
 
     }
 
