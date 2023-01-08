@@ -10,7 +10,7 @@ import com.solver.model.Request;
 @Service
 public class SolverService {
 	
-	public void solver(Request request) {
+	public String solver(Request request) {
 		int Nb_Semaines = request.getWeeksNumber();
 		
 		ArrayList<Integer> Dispo = new ArrayList<Integer>(Nb_Semaines * 6 * 2);
@@ -33,7 +33,7 @@ public class SolverService {
 		test.BuildModel();
 		test.addConstraints();
 		test.solve();
-		test.show();
+		return test.getSolution();
 	}
 	
 }

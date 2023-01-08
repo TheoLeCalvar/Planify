@@ -139,20 +139,23 @@ public class Modelisation {
 		solver.findSolution();
 	}
 
-	public void show() {
+	public String getSolution() {
+		String res = "";
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
-			System.out.println(Nb_Seances[i]);
+			res += Nb_Seances[i] + "\n";
 		}
 
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
-			System.out.println(nb0parjour[i]);
+			res += nb0parjour[i] + "\n";
 		}
 
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
 			for (int j = 0; j < 6; j++) {
-				System.out.println(agendajour[i][j]);
+				res += agendajour[i][j] + "\n";
 			}
 		}
+		System.out.println(res);
+		return res;
 	}
 
 }

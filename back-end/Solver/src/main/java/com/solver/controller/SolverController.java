@@ -22,8 +22,7 @@ public class SolverController {
 	
 	@PostMapping(path = "", produces = "application/json")
 	public ResponseEntity<String> solver(@RequestBody Request request) {
-		service.solver(request);
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
+		return new ResponseEntity<String>(service.solver(request), HttpStatus.OK);
 	}
 	
 }
