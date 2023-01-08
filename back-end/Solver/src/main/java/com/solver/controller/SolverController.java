@@ -20,7 +20,7 @@ public class SolverController {
 	@Autowired
 	private SolverService service;
 	
-	@PostMapping(path = "", produces = "application/json")
+	@PostMapping(path = "", produces = "text/plain")
 	public ResponseEntity<String> solver(@RequestBody Request request) {
 		return new ResponseEntity<String>(service.solver(request), HttpStatus.OK);
 	}

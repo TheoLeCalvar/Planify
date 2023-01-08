@@ -42,7 +42,7 @@ public class DataController {
 	
 	@PostMapping(path = "/solver", produces = "application/json")
 	public ResponseEntity<String> solver(@RequestBody Data data) {
-		return new ResponseEntity<String>(service.solver(data), HttpStatus.OK);
+		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver(data).replaceAll("\n", "   ") + "\"}", HttpStatus.OK);
 	}
 	
 }

@@ -82,8 +82,8 @@ export class RtafFormComponent implements OnInit {
         }
 
         this.service.addData(data).subscribe(
-            dataForm => {
-              console.log(dataForm)
+            (dataForm: any) => {
+              console.log(dataForm.reponse.replaceAll("   ", "\n"))
             },
             erreur =>{
               console.log(erreur)

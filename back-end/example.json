@@ -1,0 +1,19 @@
+{
+    "weeksNumber": number,
+    "modulesUeA": [{
+        "id": number,
+        "name": string,
+        "slotsNumber": number
+    }],
+    "modulesUeB": [{
+        "id": number,
+        "name": string,
+        "slotsNumber": number
+    }],
+    "modulesUeC": [{
+        "id": number,
+        "name": string,
+        "slotsNumber": number
+    }],
+    "unavailable": [string]
+}
