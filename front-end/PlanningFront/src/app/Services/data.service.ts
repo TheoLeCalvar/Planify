@@ -21,7 +21,7 @@ export class DataService {
 
   constructor(private http:HttpClient) { }
 
-  sendData(data: Data):Observable<Data>{
+  addData(data: Data):Observable<Data>{
     //send body with request
     return this.http.post<Data>(this.baseUrl, data, config);
   }
