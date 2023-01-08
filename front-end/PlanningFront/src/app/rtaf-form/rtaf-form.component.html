@@ -1,0 +1,82 @@
+<h1 class="title">Responsable TAF</h1>
+<hr>  
+<div class="mb-3 row center">
+    <label for="dureePlanning" class="w-25 col-form-label text-end">Durée du planning (nombre de semaines) : </label>
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberWeek" (change)="selectWeekChange()">
+            <option selected>Choisir le nombre de semaines</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+        </select>
+    </div>
+</div>
+<div class="mb-3 row center">
+    <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE A : </label>
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberModuleUEA" (change)="selectModuleUEAChange()">
+            <option selected>Choisir le nombre de modules de l'UE A</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+       
+    </div>
+</div>
+<div class="mb-3 row center" *ngFor="let module of modulesUEA" >
+    <label class="w-25 col-form-label text-end">Module UE A- {{module.id}} : </label>
+    <hr/>
+    <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+    <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
+</div>
+<div class="mb-3 row center">
+    <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE B : </label>
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberModuleUEB" (change)="selectModuleUEBChange()">
+            <option selected>Choisir le nombre de modules de l'UE B</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+    </div>
+</div>
+<div class="mb-3 row center" *ngFor="let module of modulesUEB" >
+    <label class="w-25 col-form-label text-end">Module UE B- {{module.id}} : </label>
+    <hr/>
+    <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+    <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
+</div>
+<div class="mb-3 row center">
+    <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE C : </label>
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberModuleUEC" (change)="selectModuleUECChange()">
+            <option selected>Choisir le nombre de modules de l'UE C</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+    </div>
+</div>
+<div class="mb-3 row center" *ngFor="let module of modulesUEC" >
+    <label class="w-25 col-form-label text-end">Module UE C- {{module.id}} : </label>
+    <hr/>
+    <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+    <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
+</div>
+<button (click)="clickFunction()" class="btn btn-success">Click Me</button>
