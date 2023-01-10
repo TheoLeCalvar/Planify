@@ -58,7 +58,7 @@
     <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
 </div>
 <div class="mb-3 row center">
-    <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE C : </label>
+    <label for="UEC" class="w-25 col-form-label text-end">Nombre de modules UE C : </label>
     <div class="w-25">
         <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberModuleUEC" (change)="selectModuleUECChange()">
             <option selected>Choisir le nombre de modules de l'UE C</option>
@@ -79,4 +79,24 @@
     <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
     <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
 </div>
-<button (click)="clickFunction()" class="btn border title">Click Me</button>
+<div class="mb-3 row center">
+    <label for="disponibilités" class="w-25 col-form-label text-end">Les disponibilités: </label>
+    <div class="w-25">
+        <button mat-icon-button [matMenuTriggerFor]="appMenu">
+            <mat-icon>calendar_today</mat-icon>
+          </button>
+          <mat-menu #appMenu="matMenu" class="drop-calendar" >
+              <div (click)="$event.stopPropagation()">
+                  <mat-calendar #calendar (selectedChange)="select($event,calendar)" ></mat-calendar>
+              </div>
+          </mat-menu>
+          <pre>
+            {{daysSelected|json}}
+          </pre>
+    </div>
+    
+</div>
+<div class="mb-3 row center">
+    <div class="w-25"></div>
+    <button (click)="clickFunction()" class="btn border title w-25">Click Me</button>
+</div>

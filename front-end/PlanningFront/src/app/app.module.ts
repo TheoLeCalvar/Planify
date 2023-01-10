@@ -6,6 +6,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RtafFormComponent } from './rtaf-form/rtaf-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
+import { ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule} from '@angular/material/menu';
+import { MatIconModule} from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
+
 
 @NgModule({
   declarations: [
@@ -16,9 +28,19 @@ import { RtafFormComponent } from './rtaf-form/rtaf-form.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule      
+    FormsModule,
+    BrowserAnimationsModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    MatButtonModule,                  
+    MatMenuModule,
+    MatIconModule,
+    MatDatepickerModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, RtafFormComponent]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));

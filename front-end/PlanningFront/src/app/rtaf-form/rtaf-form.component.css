@@ -14,3 +14,13 @@ hr {
 .border{
     border: #00b8de ;
 }
+
+.mat-calendar-body-cell.selected
+{
+  background-color:#00b8de!important;
+  border-radius: 50%
+}
+.drop-calendar
+{
+  width:30rem
+}
