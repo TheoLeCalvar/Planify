@@ -13,7 +13,7 @@ public class Calendrier {
 	}
 
 	public Calendrier(int n) {
-		this.Dispo = new ArrayList<Integer>(n * 6 * 2); // Constructeur prenant que le nombre de semaine ( Cas où il n'y a pas d'indispo)
+		this.Dispo = new ArrayList<Integer>(n * 6 * 2); // Constructeur prenant que le nombre de semaine ( Cas où il n' y a pas d'indispo)
 		for (int i = 0; i < n * 6 * 2; i++) {
 			this.Dispo.add(1);
 		}
@@ -36,11 +36,11 @@ public class Calendrier {
 		Dispo = dispo;
 	}
 
-	public int getNb_Créneaux() {
+	public int getNb_Creneaux() {
 		return this.getNb_Semaines() * 2 * 6;
 	}
 
-	public int getNb_CréneauxDispo() {
+	public int getNb_CreneauxDispo() {
 		int Result = 0;
 		for (int i : Dispo) {
 			if (i == 1) {
@@ -54,7 +54,7 @@ public class Calendrier {
 		return this.Nb_Semaines * 2;
 	}
 
-	public boolean Créneaux_dispo(int i) { // Prend en entrée un créneaux et vérifie si il est dispo==true ou non==false
+	public boolean Creneaux_dispo(int i) { // Prend en entrée un créneaux et vérifie si il est dispo==true ou non==false
 		if (this.getDispo().get(i) == 1) {
 			return true;
 		} else {
