@@ -1,5 +1,5 @@
 <h1 class="title">Responsable TAF</h1>
-<hr>  
+<hr>
 <div class="mb-3 row center">
     <label for="dureePlanning" class="w-25 col-form-label text-end">Durée du planning (nombre de semaines) : </label>
     <div class="w-25">
@@ -26,14 +26,14 @@
             <option value="7">7</option>
             <option value="8">8</option>
         </select>
-       
+
     </div>
 </div>
-<div class="mb-3 row center" *ngFor="let module of modulesUEA" >
+<div class="mb-3 row center" *ngFor="let module of modulesUEA">
     <label class="w-25 col-form-label text-end">Module UE A- {{module.id}} : </label>
     <hr/>
-    <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
-    <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
+    <label class="w-25 col-form-label text-end">Nom module :</label> <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+    <label class="w-25 col-form-label ">Nombre de creneau :</label> <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
 </div>
 <div class="mb-3 row center">
     <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE B : </label>
@@ -51,11 +51,11 @@
         </select>
     </div>
 </div>
-<div class="mb-3 row center" *ngFor="let module of modulesUEB" >
+<div class="mb-3 row center" *ngFor="let module of modulesUEB">
     <label class="w-25 col-form-label text-end">Module UE B- {{module.id}} : </label>
     <hr/>
-    <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
-    <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
+    <label class="w-25 col-form-label text-end">Nom module :</label> <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+    <label class="w-25 col-form-label ">Nombre de creneau :</label> <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
 </div>
 <div class="mb-3 row center">
     <label for="UEC" class="w-25 col-form-label text-end">Nombre de modules UE C : </label>
@@ -73,11 +73,11 @@
         </select>
     </div>
 </div>
-<div class="mb-3 row center" *ngFor="let module of modulesUEC" >
+<div class="mb-3 row center" *ngFor="let module of modulesUEC">
     <label class="w-25 col-form-label text-end">Module UE C- {{module.id}} : </label>
     <hr/>
-    <label class="w-25 col-form-label text-end" >Nom module :</label> <input  class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
-    <label class="w-25 col-form-label " >Nombre de creneau :</label> <input   class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.nbCreneau"/>
+    <label class="w-25 col-form-label text-end">Nom module :</label> <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+    <label class="w-25 col-form-label ">Nombre de creneau :</label> <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
 </div>
 <div class="mb-3 row center">
     <label for="disponibilités" class="w-25 col-form-label text-end">Les indisponibilités: </label>
@@ -85,16 +85,16 @@
         <button mat-icon-button [matMenuTriggerFor]="appMenu">
             <mat-icon>calendar_today</mat-icon>
           </button>
-          <mat-menu #appMenu="matMenu" class="drop-calendar" >
-              <div (click)="$event.stopPropagation()">
-                  <mat-calendar #calendar (selectedChange)="select($event,calendar)" ></mat-calendar>
-              </div>
-          </mat-menu>
-          <pre>
+        <mat-menu #appMenu="matMenu" class="drop-calendar">
+            <div (click)="$event.stopPropagation()">
+                <mat-calendar #calendar (selectedChange)="select($event,calendar)"></mat-calendar>
+            </div>
+        </mat-menu>
+        <pre>
             {{daysSelected|json}}
           </pre>
     </div>
-    
+
 </div>
 <div class="mb-3 row center">
     <div class="w-25"></div>

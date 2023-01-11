@@ -49,6 +49,8 @@ export class RtafFormComponent implements OnInit {
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
     modulesUEC: Module[] = [];
+
+    countId: number = 1;
  
 
     constructor(private  service: DataService) { }
@@ -63,9 +65,9 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEA = [];
         for(let i=1; i <= this.selectedNumberModuleUEA ; i++){
             this.modulesUEA.push({
-                id: i,
+                id: this.countId++,
                 name: "",
-                nbCreneau: 0
+                slotsNumber: 0
             })
         }
        
@@ -76,9 +78,9 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEB = [];
         for(let i=1; i <= this.selectedNumberModuleUEB ; i++){
             this.modulesUEB.push({
-                id: i,
+                id: this.countId++,
                 name: "",
-                nbCreneau: 0
+                slotsNumber: 0
             })
         }
        
@@ -89,9 +91,9 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEC = [];
         for(let i=1; i <= this.selectedNumberModuleUEC ; i++){
             this.modulesUEC.push({
-                id: i,
+                id: this.countId++,
                 name: "",
-                nbCreneau: 0
+                slotsNumber: 0
             })
         }
     }
