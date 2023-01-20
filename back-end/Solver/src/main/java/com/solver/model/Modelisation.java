@@ -157,13 +157,14 @@ public class Modelisation {
 
 		res += "\n\n";
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
-			res += "Jour " + i + ": \t";
+			res += "Jour " + i + ":  ";
 		}
-
+		res += "\n";
 		for (int j = 0; j < 6; j++) {
 			for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
-				res += agendajour[i][j].getValue() + "\t" + "\t";
+				res += agendajour[i][j].getValue() + "  ";
 			}
+			res += "\n";
 		}
 
 		System.out.println(res);
