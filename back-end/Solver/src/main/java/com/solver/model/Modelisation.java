@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
@@ -178,54 +179,57 @@ public class Modelisation {
 		return res;
 	}
 	
-	public ArrayList<Integer> Traduction(ArrayList<Date> date_indispo,ArrayList<Integer> creneau_indispo) {
+	public ArrayList<Integer> Traduction(HashMap<Date,ArrayList<Integer>> a, Date debut ){
 		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
-		for(Date d1 :date_indispo) {
-		d.add(d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());}
-		LocalDate debut= LocalDate.of(2022, 11, 8);
+		for (Date d1 :a.keySet()) {
+			d.add(d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+			}
+		LocalDate local_debut= debut.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		ArrayList<Integer> l_int= new ArrayList<Integer>();
 		ArrayList<Integer> l_final= new ArrayList<Integer>();
 		for(LocalDate date:d) {
-			Duration dure = Duration.between(debut.atTime(0, 0), date.atTime(0, 0));
-			
+			Duration dure = Duration.between(local_debut.atTime(0, 0), date.atTime(0, 0));
 			System.out.println(dure);
 			Integer i = (int) (long) dure.toDays();
 			l_int.add((i/7)*2+(i%7)+1);
-		}
+			}
 		for(int i:l_int) {
-			for(Integer j:creneau_indispo) {
-				l_final.add(i*6+j);
+			for(ArrayList<Integer> j:a.values()) {
+				for(Integer k : j) {
+					l_final.add(i*6+k);
+				}
 			}
 		}
 		ArrayList<Integer>l_creneau=new ArrayList<Integer>();
 		//changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
-		for(int i=0;i<120;i++) {
+		for(int l=0;l<120;l++) {
 			for(int e : l_final) {
-				if(i==e) {
+				if(l==e) {
 					l_creneau.add(0);
+				} else {
+					l_creneau.add(1);					}
 				}
-				else {l_creneau.add(1);
-			}
-		}}
+				
+		}
 		return l_creneau;
 	}
 	
 	public static void main(String[] args) {
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-		modulesUeA.add(new Module(7, "1", 1));
-		modulesUeA.add(new Module(7, "2", 2));
-		modulesUeA.add(new Module(8, "3", 3));
+		modulesUeA.add(new Module(1, "1", 7));
+		modulesUeA.add(new Module(2, "2", 7));
+		modulesUeA.add(new Module(3, "3", 8));
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-		modulesUeB.add(new Module(11, "4", 4));
-		modulesUeB.add(new Module(11, "5", 5));
-		modulesUeB.add(new Module(11, "6", 6));
+		modulesUeB.add(new Module(4, "4", 11));
+		modulesUeB.add(new Module(5, "5", 11));
+		modulesUeB.add(new Module(6, "6", 11));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
-		modulesUeC.add(new Module(4, "7", 7));
-		modulesUeC.add(new Module(4, "8", 8));
-		modulesUeC.add(new Module(3, "9", 9));
+		modulesUeC.add(new Module(7, "7", 4));
+		modulesUeC.add(new Module(8, "8", 4));
+		modulesUeC.add(new Module(9, "9", 3));
 		ArrayList<String> unavailable = new ArrayList<String>();
-		unavailable.add("2023-11-21");
-		
+		unavailable.add("2023-11-08");
+
 		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable);
 		new SolverService().solver(request);
 	}
