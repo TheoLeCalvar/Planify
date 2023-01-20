@@ -212,10 +212,19 @@ public class Modelisation {
 	
 	public static void main(String[] args) {
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-		modulesUeA.add(new Module(0, "1", 0));
+		modulesUeA.add(new Module(7, "1", 1));
+		modulesUeA.add(new Module(7, "2", 2));
+		modulesUeA.add(new Module(8, "3", 3));
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
+		modulesUeB.add(new Module(11, "4", 4));
+		modulesUeB.add(new Module(11, "5", 5));
+		modulesUeB.add(new Module(11, "6", 6));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
+		modulesUeC.add(new Module(4, "7", 7));
+		modulesUeC.add(new Module(4, "8", 8));
+		modulesUeC.add(new Module(3, "9", 9));
 		ArrayList<String> unavailable = new ArrayList<String>();
+		unavailable.add("2023-11-21");
 		
 		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable);
 		new SolverService().solver(request);
