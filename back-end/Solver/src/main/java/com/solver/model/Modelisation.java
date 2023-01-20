@@ -1,11 +1,17 @@
 package com.solver.model;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.variables.IntVar;
+
+import com.solver.service.SolverService;
 
 public class Modelisation {
 
@@ -170,6 +176,49 @@ public class Modelisation {
 		System.out.println(res);
 
 		return res;
+	}
+	
+	public ArrayList<Integer> Traduction(ArrayList<Date> date_indispo,ArrayList<Integer> creneau_indispo) {
+		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
+		for(Date d1 :date_indispo) {
+		d.add(d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());}
+		LocalDate debut= LocalDate.of(2022, 11, 8);
+		ArrayList<Integer> l_int= new ArrayList<Integer>();
+		ArrayList<Integer> l_final= new ArrayList<Integer>();
+		for(LocalDate date:d) {
+			Duration dure = Duration.between(debut.atTime(0, 0), date.atTime(0, 0));
+			
+			System.out.println(dure);
+			Integer i = (int) (long) dure.toDays();
+			l_int.add((i/7)*2+(i%7)+1);
+		}
+		for(int i:l_int) {
+			for(Integer j:creneau_indispo) {
+				l_final.add(i*6+j);
+			}
+		}
+		ArrayList<Integer>l_creneau=new ArrayList<Integer>();
+		//changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
+		for(int i=0;i<120;i++) {
+			for(int e : l_final) {
+				if(i==e) {
+					l_creneau.add(0);
+				}
+				else {l_creneau.add(1);
+			}
+		}}
+		return l_creneau;
+	}
+	
+	public static void main(String[] args) {
+		ArrayList<Module> modulesUeA = new ArrayList<Module>();
+		modulesUeA.add(new Module(0, "1", 0));
+		ArrayList<Module> modulesUeB = new ArrayList<Module>();
+		ArrayList<Module> modulesUeC = new ArrayList<Module>();
+		ArrayList<String> unavailable = new ArrayList<String>();
+		
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable);
+		new SolverService().solver(request);
 	}
 	
 }

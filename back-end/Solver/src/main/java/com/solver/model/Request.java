@@ -10,6 +10,16 @@ public class Request {
 	private ArrayList<Module> modulesUeC;
 	private ArrayList<String> unavailable;
 	
+	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
+			ArrayList<Module> modulesUeC, ArrayList<String> unavailable) {
+		super();
+		this.weeksNumber = weeksNumber;
+		this.modulesUeA = modulesUeA;
+		this.modulesUeB = modulesUeB;
+		this.modulesUeC = modulesUeC;
+		this.unavailable = unavailable;
+	}
+
 	public int getWeeksNumber() {
 		return weeksNumber;
 	}
