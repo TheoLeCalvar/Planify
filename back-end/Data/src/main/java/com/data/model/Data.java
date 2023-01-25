@@ -13,24 +13,38 @@ public class Data {
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
 	private ArrayList<String> unavailable;
-	
+	private String calendar;
+
 	public String getId() {
 		return id;
 	}
+
 	public int getWeeksNumber() {
 		return weeksNumber;
 	}
+
 	public ArrayList<Module> getModulesUeA() {
 		return modulesUeA;
 	}
+
 	public ArrayList<Module> getModulesUeB() {
 		return modulesUeB;
 	}
+
 	public ArrayList<Module> getModulesUeC() {
 		return modulesUeC;
 	}
+
 	public ArrayList<String> getUnavailable() {
 		return unavailable;
 	}
-	
+
+	public String getCalendar() {
+		return calendar;
+	}
+
+	public void setCalendar(String calendar) {
+		this.calendar = calendar;
+	}
+
 }
