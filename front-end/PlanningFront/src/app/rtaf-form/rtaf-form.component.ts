@@ -145,9 +145,11 @@ export class RtafFormComponent implements OnInit {
 
     clickFunction() {
         console.log("number of week :",this.selectedNumberWeek);
+        console.log("start date: ", this.startAt);
         console.log("modules UEA",this.modulesUEA);
         console.log("modules UEB",this.modulesUEB);
         console.log("modules UEC",this.modulesUEC);
+        console.log("les indisponibilités",this.tableData);
 
         let data : Data = {
             weeksNumber : this.selectedNumberWeek,
@@ -155,7 +157,7 @@ export class RtafFormComponent implements OnInit {
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailable: []
+            unavailable: this.tableData
         }
 
         this.service.addData(data).subscribe(
