@@ -122,10 +122,12 @@
         <tr class="table-header">
             <th>Date de l'indisponibilité</th>
             <th>Les créneaux</th>
+            <th></th>
         </tr>
         <tr *ngFor="let row of tableData" class="table-row">
             <td>{{ row.date }}</td>
             <td>{{ row.creneaux }}</td>
+            <td><button class="delete-button" (click)="deleteRow(row)">Supprimer</button></td>
         </tr>
     </table>
 </div>

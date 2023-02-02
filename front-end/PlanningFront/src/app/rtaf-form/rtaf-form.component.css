@@ -45,3 +45,11 @@ hr {
   border-right: 1px solid lightgray;
 }
 
+.delete-button {
+  background-color: red !important;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
