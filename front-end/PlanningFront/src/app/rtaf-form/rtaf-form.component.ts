@@ -1,6 +1,7 @@
 import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
-import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
+import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
 import { DataService } from '../Services/data.service';
 
@@ -14,32 +15,21 @@ import { DataService } from '../Services/data.service';
 })
 export class RtafFormComponent implements OnInit {
 
-    daysSelected: string[] = [];
-    event: any;
-    isSelected = (event: any) => {
-        const date =
-        event.getFullYear() +
-        "-" +
-        ("00" + (event.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("00" + event.getDate()).slice(-2);
-        return this.daysSelected.find(x => x == date) ? "selected" : null;
-    };
 
-    select(event: any, calendar: any) {
-        const date =
-        event.getFullYear() +
-        "-" +
-        ("00" + (event.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("00" + event.getDate()).slice(-2);
-        const index = this.daysSelected.findIndex(x => x == date);
-        if (index < 0) this.daysSelected.push(date);
-        else this.daysSelected.splice(index, 1);
+    indisponibility: Indisponibilite;
 
-        calendar.updateTodaysDate();
-        console.log("days seleted",this.daysSelected);
-    }
+    tableData : Indisponibilite[] = [];
+    input1Value: string;
+    input2Value: string;
+    input3Value: string;
+
+    debut: Date = new Date();
+    startDate : string; 
+    startAt: Date;
+    
+    indisponible: Date = new Date();
+    indisponibilityDate : string; 
+    
 
     selectedNumberWeek: number =0 ;
     selectedNumberModuleUEA : number =0;
@@ -50,12 +40,46 @@ export class RtafFormComponent implements OnInit {
     modulesUEB: Module[] = [];
     modulesUEC: Module[] = [];
 
+    items = [
+        { label: 1, isChecked: false },
+        { label: 2, isChecked: false },
+        { label: 3, isChecked: false },
+        { label: 4, isChecked: false },
+        { label: 5, isChecked: false },
+        { label: 6, isChecked: false },
+    ];
+ 
+
     countId: number = 1;
  
 
     constructor(private  service: DataService) { }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        let month = this.debut.getMonth() ; 
+        let year = this.debut.getUTCFullYear();
+        let day = this.debut.getDay();
+        this.startAt = new Date(this.debut);
+        //console.log(this.startAt);
+    }
+
+    changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
+        this.startDate = new Date(this.debut.getTime() - this.debut.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        console.log("debut: ",this.debut);
+        console.log("startDate: ",this.startDate);
+        let month = this.debut.getMonth() ; 
+        let year = this.debut.getUTCFullYear();
+        let day = this.debut.getDay();
+        this.startAt = new Date(this.debut);
+        console.log(this.startAt);
+    }
+
+    addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+        this.indisponibilityDate = new Date(this.indisponible.getTime() - this.indisponible.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        console.log("indisponible: ",this.indisponible);
+        console.log("indisponibilityDate: ",this.indisponibilityDate);
+    }
+
 
     selectWeekChange() {
         console.log(this.selectedNumberWeek);
@@ -98,18 +122,42 @@ export class RtafFormComponent implements OnInit {
         }
     }
 
+    addFunction(){
+        console.log("date indisponible: ", this.indisponibilityDate);
+        let selectedCreneaux = [];
+        for(let item of this.items){
+            if(item.isChecked){
+                selectedCreneaux.push(item.label)
+            }
+        }
+        console.log("creneaux: ", selectedCreneaux);
+        this.indisponibility= {
+            date: this.indisponibilityDate,
+            creneaux : selectedCreneaux
+        }
+        console.log(this.indisponibility);
+
+
+        this.tableData.push(this.indisponibility);
+        console.log(this.tableData)
+        
+    }
+
     clickFunction() {
         console.log("number of week :",this.selectedNumberWeek);
+        console.log("start date: ", this.startAt);
         console.log("modules UEA",this.modulesUEA);
         console.log("modules UEB",this.modulesUEB);
         console.log("modules UEC",this.modulesUEC);
+        console.log("les indisponibilités",this.tableData);
 
         let data : Data = {
             weeksNumber : this.selectedNumberWeek,
+            startDate: this.startDate,
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailable: this.daysSelected
+            unavailable: this.tableData
         }
 
         this.service.addData(data).subscribe(
