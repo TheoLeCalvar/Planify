@@ -49,7 +49,7 @@ public class DataService {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
 		String calendar = restTemplate.postForEntity(URL_SOLVER, request, String.class).getBody();
-
+		
 		data.setCalendar(calendar);
 		save(data);
 		return calendar;

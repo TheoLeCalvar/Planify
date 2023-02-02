@@ -9,10 +9,11 @@ public class Data {
 	@Id
 	private String id;
 	private int weeksNumber;
+	private String startDate;
 	private ArrayList<Module> modulesUeA;
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
-	private ArrayList<String> unavailable;
+	private ArrayList<Unavailable> unavailables;
 	private String calendar;
 
 	public String getId() {
@@ -21,6 +22,10 @@ public class Data {
 
 	public int getWeeksNumber() {
 		return weeksNumber;
+	}
+
+	public String getStartDate() {
+		return startDate;
 	}
 
 	public ArrayList<Module> getModulesUeA() {
@@ -35,8 +40,8 @@ public class Data {
 		return modulesUeC;
 	}
 
-	public ArrayList<String> getUnavailable() {
-		return unavailable;
+	public ArrayList<Unavailable> getUnavailables() {
+		return unavailables;
 	}
 
 	public String getCalendar() {

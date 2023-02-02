@@ -133,7 +133,7 @@ export class RtafFormComponent implements OnInit {
         console.log("creneaux: ", selectedCreneaux);
         this.indisponibility= {
             date: this.indisponibilityDate,
-            creneaux : selectedCreneaux
+            slots : selectedCreneaux
         }
         console.log(this.indisponibility);
 
