@@ -8,9 +8,7 @@ hr {
     height:3px;
     background-color: #00b8de;
 }
-.w-25 {
-    width: 15% !important;
-}
+
 .border{
     border: #00b8de ;
 }
@@ -24,3 +22,26 @@ hr {
 {
   width:30rem
 }
+.table {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.table-header {
+  background-color: lightgray;
+}
+
+.table-header th {
+  padding: 10px;
+  border-right: 1px solid black;
+}
+
+.table-row {
+  border-bottom: 1px solid lightgray;
+}
+
+.table-row td {
+  padding: 10px;
+  border-right: 1px solid lightgray;
+}
+

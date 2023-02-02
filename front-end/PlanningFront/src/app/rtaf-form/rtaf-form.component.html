@@ -13,6 +13,19 @@
     </div>
 </div>
 <div class="mb-3 row center">
+    <label for="startDate" class="w-25 col-form-label text-end">Date du début planning : </label>
+    <div class="w-25">
+        <mat-form-field>
+            <mat-label>Date du début</mat-label>
+            <input matInput [matDatepicker]="picker" 
+                placeholder="Choisir date du début" 
+                [(ngModel)]="debut" (dateChange)="changeDate('change', $event)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>
+<div class="mb-3 row center">
     <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE A : </label>
     <div class="w-25">
         <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberModuleUEA" (change)="selectModuleUEAChange()">
@@ -82,20 +95,41 @@
 <div class="mb-3 row center">
     <label for="disponibilités" class="w-25 col-form-label text-end">Les indisponibilités: </label>
     <div class="w-25">
-        <button mat-icon-button [matMenuTriggerFor]="appMenu">
-            <mat-icon>calendar_today</mat-icon>
-          </button>
-          <mat-menu #appMenu="matMenu" class="drop-calendar" >
-              <div (click)="$event.stopPropagation()">
-                  <mat-calendar #calendar (selectedChange)="select($event,calendar)" ></mat-calendar>
-              </div>
-          </mat-menu>
-          <pre>
-            {{daysSelected|json}}
-          </pre>
+        <mat-form-field>
+            <mat-label>Choisir date indisponible</mat-label>
+            <input matInput [matDatepicker]="picker1" 
+                placeholder="Choisir date indisponible" 
+                [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker [startAt]="startAt" #picker1></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="w-25 ">
+        <div  *ngFor="let item of items">
+            <input type="checkbox" [(ngModel)]="item.isChecked"> {{ item.label }}   
+        </div>
+    </div>
+
+    <div class="w-25">
+        <button (click)="addFunction()" class="btn border title w-25">Ajouter</button>
+
     </div>
     
 </div>
+<div >
+    
+    <table class="table">
+        <tr class="table-header">
+            <th>Date de l'indisponibilité</th>
+            <th>Les créneaux</th>
+        </tr>
+        <tr *ngFor="let row of tableData" class="table-row">
+            <td>{{ row.date }}</td>
+            <td>{{ row.creneaux }}</td>
+        </tr>
+    </table>
+</div>
+
 <div class="mb-3 row center">
     <div class="w-25"></div>
     <button (click)="clickFunction()" class="btn border title w-25">Click Me</button>
