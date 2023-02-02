@@ -24,6 +24,16 @@ public class Donnee {
 	public ArrayList<UE> getListe_UE() {
 		return Liste_UE;
 	}
+	
+	public ArrayList<Module> getListe_Module(){
+		ArrayList<Module> Liste_modules = new ArrayList<Module>();
+		for (UE ue:this.Liste_UE) {
+			for (Module module:ue.getListeModules()) {
+				Liste_modules.add(module);
+			}
+		}
+		return Liste_modules;
+	}
 
 	public void setListe_UE(ArrayList<UE> liste_UE) {
 		Liste_UE = liste_UE;
