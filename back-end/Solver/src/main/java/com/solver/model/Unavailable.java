@@ -7,6 +7,11 @@ public class Unavailable {
 	private String date;
 	private ArrayList<Integer> slots;
 
+	public Unavailable(String date, ArrayList<Integer> slots) {
+		this.date = date;
+		this.slots = slots;
+	}
+
 	public String getDate() {
 		return date;
 	}
