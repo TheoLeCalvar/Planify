@@ -17,20 +17,19 @@ public class Modelisation {
 	private IntVar[] nb0parjour;
 	private Donnee donnee;
 
-	public Modelisation(ArrayList<Module> UE_A, ArrayList<Module> UE_B, ArrayList<Module> UE_C, int Nb_Semaines,
-			ArrayList<Integer> Dispo) {
+	public Modelisation(ArrayList<Module> UE_A, ArrayList<Module> UE_B, ArrayList<Module> UE_C, int Nb_Semaines, ArrayList<Integer> Dispo) {
 		this.donnee = new Donnee(UE_A, UE_B, UE_C, Nb_Semaines, Dispo);
 	}
 
 	public void BuildModel() {
 		model = new Model();
 		solver = model.getSolver();
-		planning = model.intVarArray("planning", donnee.getCalendrier().getNb_Créneaux(), 0,
+		planning = model.intVarArray("planning", donnee.getCalendrier().getNb_Creneaux(), 0,
 		donnee.Nb_cour_different()); // Liste de tout les créneaux, contenant, pour chaque créneaux, le cours affecté.
 		agendajour = model.intVarMatrix("agenda-Jour", donnee.getCalendrier().getNb_Jours(), 6, 0,
 		donnee.Nb_cour_different()); // Matrice contenant le nombre de jour, et pour chaque jour, 6 créneaux, qui contienne le cours affecté.
 		Nb_Seances = model.intVarArray("Nb_seances", donnee.Nb_cour_different(), 0,
-		donnee.getCalendrier().getNb_Créneaux()); // Liste contenant le nombre de séance part cours différents (Nb_seances[O] contient le nombre de cours vide
+		donnee.getCalendrier().getNb_Creneaux()); // Liste contenant le nombre de séance part cours différents (Nb_seances[O] contient le nombre de cours vide
 		nb0parjour = model.intVarArray("Nombre de 0 par jour", donnee.getCalendrier().getNb_Jours(), 0, 6); // Liste contenant le nombre de cours vide à attribuer par jours (pour equilibrer)
 	}
 
@@ -38,8 +37,8 @@ public class Modelisation {
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_Seances[0], "=", donnee.Nb_0()).post();
 		for (UE i : donnee.getListe_UE()) {
-			for (Module j : i.getUe()) {
-				model.arithm(Nb_Seances[j.getNumero_module()], "=", j.getNb_Creneaux()).post();
+			for (Module j : i.getListeModules()) {
+				model.arithm(Nb_Seances[j.getNumero_module()], "=", j.getNb_creneaux()).post();
 			}
 		}
 		// On rempli la variable planning en fonction de la variable Nb_Seances
@@ -59,9 +58,11 @@ public class Modelisation {
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
 			model.arithm(nb0parjour[i], ">=", donnee.Nb_0Jour()).post();
 		}
-		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
-			model.arithm(nb0parjour[i], "<=", donnee.Nb_0Jour() + 1).post();
-		}
+		/*
+		 * for (int i=0; i<donnee.getCalendrier().getNb_Jours(); i++) {
+		 * model.arithm(nb0parjour[i], "<=", donnee.Nb_0Jour()+1).post(); }
+		 * 
+		 */
 
 		// On place le bon nombre de séances vides dans la variable agendaJour
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
@@ -80,7 +81,7 @@ public class Modelisation {
 
 	public void Contraintes_Automate1() { // pas de trous dans une journée + même créneaux de cours collés
 		// Création des expressions régulières pour les contraintes de cours
-		StringBuilder regexp0 = new StringBuilder("0*[^0]{0,3}0*");
+		StringBuilder regexp0 = new StringBuilder("0*[^0]{0,4}0*");
 		StringBuilder regexp1 = new StringBuilder("[^1]*1{0,3}[^1]*");
 		StringBuilder regexp2 = new StringBuilder("[^2]*2{0,3}[^2]*");
 		StringBuilder regexp3 = new StringBuilder("[^3]*3{0,3}[^3]*");
@@ -104,7 +105,6 @@ public class Modelisation {
 		FiniteAutomaton auto9 = new FiniteAutomaton(regexp9.toString(), 0, 6);
 
 		// On post les contraintes de chaques automates
-
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
 			model.regular(agendajour[i], auto0).post();
 			model.regular(agendajour[i], auto1).post();
@@ -120,8 +120,8 @@ public class Modelisation {
 	}
 
 	public void Contrainte_Dispo() {
-		for (int i = 0; i < donnee.getCalendrier().getNb_Créneaux(); i++) {
-			if (!donnee.getCalendrier().Créneaux_dispo(i)) {
+		for (int i = 0; i < donnee.getCalendrier().getNb_Creneaux(); i++) {
+			if (!donnee.getCalendrier().Creneaux_dispo(i)) {
 				model.arithm(planning[i], "=", 0).post();
 			}
 		}
@@ -154,8 +154,21 @@ public class Modelisation {
 				res += agendajour[i][j] + "\n";
 			}
 		}
+
+		res += "\n\n";
+		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
+			res += "Jour " + i + ": \t";
+		}
+
+		for (int j = 0; j < 6; j++) {
+			for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
+				res += agendajour[i][j].getValue() + "\t" + "\t";
+			}
+		}
+
 		System.out.println(res);
+
 		return res;
 	}
-
+	
 }

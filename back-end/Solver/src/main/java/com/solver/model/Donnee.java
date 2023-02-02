@@ -19,7 +19,6 @@ public class Donnee {
 		this.Liste_UE.add(ueb);
 		this.Liste_UE.add(uec);
 		this.calendrier = new Calendrier(Nb_Semaines, Dispo);
-
 	}
 
 	public ArrayList<UE> getListe_UE() {
@@ -47,7 +46,7 @@ public class Donnee {
 	}
 
 	public int Nb_0() {
-		return getCalendrier().getNb_Créneaux() - Nb_cours();
+		return getCalendrier().getNb_Creneaux() - Nb_cours();
 	}
 
 	public int Nb_0Jour() {

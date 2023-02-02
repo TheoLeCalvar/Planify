@@ -1,6 +1,7 @@
 package com.solver.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,47 @@ public class SolverService {
 	public String solver(Request request) {
 		int Nb_Semaines = request.getWeeksNumber();
 		
-		ArrayList<Integer> Dispo = new ArrayList<Integer>(Nb_Semaines * 6 * 2);
-		for (int i = 0; i < Nb_Semaines * 6 * 2; i++) {
-			int x = Math.random() > .15 ? 1 : 0;
-			Dispo.add(x);
-		}
+		ArrayList<Integer> Dispo = new ArrayList<>(Arrays.asList(
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 0,0,0,0,0,0,
+				 0,0,0,0,0,0,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1,
+				 1,1,1,1,1,1)); 
+		 
+		 /*
+		 ArrayList<Integer> Dispo = new ArrayList<Integer>(Nb_Semaines*6*2);
+		 for (int i = 0 ; i<Nb_Semaines*6*2;i++) {
+			 int x = Math.random()>.15?1:0; 
+			 Dispo.add(x);
+		 }
+		  * 
+		  */
 
 		System.out.println(Dispo);
 		int Result = 0;

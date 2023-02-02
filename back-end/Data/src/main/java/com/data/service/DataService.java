@@ -44,8 +44,8 @@ public class DataService {
 
 	public String solver(Data data) {
 		String requestBody = new Gson().toJson(data);
-		requestBody = requestBody.replaceAll("id", "Numero_module");
-		requestBody = requestBody.replaceAll("slotsNumber", "Nb_Creneaux");
+		requestBody = requestBody.replaceAll("id", "numero_module");
+		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
 		
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
