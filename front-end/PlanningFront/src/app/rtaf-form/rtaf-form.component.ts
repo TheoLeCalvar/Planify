@@ -142,6 +142,12 @@ export class RtafFormComponent implements OnInit {
         console.log(this.tableData)
         
     }
+    deleteRow(row: any) {
+        const index = this.tableData.indexOf(row);
+        this.tableData.splice(index, 1);
+        console.log("apres suppression");
+        console.log(this.tableData);
+    }
 
     clickFunction() {
         console.log("number of week :",this.selectedNumberWeek);

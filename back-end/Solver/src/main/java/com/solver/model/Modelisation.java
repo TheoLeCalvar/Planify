@@ -319,7 +319,7 @@ public class Modelisation {
 		slots.add(4);
 		unavailable.add(new Unavailable("2023-02-08", slots));
 
-		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable, "2022-12-14");
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable, "2023-02-08");
 		new SolverService().solver(request);
 	}
 	
