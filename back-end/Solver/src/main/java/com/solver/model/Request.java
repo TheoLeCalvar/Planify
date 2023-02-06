@@ -12,13 +12,14 @@ public class Request {
 	private ArrayList<Unavailable> unavailables;
 
 	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
-			ArrayList<Module> modulesUeC, ArrayList<Unavailable> unavailables) {
+			ArrayList<Module> modulesUeC, ArrayList<Unavailable> unavailables, String startDate) {
 		super();
 		this.weeksNumber = weeksNumber;
 		this.modulesUeA = modulesUeA;
 		this.modulesUeB = modulesUeB;
 		this.modulesUeC = modulesUeC;
 		this.unavailables = unavailables;
+		this.startDate = startDate;
 	}
 
 	public int getWeeksNumber() {

@@ -1,5 +1,7 @@
 package com.solver.model;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Unavailable {
@@ -19,5 +21,7 @@ public class Unavailable {
 	public ArrayList<Integer> getSlots() {
 		return slots;
 	}
-
 }
+
+
+

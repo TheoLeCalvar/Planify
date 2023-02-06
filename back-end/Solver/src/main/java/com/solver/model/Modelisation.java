@@ -315,9 +315,11 @@ public class Modelisation {
 		ArrayList<Integer> slots = new ArrayList<>();
 		slots.add(1);
 		slots.add(2);
-		unavailable.add(new Unavailable("2023-11-08", slots));
+		slots.add(3);
+		slots.add(4);
+		unavailable.add(new Unavailable("2023-02-08", slots));
 
-		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable);
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable, "2022-12-14");
 		new SolverService().solver(request);
 	}
 	
