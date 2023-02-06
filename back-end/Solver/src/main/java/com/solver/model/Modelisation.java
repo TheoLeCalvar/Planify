@@ -44,6 +44,7 @@ public class Modelisation {
 	public void Contrainte_nbcours() { // Contrainte permettant de remplir toute les variables avec le bon nombre de cours
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_Seances[0], "=", donnee.Nb_0()).post();
+		
 		for (Module j:donnee.getListe_Module()) {
 				model.arithm(Nb_Seances[j.getNumero_module()], "=", j.getNb_creneaux()).post();
 			}
@@ -235,76 +236,41 @@ public class Modelisation {
 	public static void main(String[] args) {
 		
 		ArrayList<Integer> Dispo = new ArrayList<>(Arrays.asList(
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 0,0,0,0,0,0,
-				 0,0,0,0,0,0,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1));
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1));
 		
-		ArrayList<Integer> Dispo2 = new ArrayList<>(Arrays.asList(
-				 0,0,0,0,0,0,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1));
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
 		modulesUeA.add(new Module(1, "1", 7, Dispo));
 		modulesUeA.add(new Module(2, "2", 7,Dispo));
 		modulesUeA.add(new Module(3, "3", 8,Dispo));
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-		modulesUeB.add(new Module(4, "4", 11,Dispo2));
+		modulesUeB.add(new Module(4, "4", 11,Dispo));
 		modulesUeB.add(new Module(5, "5", 11,Dispo));
 		modulesUeB.add(new Module(6, "6", 11,Dispo));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();

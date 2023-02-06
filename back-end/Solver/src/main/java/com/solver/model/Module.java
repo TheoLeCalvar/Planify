@@ -23,6 +23,9 @@ public class Module {
 	public ArrayList<Integer> getDispo() {
 		return Dispo;
 	}
+	public void setDispo(ArrayList<Integer> dispo) {
+		this.Dispo = dispo;
+	}
 
 	public String getName() {
 		return name;

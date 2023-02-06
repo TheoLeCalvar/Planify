@@ -17,7 +17,49 @@ public class SolverService {
 		int Nb_Semaines = request.getWeeksNumber();
 		
 		ArrayList<Integer> Dispo = new Donnee().Traduction(request.getUnavailables() , request.getStartDate() );
-				
+		
+		ArrayList<Integer> DispoTest = new Donnee().Traduction(request.getUnavailables() , request.getStartDate() );
+		
+//		ArrayList<Integer> DispoTest = new ArrayList<>(Arrays.asList(
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1,
+//				 1,1,1,1,1,1));
+//		
+		for(com.solver.model.Module module : request.getModulesUeA()) {
+			module.setDispo(DispoTest);
+		}
+		for(com.solver.model.Module module : request.getModulesUeB()) {
+			module.setDispo(DispoTest);
+		}
+		for(com.solver.model.Module module : request.getModulesUeC()) {
+			module.setDispo(DispoTest);
+		}
+		
 		 /*
 		 ArrayList<Integer> Dispo = new ArrayList<Integer>(Nb_Semaines*6*2);
 		 for (int i = 0 ; i<Nb_Semaines*6*2;i++) {

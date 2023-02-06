@@ -163,7 +163,7 @@ export class RtafFormComponent implements OnInit {
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailable: this.tableData
+            unavailables: this.tableData
         }
 
         this.service.addData(data).subscribe(
