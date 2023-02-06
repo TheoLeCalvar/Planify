@@ -3,6 +3,13 @@ package com.solver.model;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.sql.Date;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class Donnee {
 
@@ -19,6 +26,11 @@ public class Donnee {
 		this.Liste_UE.add(ueb);
 		this.Liste_UE.add(uec);
 		this.calendrier = new Calendrier(Nb_Semaines, Dispo);
+	}
+	
+	public Donnee() {
+		this.calendrier = new Calendrier(14);
+		
 	}
 
 	public ArrayList<UE> getListe_UE() {
@@ -71,34 +83,60 @@ public class Donnee {
 		this.calendrier = calendrier;
 	}
 
-	public ArrayList<Integer> Traduction(ArrayList<LocalDate> date_indispo, ArrayList<Integer> creneau_indispo) {
-		LocalDate debut = LocalDate.of(2022, 11, 8);
-		ArrayList<Integer> l_int = new ArrayList<Integer>();
-		ArrayList<Integer> l_final = new ArrayList<Integer>();
-		for (LocalDate date : date_indispo) {
-			Duration dure = Duration.between(debut.atTime(0, 0), date.atTime(0, 0));
-
-			System.out.println(dure);
+	public ArrayList<Integer> Traduction(ArrayList<Unavailable> a, String debut ){
+		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
+		for(Unavailable el :a) {
+		d.add((LocalDate.of(Integer.valueOf(el.getDate().substring(0,4)),Integer.valueOf(el.getDate().substring(5,7)), Integer.valueOf(el.getDate().substring(8,10)))));
+		}
+		LocalDate local_debut= (LocalDate.of(Integer.valueOf(debut.substring(0,4)),Integer.valueOf(debut.substring(5,7)), Integer.valueOf(debut.substring(8,10))));
+		ArrayList<Integer> l_int= new ArrayList<Integer>();
+		ArrayList<Integer> l_final= new ArrayList<Integer>();
+		for(LocalDate date:d) {
+			Duration dure = Duration.between(local_debut.atTime(0, 0), date.atTime(0, 0));
 			Integer i = (int) (long) dure.toDays();
-			l_int.add((i / 7) * 2 + (i % 7) + 1);
+			System.out.println(i);
+			l_int.add((i/7)*2+(i%7));
 		}
-		for (int i : l_int) {
-			for (Integer j : creneau_indispo) {
-				l_final.add(i * 6 + j);
-			}
-		}
-		ArrayList<Integer> l_creneau = new ArrayList<Integer>();
-		// changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
-		for (int i = 0; i < 120; i++) {
-			for (int e : l_final) {
-				if (i == e) {
+
+			for(int i:l_int) {
+				for (Unavailable el : a) {
+					ArrayList<Integer> slot =el.getSlots();
+				 {
+					for(Integer k : slot) {
+					l_final.add(i*6+k);
+				}
+				}}}
+			ArrayList<Integer>l_creneau=new ArrayList<Integer>();
+			//changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
+			for(int l=0;l<this.getCalendrier().getNb_Creneaux();l++) {
+					if(l_final.contains(l)) {
 					l_creneau.add(0);
-				} else {
-					l_creneau.add(1);
+					}
+					else {l_creneau.add(1);
 				}
 			}
-		}
-		return l_creneau;
-	}
+			return l_creneau;
+			}
+public static void main(String args[]) {
+	String s ="2022-12-21";
+	String s2 ="2022-12-22";
+	String s3 ="2022-12-28";
 
-}
+	ArrayList<Integer> i = new ArrayList<Integer>();
+	i.add(2);
+	i.add(4);
+	Unavailable un = new Unavailable(s,i);
+	Unavailable un1 = new Unavailable(s3,i);
+	Unavailable un2 = new Unavailable(s2,i);
+
+	
+	ArrayList<Unavailable> e= new ArrayList<Unavailable>();
+	e.add(un);
+	e.add(un1);
+	e.add(un2);
+	String s1="2022-12-14";
+	Donnee t = new Donnee();
+		 System.out.println(t.Traduction(e,s1));
+	}}
+		
+
