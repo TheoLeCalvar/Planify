@@ -1,0 +1,48 @@
+@startuml Diagramme
+
+title Diagramme de sequences
+actor ResponsableTAF
+actor Enseignant
+entity FrontEnd
+entity DataService
+entity SolverService
+database MongoDB #LightBlue
+
+alt ResponsableTAF
+    ResponsableTAF -> FrontEnd: Submit()
+    FrontEnd -> DataService: Information générale
+    DataService -> MongoDB: Information générale
+    MongoDB -> DataService: OK
+    DataService -> DataService
+    note right
+        Notifier tous les enseignants
+    end note
+    DataService -> FrontEnd: OK
+    FrontEnd -> ResponsableTAF: OK
+end
+
+alt Enseignant
+    Enseignant -> FrontEnd: Submit()
+    FrontEnd -> DataService: Préférences
+    DataService -> MongoDB: Mise a jour de préférences
+    MongoDB -> DataService: OK
+    DataService -> MongoDB: GET - liste d'attente
+    MongoDB -> DataService: liste d'attente
+    DataService -> MongoDB: Mise a jour la liste d'attente
+    MongoDB -> DataService: OK
+    DataService -> FrontEnd: OK
+    FrontEnd -> Enseignant: OK
+end
+
+alt Si la liste d'attende est vide
+    ResponsableTAF -> FrontEnd: Solve()
+    FrontEnd -> DataService: Solve
+    DataService -> SolverService: Solve
+    SolverService -> DataService: Calendrier
+    DataService -> MongoDB: Calendrier
+    MongoDB -> DataService: OK
+    DataService -> FrontEnd: Calendrier
+    FrontEnd -> ResponsableTAF: Calendrier
+end
+
+@enduml

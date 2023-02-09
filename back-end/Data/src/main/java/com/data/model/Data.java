@@ -8,6 +8,7 @@ public class Data {
 
 	@Id
 	private String id;
+	private String creationDate;
 	private int weeksNumber;
 	private String startDate;
 	private ArrayList<Module> modulesUeA;
@@ -15,6 +16,7 @@ public class Data {
 	private ArrayList<Module> modulesUeC;
 	private ArrayList<Unavailable> unavailables;
 	private String calendar;
+	private ArrayList<String> teacherWaitingList;
 
 	public String getId() {
 		return id;
