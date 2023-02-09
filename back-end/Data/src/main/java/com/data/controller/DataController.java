@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.data.model.Data;
+import com.data.model.DataCalendar;
 import com.data.service.DataService;
 
 @CrossOrigin
@@ -26,16 +26,16 @@ public class DataController {
 	private DataService service;
 
 	@GetMapping(path = "/list", produces = "application/json")
-	public ResponseEntity<List<Data>> listSolutions() {
-		return new ResponseEntity<List<Data>>(service.listAll(), HttpStatus.OK);
+	public ResponseEntity<List<DataCalendar>> listSolutions() {
+		return new ResponseEntity<List<DataCalendar>>(service.listAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{id}", produces = "application/json")
-	public ResponseEntity<Data> getSolution(@PathVariable("id") String id) {
+	public ResponseEntity<DataCalendar> getSolution(@PathVariable("id") String id) {
 		try {
-			return new ResponseEntity<Data>(service.get(id), HttpStatus.OK);
+			return new ResponseEntity<DataCalendar>(service.get(id), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Data>(new Data(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<DataCalendar>(new DataCalendar(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class DataController {
 	}
 
 	@PostMapping(path = "/solver", produces = "application/json")
-	public ResponseEntity<String> solver(@RequestBody Data data) {
+	public ResponseEntity<String> solver(@RequestBody DataCalendar data) {
 		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver(data).replaceAll("\n", "   ") + "\"}",
 				HttpStatus.OK);
 	}

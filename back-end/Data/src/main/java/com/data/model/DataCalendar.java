@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 
-public class Data {
+public class DataCalendar {
 
 	@Id
 	private String id;
@@ -15,11 +15,15 @@ public class Data {
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
 	private ArrayList<Unavailable> unavailables;
-	private String calendar;
 	private ArrayList<String> teacherWaitingList;
+	private String calendar;
 
 	public String getId() {
 		return id;
+	}
+
+	public String getCreationDate() {
+		return creationDate;
 	}
 
 	public int getWeeksNumber() {
@@ -46,8 +50,20 @@ public class Data {
 		return unavailables;
 	}
 
+	public ArrayList<String> getTeacherWaitingList() {
+		return teacherWaitingList;
+	}
+
 	public String getCalendar() {
 		return calendar;
+	}
+
+	public void setCreationDate(String creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public void setTeacherWaitingList(ArrayList<String> teacherWaitingList) {
+		this.teacherWaitingList = teacherWaitingList;
 	}
 
 	public void setCalendar(String calendar) {

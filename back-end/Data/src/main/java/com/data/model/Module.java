@@ -1,14 +1,15 @@
 package com.data.model;
 
+import java.util.Map;
+
+import com.data.util.Localisation;
+
 public class Module {
 
-	private int id;
 	private String name;
 	private int slotsNumber;
-
-	public int getId() {
-		return id;
-	}
+	private Map<Localisation, String> mails;
+	private boolean isSync;
 
 	public String getName() {
 		return name;
@@ -16,6 +17,14 @@ public class Module {
 
 	public int getSlotsNumber() {
 		return slotsNumber;
+	}
+
+	public Map<Localisation, String> getMails() {
+		return mails;
+	}
+
+	public boolean getIsSync() {
+		return isSync;
 	}
 
 }

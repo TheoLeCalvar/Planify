@@ -9,46 +9,46 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.data.model.Data;
-import com.data.repo.DataRepo;
+import com.data.model.DataCalendar;
+import com.data.repo.DataCalendarRepo;
+import com.data.util.Constants;
 import com.google.gson.Gson;
 
 @Service
 public class DataService {
 
-	final private String URL_SOLVER = "http://solver:3201/solver";
-
 	@Autowired
 	protected RestTemplate restTemplate;
 
 	@Autowired
-	private DataRepo repo;
+	private DataCalendarRepo dataCalendarRepo;
 
-	public void save(Data data) {
-		repo.save(data);
+	public void save(DataCalendar data) {
+		dataCalendarRepo.save(data);
 	}
 
-	public List<Data> listAll() {
-		return repo.findAll();
+	public List<DataCalendar> listAll() {
+		return dataCalendarRepo.findAll();
 	}
 
-	public Data get(String id) {
-		return repo.findById(id).get();
+	public DataCalendar get(String id) {
+		return dataCalendarRepo.findById(id).get();
 	}
 
 	public void delete(String id) {
-		repo.deleteById(id);
+		dataCalendarRepo.deleteById(id);
 	}
 
-	public String solver(Data data) {
+	public String solver(DataCalendar data) {
 		String requestBody = new Gson().toJson(data);
-		requestBody = requestBody.replaceAll("id", "numero_module");
 		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
-		String calendar = restTemplate.postForEntity(URL_SOLVER, request, String.class).getBody();
+		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), request, String.class).getBody();
+
+//		TODO: Notifier tous les enseinants
 		
 		data.setCalendar(calendar);
 		save(data);
