@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.data.model.DataCalendar;
+import com.data.model.User;
 import com.data.repo.DataCalendarRepo;
 import com.data.util.Constants;
 import com.google.gson.Gson;
@@ -39,7 +40,21 @@ public class DataService {
 		dataCalendarRepo.deleteById(id);
 	}
 
-	public String solver(DataCalendar data) {
+	public void saveDataCalendar(DataCalendar data) {
+		save(data);
+//		TODO: Notify all teachers
+	}
+
+	public void savePreferences(User user) {
+//		TODO: save preferences -> request to UserService
+//		TODO: delete mail of teacherWaitingList
+	}
+
+	public String solver() {
+//		TODO: get data from DB
+		DataCalendar data = new DataCalendar();
+//		TODO: verify that teacherWaitingList is empty
+
 		String requestBody = new Gson().toJson(data);
 		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
 
@@ -48,8 +63,6 @@ public class DataService {
 		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
 		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), request, String.class).getBody();
 
-//		TODO: Notifier tous les enseinants
-		
 		data.setCalendar(calendar);
 		save(data);
 		return calendar;

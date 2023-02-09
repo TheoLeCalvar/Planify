@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.data.model.DataCalendar;
+import com.data.model.User;
 import com.data.service.DataService;
 
 @CrossOrigin
@@ -44,9 +45,19 @@ public class DataController {
 		service.delete(id);
 	}
 
+	@PostMapping(path = "/save-data-calendar", produces = "application/json")
+	public void saveDataCalendar(@RequestBody DataCalendar data) {
+		service.saveDataCalendar(data);
+	}
+
+	@PostMapping(path = "/save-preferences", produces = "application/json")
+	public void savePreferences(@RequestBody User user) {
+		service.savePreferences(user);
+	}
+
 	@PostMapping(path = "/solver", produces = "application/json")
-	public ResponseEntity<String> solver(@RequestBody DataCalendar data) {
-		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver(data).replaceAll("\n", "   ") + "\"}",
+	public ResponseEntity<String> solver() {
+		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver().replaceAll("\n", "   ") + "\"}",
 				HttpStatus.OK);
 	}
 
