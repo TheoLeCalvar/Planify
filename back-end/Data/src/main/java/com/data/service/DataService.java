@@ -41,6 +41,7 @@ public class DataService {
 	}
 
 	public void saveDataCalendar(DataCalendar data) {
+//		TODO: Verify all information (required fields)
 		save(data);
 //		TODO: Notify all teachers
 	}
