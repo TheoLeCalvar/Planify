@@ -29,3 +29,9 @@ Stop and remove containers
 ```bash
 docker-compose down
 ```
+
+## Tests
+
+```bash
+bash create-test-users.sh 
+```

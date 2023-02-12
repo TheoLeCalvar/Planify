@@ -43,7 +43,7 @@ public class DataService {
 	public void saveDataCalendar(DataCalendar data) {
 		data.generateTeacherWaitingList();
 		save(data);
-//		TODO: Notify all teachers via e-mail
+//		TODO: Notify all teachers by e-mail
 	}
 
 	public void savePreferences(User user) {

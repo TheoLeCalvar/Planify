@@ -38,7 +38,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(path = "/new-user", produces = "application/json")
+	@PostMapping(path = "/new", produces = "application/json")
 	public void saveDataCalendar(@RequestBody User user) {
 		service.save(user);
 	}
