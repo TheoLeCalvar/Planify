@@ -93,15 +93,22 @@ public class DataCalendar {
 	}
 	
 	public void generateTeacherWaitingList() {
+		teacherWaitingList = new ArrayList<>();
 		modulesUeA.forEach((module) -> {
-			module.getMails().values().forEach((value) -> { teacherWaitingList.add(value); });
+			module.getMails().values().forEach((mail) -> { addMailToList(mail); });
 		});
 		modulesUeB.forEach((module) -> {
-			module.getMails().values().forEach((value) -> { teacherWaitingList.add(value); });
+			module.getMails().values().forEach((mail) -> { addMailToList(mail); });
 		});
 		modulesUeC.forEach((module) -> {
-			module.getMails().values().forEach((value) -> { teacherWaitingList.add(value); });
+			module.getMails().values().forEach((mail) -> { addMailToList(mail); });
 		});
+	}
+	
+	private void addMailToList(String mail) {
+		if (!teacherWaitingList.contains(mail)) {
+			teacherWaitingList.add(mail);
+		}
 	}
 
 }

@@ -1,0 +1,11 @@
+# Spring properties
+spring:
+  application:
+    name: user.com       # Service registers under this name
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/user
+
+# HTTP Server
+server:
+  port: 3202   # HTTP (Tomcat) port
