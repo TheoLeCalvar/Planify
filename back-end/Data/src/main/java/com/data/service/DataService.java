@@ -41,9 +41,9 @@ public class DataService {
 	}
 
 	public void saveDataCalendar(DataCalendar data) {
-//		TODO: Verify all information (required fields)
+		data.generateTeacherWaitingList();
 		save(data);
-//		TODO: Notify all teachers
+//		TODO: Notify all teachers via e-mail
 	}
 
 	public void savePreferences(User user) {

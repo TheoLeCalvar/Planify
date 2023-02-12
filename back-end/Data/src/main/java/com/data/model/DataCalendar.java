@@ -91,5 +91,17 @@ public class DataCalendar {
 	public void setCalendar(String calendar) {
 		this.calendar = calendar;
 	}
+	
+	public void generateTeacherWaitingList() {
+		modulesUeA.forEach((module) -> {
+			module.getMails().values().forEach((value) -> { teacherWaitingList.add(value); });
+		});
+		modulesUeB.forEach((module) -> {
+			module.getMails().values().forEach((value) -> { teacherWaitingList.add(value); });
+		});
+		modulesUeC.forEach((module) -> {
+			module.getMails().values().forEach((value) -> { teacherWaitingList.add(value); });
+		});
+	}
 
 }
