@@ -24,8 +24,8 @@ public class DataService {
 	@Autowired
 	private DataCalendarRepo dataCalendarRepo;
 
-	public void save(DataCalendar data) {
-		dataCalendarRepo.save(data);
+	public void save(DataCalendar dataCalendar) {
+		dataCalendarRepo.save(dataCalendar);
 	}
 
 	public List<DataCalendar> listAll() {
@@ -40,23 +40,33 @@ public class DataService {
 		dataCalendarRepo.deleteById(id);
 	}
 
-	public void saveDataCalendar(DataCalendar data) {
-		data.generateTeacherWaitingList();
-		save(data);
+	public void saveDataCalendar(DataCalendar dataCalendar) {
+		dataCalendar.setCreationDate(System.currentTimeMillis());
+		dataCalendar.generateTeacherWaitingList();
+		save(dataCalendar);
 //		TODO: Notify all teachers by e-mail
 	}
 
 	public void savePreferences(User user) {
-//		TODO: save preferences -> request to UserService
-//		TODO: delete mail of teacherWaitingList
+		if (user.getMail().isBlank()) {
+			throw new Error("mail is mandatory");
+		}
+		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + user.getMail(), User.class).getBody();
+		userDB.setUnavailables(user.getUnavailables());
+		restTemplate.postForEntity(Constants.getUrlUser() + "/new", userDB, User.class).getBody();
+
+		DataCalendar dataCalendar = dataCalendarRepo.findTopByOrderByCreationDateDesc();
+		dataCalendar.deleteMailToList(user.getMail());
+		save(dataCalendar);
 	}
 
 	public String solver() {
-//		TODO: get data from DB
-		DataCalendar data = new DataCalendar();
-//		TODO: verify that teacherWaitingList is empty
+		DataCalendar dataCalendar = dataCalendarRepo.findTopByOrderByCreationDateDesc();
+		if (dataCalendar.getTeacherWaitingList().size() != 0) {
+			throw new Error("teacherWaitingList is not empty");
+		}
 
-		String requestBody = new Gson().toJson(data);
+		String requestBody = new Gson().toJson(dataCalendar);
 		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
 
 		HttpHeaders headers = new HttpHeaders();
@@ -64,8 +74,8 @@ public class DataService {
 		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
 		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), request, String.class).getBody();
 
-		data.setCalendar(calendar);
-		save(data);
+		dataCalendar.setCalendar(calendar);
+		save(dataCalendar);
 		return calendar;
 	}
 

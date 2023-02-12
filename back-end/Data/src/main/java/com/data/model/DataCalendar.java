@@ -15,9 +15,6 @@ public class DataCalendar {
 	@Id
 	private String id;
 
-	@NotBlank(message = "creationDate is mandatory")
-	private String creationDate;
-
 	@Min(value = 13, message = "weeksNumber: minimum value is 13")
 	@Max(value = 16, message = "weeksNumber: maximum value is 16")
 	private int weeksNumber;
@@ -37,15 +34,12 @@ public class DataCalendar {
 	@NotNull(message = "unavailables is mandatory")
 	private ArrayList<@Valid Unavailable> unavailables;
 
+	private long creationDate;
 	private ArrayList<String> teacherWaitingList;
 	private String calendar;
 
 	public String getId() {
 		return id;
-	}
-
-	public String getCreationDate() {
-		return creationDate;
 	}
 
 	public int getWeeksNumber() {
@@ -72,6 +66,10 @@ public class DataCalendar {
 		return unavailables;
 	}
 
+	public long getCreationDate() {
+		return creationDate;
+	}
+
 	public ArrayList<String> getTeacherWaitingList() {
 		return teacherWaitingList;
 	}
@@ -80,7 +78,7 @@ public class DataCalendar {
 		return calendar;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(long creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -91,20 +89,30 @@ public class DataCalendar {
 	public void setCalendar(String calendar) {
 		this.calendar = calendar;
 	}
-	
+
 	public void generateTeacherWaitingList() {
 		teacherWaitingList = new ArrayList<>();
 		modulesUeA.forEach((module) -> {
-			module.getMails().values().forEach((mail) -> { addMailToList(mail); });
+			module.getMails().values().forEach((mail) -> {
+				addMailToList(mail);
+			});
 		});
 		modulesUeB.forEach((module) -> {
-			module.getMails().values().forEach((mail) -> { addMailToList(mail); });
+			module.getMails().values().forEach((mail) -> {
+				addMailToList(mail);
+			});
 		});
 		modulesUeC.forEach((module) -> {
-			module.getMails().values().forEach((mail) -> { addMailToList(mail); });
+			module.getMails().values().forEach((mail) -> {
+				addMailToList(mail);
+			});
 		});
 	}
-	
+
+	public void deleteMailToList(String mail) {
+		teacherWaitingList.remove(mail);
+	}
+
 	private void addMailToList(String mail) {
 		if (!teacherWaitingList.contains(mail)) {
 			teacherWaitingList.add(mail);

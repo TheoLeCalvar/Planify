@@ -31,4 +31,8 @@ public class User {
 		return localisation;
 	}
 
+	public void setUnavailables(ArrayList<Unavailable> unavailables) {
+		this.unavailables = unavailables;
+	}
+
 }
