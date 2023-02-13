@@ -1,0 +1,192 @@
+---
+openapi: 3.0.0
+info:
+  title: Data API
+  description: This is the API of the Data service
+  contact:
+    email: sebastian.romero@imt-atlantique.net
+  version: 1.0.0
+servers:
+- url: http://localhost:3200
+  description: For local tests
+paths:
+  /data/list:
+    get:
+      summary: get list of calendars
+      description: |
+        Get list of calendars
+      operationId: listCalendars
+      responses:
+        "200":
+          description: list of calendars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataCalendar'
+  /data/{id}:
+    get:
+      summary: get calendar by id
+      description: |
+        Get calendar by id
+      operationId: getCalendar
+      parameters:
+      - name: id
+        in: path
+        description: Calendar ID.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: 1
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: data calendar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataCalendar'
+    delete:
+      summary: delete calendar by id
+      description: |
+        Delete calendar by id
+      operationId: deleteCalendar
+      parameters:
+      - name: id
+        in: path
+        description: Calendar ID.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: 1
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: data of calendar deleted
+  /data/save-data-calendar:     
+    post:
+      summary: save data of calendar
+      description: Save data of calendar
+      operationId: saveDataCalendar
+      requestBody:
+        description: item to save
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataCalendar'
+      responses:
+        "200":
+          description: data of calendar saved
+  /data/save-preferences:     
+    post:
+      summary: save preferences of user
+      description: Save preferences of user
+      operationId: savePreferences
+      requestBody:
+        description: preferences to save
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: preferences of user saved
+  /data/solver:     
+    post:
+      summary: execute solver
+      description: Execute solver to find a solution (calendar)
+      operationId: solver
+      responses:
+        "200":
+          description: solver executed
+components:
+  schemas:
+    DataCalendar:
+      required:
+      - weeksNumber
+      - startDate
+      - modulesUeA
+      - modulesUeB
+      - modulesUeC
+      - unavailables
+      type: object
+      properties:
+        weeksNumber:
+          type: number
+          example: 15
+        startDate:
+          type: string
+          example: 2023-02-07
+        modulesUeA:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+        modulesUeB:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+        modulesUeC:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+        unavailables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unavailable'
+    Module:
+      required:
+      - name
+      - slotsNumber
+      - mails
+      type: object
+      properties:
+        name:
+          type: string
+          example: module1
+        slotsNumber:
+          type: number
+          example: 7
+        mails:
+          type: object
+          properties:
+            Nantes:
+              type: string
+              example: mail1@test.com
+            Brest:
+              type: string
+              example: mail2@test.com
+        isSync:
+          type: boolean
+          example: true
+    Unavailable:
+      required:
+      - date
+      - slots
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2023-02-14
+        slots:
+          type: array
+          items:
+            type: number
+            example: 1
+    User:
+      required:
+      - mail
+      - unavailables
+      type: object
+      properties:
+        mail:
+          type: string
+          example: mail1@test.com
+        unavailables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unavailable'
