@@ -25,12 +25,12 @@ public class UserController {
 	private UserService service;
 
 	@GetMapping(path = "/list", produces = "application/json")
-	public ResponseEntity<List<User>> listSolutions() {
+	public ResponseEntity<List<User>> listUsers() {
 		return new ResponseEntity<List<User>>(service.listAll(), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/get/{mail}", produces = "application/json")
-	public ResponseEntity<User> getSolution(@PathVariable("mail") String mail) {
+	@GetMapping(path = "/{mail}", produces = "application/json")
+	public ResponseEntity<User> getUser(@PathVariable("mail") String mail) {
 		try {
 			return new ResponseEntity<User>(service.get(mail), HttpStatus.OK);
 		} catch (Exception e) {
@@ -39,7 +39,7 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/new", produces = "application/json")
-	public void saveDataCalendar(@RequestBody User user) {
+	public void saveUser(@RequestBody User user) {
 		service.save(user);
 	}
 

@@ -35,12 +35,12 @@ public class DataController {
 	private DataService service;
 
 	@GetMapping(path = "/list", produces = "application/json")
-	public ResponseEntity<List<DataCalendar>> listSolutions() {
+	public ResponseEntity<List<DataCalendar>> listCalendars() {
 		return new ResponseEntity<List<DataCalendar>>(service.listAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{id}", produces = "application/json")
-	public ResponseEntity<DataCalendar> getSolution(@PathVariable("id") String id) {
+	public ResponseEntity<DataCalendar> getCalendar(@PathVariable("id") String id) {
 		try {
 			return new ResponseEntity<DataCalendar>(service.get(id), HttpStatus.OK);
 		} catch (Exception e) {
@@ -49,7 +49,7 @@ public class DataController {
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public void deleteSolution(@PathVariable("id") String id) {
+	public void deleteCalendar(@PathVariable("id") String id) {
 		service.delete(id);
 	}
 
