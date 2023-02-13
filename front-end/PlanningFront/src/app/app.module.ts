@@ -17,6 +17,8 @@ import { MatMenuModule} from '@angular/material/menu';
 import { MatIconModule} from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
 
 
 
@@ -37,7 +39,9 @@ import {MatInputModule} from '@angular/material/input';
     MatMenuModule,
     MatIconModule,
     MatDatepickerModule,
-    MatInputModule
+    MatInputModule,
+    MatMomentDateModule,
+  
   ],
   providers: [],
   bootstrap: [AppComponent, RtafFormComponent]

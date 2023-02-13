@@ -1,9 +1,11 @@
-import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
-import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Component, Input, OnInit,ViewChild,ViewEncapsulation  } from '@angular/core';
+import { MatCalendar, MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
 import { DataService } from '../Services/data.service';
+import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import * as moment from 'moment';
 
 
 
@@ -15,6 +17,7 @@ import { DataService } from '../Services/data.service';
 })
 export class RtafFormComponent implements OnInit {
 
+    @ViewChild('picker1') private myCalendar: MatCalendar<Date>;
 
     indisponibility: Indisponibilite;
 
@@ -73,6 +76,14 @@ export class RtafFormComponent implements OnInit {
         this.startAt = new Date(this.debut);
         console.log(this.startAt);
     }
+
+    hideWeekends = (date: Date): MatCalendarCellCssClasses => {
+        console.log(moment(date).day());
+        return moment(date).day() === 2 || moment(date).day() === 5
+          ? 'weekend'
+          : '';
+    };
+   
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
         this.indisponibilityDate = new Date(this.indisponible.getTime() - this.indisponible.getTimezoneOffset() * 60000).toISOString().slice(0, 10);

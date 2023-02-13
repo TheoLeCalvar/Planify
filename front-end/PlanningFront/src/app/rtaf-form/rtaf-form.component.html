@@ -101,7 +101,7 @@
                 placeholder="Choisir date indisponible" 
                 [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker [startAt]="startAt" #picker1></mat-datepicker>
+            <mat-datepicker [startAt]="startAt" #picker1 ></mat-datepicker>
         </mat-form-field>
     </div>
     <div class="w-25 ">
