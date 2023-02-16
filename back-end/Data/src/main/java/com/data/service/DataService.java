@@ -15,29 +15,27 @@ import com.google.gson.Gson;
 
 @Service
 public class DataService {
-	
+
 	final private String URL_SOLVER = "http://solver:3201/solver";
 
 	@Autowired
 	protected RestTemplate restTemplate;
-	
+
 	@Autowired
 	private DataRepo repo;
-		
+
+	public void save(Data data) {
+		repo.save(data);
+	}
+
 	public List<Data> listAll() {
 		return repo.findAll();
 	}
-	
+
 	public Data get(String id) {
-		try {
-			return repo.findById(id).get();
-		}
-		catch (Exception e) { 
-			// TODO: handling error
-			return new Data();
-		}
+		return repo.findById(id).get();
 	}
-	
+
 	public void delete(String id) {
 		repo.deleteById(id);
 	}
@@ -46,11 +44,15 @@ public class DataService {
 		String requestBody = new Gson().toJson(data);
 		requestBody = requestBody.replaceAll("id", "numero_module");
 		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
-		
+
 		HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
-		return restTemplate.postForEntity(URL_SOLVER, request, String.class).getBody();
+		String calendar = restTemplate.postForEntity(URL_SOLVER, request, String.class).getBody();
+		
+		data.setCalendar(calendar);
+		save(data);
+		return calendar;
 	}
-	
+
 }

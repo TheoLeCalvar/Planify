@@ -17,9 +17,7 @@
     <div class="w-25">
         <mat-form-field>
             <mat-label>Date du début</mat-label>
-            <input matInput [matDatepicker]="picker" 
-                placeholder="Choisir date du début" 
-                [(ngModel)]="debut" (dateChange)="changeDate('change', $event)">
+            <input matInput [matDatepicker]="picker" placeholder="Choisir date du début" [(ngModel)]="debut" (dateChange)="changeDate('change', $event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -139,8 +137,8 @@
     </div>
 
 </div>
-<div >
-    
+<div>
+
     <table class="table">
         <tr class="table-header">
             <th>Date de l'indisponibilité</th>
@@ -149,7 +147,7 @@
         </tr>
         <tr *ngFor="let row of tableData" class="table-row">
             <td>{{ row.date }}</td>
-            <td>{{ row.creneaux }}</td>
+            <td>{{ row.slots }}</td>
             <td><button class="delete-button" (click)="deleteRow(row)">Supprimer</button></td>
         </tr>
     </table>

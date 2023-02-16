@@ -157,7 +157,7 @@ export class RtafFormComponent implements OnInit {
         console.log("creneaux: ", selectedCreneaux);
         this.indisponibility= {
             date: this.indisponibilityDate,
-            creneaux : selectedCreneaux
+            slots : selectedCreneaux
         }
         console.log(this.indisponibility);
 
@@ -187,7 +187,7 @@ export class RtafFormComponent implements OnInit {
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailable: this.tableData
+            unavailables: this.tableData
         }
 
         this.service.addData(data).subscribe(

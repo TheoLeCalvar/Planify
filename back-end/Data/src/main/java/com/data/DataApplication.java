@@ -18,5 +18,5 @@ public class DataApplication {
 	RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
+
 }

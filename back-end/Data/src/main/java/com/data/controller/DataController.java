@@ -24,25 +24,30 @@ public class DataController {
 
 	@Autowired
 	private DataService service;
-	
+
 	@GetMapping(path = "/list", produces = "application/json")
 	public ResponseEntity<List<Data>> listSolutions() {
 		return new ResponseEntity<List<Data>>(service.listAll(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/{id}", produces = "application/json")
 	public ResponseEntity<Data> getSolution(@PathVariable("id") String id) {
-		return new ResponseEntity<Data>(service.get(id), HttpStatus.OK);
+		try {
+			return new ResponseEntity<Data>(service.get(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Data>(new Data(), HttpStatus.BAD_REQUEST);
+		}
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
 	public void deleteSolution(@PathVariable("id") String id) {
 		service.delete(id);
 	}
-	
+
 	@PostMapping(path = "/solver", produces = "application/json")
 	public ResponseEntity<String> solver(@RequestBody Data data) {
-		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver(data).replaceAll("\n", "   ") + "\"}", HttpStatus.OK);
+		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver(data).replaceAll("\n", "   ") + "\"}",
+				HttpStatus.OK);
 	}
-	
+
 }

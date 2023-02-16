@@ -1,11 +1,19 @@
 package com.solver.model;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.variables.IntVar;
+
+import com.solver.service.SolverService;
 
 public class Modelisation {
 
@@ -36,11 +44,10 @@ public class Modelisation {
 	public void Contrainte_nbcours() { // Contrainte permettant de remplir toute les variables avec le bon nombre de cours
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_Seances[0], "=", donnee.Nb_0()).post();
-		for (UE i : donnee.getListe_UE()) {
-			for (Module j : i.getListeModules()) {
+		
+		for (Module j:donnee.getListe_Module()) {
 				model.arithm(Nb_Seances[j.getNumero_module()], "=", j.getNb_creneaux()).post();
 			}
-		}
 		// On rempli la variable planning en fonction de la variable Nb_Seances
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
 			model.count(i, planning, Nb_Seances[i]).post();
@@ -126,6 +133,17 @@ public class Modelisation {
 			}
 		}
 	}
+	
+	public void Contrainte_Dispo_Module() {
+		for (int i = 0; i < donnee.getCalendrier().getNb_Creneaux(); i++) {
+			for (Module module:donnee.getListe_Module()) {
+				if(!module.Creneaux_dispo(i)) {
+					model.arithm(planning[i], "!=", module.getNumero_module()).post();
+				}
+			}
+		}
+		
+	}
 
 	public void addConstraints() {
 		Contrainte_Dispo();
@@ -133,13 +151,20 @@ public class Modelisation {
 		Contrainte_Equilibrage0();
 		Contrainte_mercredi_soir0();
 		Contraintes_Automate1();
+		Contrainte_Dispo_Module();
 	}
 
 	public void solve() {
 		solver.findSolution();
 	}
-
+	
 	public String getSolution() {
+		HashMap<Integer, String> num_nom= new HashMap<>();
+		for (Module module: donnee.getListe_Module()) {
+			num_nom.put(module.getNumero_module(), module.getName());
+		}
+		System.out.println("ici :"+num_nom);
+		
 		String res = "";
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
 			res += Nb_Seances[i] + "\n";
@@ -157,18 +182,111 @@ public class Modelisation {
 
 		res += "\n\n";
 		for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
-			res += "Jour " + i + ": \t";
+			res += "Jour " + i + ":  ";
 		}
-
+		res += "\n";
 		for (int j = 0; j < 6; j++) {
 			for (int i = 0; i < donnee.getCalendrier().getNb_Jours(); i++) {
-				res += agendajour[i][j].getValue() + "\t" + "\t";
+				res+= agendajour[i][j].getValue()+"        ";
 			}
+			res += "\n";
 		}
 
 		System.out.println(res);
 
 		return res;
+	}
+	
+	public ArrayList<Integer> Traduction(HashMap<Date,ArrayList<Integer>> a, Date debut ){
+		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
+		for (Date d1 :a.keySet()) {
+			d.add(d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+			}
+		LocalDate local_debut= debut.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		ArrayList<Integer> l_int= new ArrayList<Integer>();
+		ArrayList<Integer> l_final= new ArrayList<Integer>();
+		for(LocalDate date:d) {
+			Duration dure = Duration.between(local_debut.atTime(0, 0), date.atTime(0, 0));
+			System.out.println(dure);
+			Integer i = (int) (long) dure.toDays();
+			l_int.add((i/7)*2+(i%7)+1);
+			}
+		for(int i:l_int) {
+			for(ArrayList<Integer> j:a.values()) {
+				for(Integer k : j) {
+					l_final.add(i*6+k);
+				}
+			}
+		}
+		ArrayList<Integer>l_creneau=new ArrayList<Integer>();
+		//changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
+		for(int l=0;l<120;l++) {
+			for(int e : l_final) {
+				if(l==e) {
+					l_creneau.add(0);
+				} else {
+					l_creneau.add(1);					}
+				}
+				
+		}
+		return l_creneau;
+	}
+	
+		
+	public static void main(String[] args) {
+		
+		ArrayList<Integer> Dispo = new ArrayList<>(Arrays.asList(
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1,
+		 1,1,1,1,1,1));
+		
+		ArrayList<Module> modulesUeA = new ArrayList<Module>();
+		modulesUeA.add(new Module(1, "1", 7, Dispo));
+		modulesUeA.add(new Module(2, "2", 7,Dispo));
+		modulesUeA.add(new Module(3, "3", 8,Dispo));
+		ArrayList<Module> modulesUeB = new ArrayList<Module>();
+		modulesUeB.add(new Module(4, "4", 11,Dispo));
+		modulesUeB.add(new Module(5, "5", 11,Dispo));
+		modulesUeB.add(new Module(6, "6", 11,Dispo));
+		ArrayList<Module> modulesUeC = new ArrayList<Module>();
+		modulesUeC.add(new Module(7, "7", 4,Dispo));
+		modulesUeC.add(new Module(8, "8", 4,Dispo));
+		modulesUeC.add(new Module(9, "9", 3,Dispo));
+		ArrayList<Unavailable> unavailable = new ArrayList<Unavailable>();
+		ArrayList<Integer> slots = new ArrayList<>();
+		slots.add(1);
+		slots.add(2);
+		slots.add(3);
+		slots.add(4);
+		unavailable.add(new Unavailable("2023-02-08", slots));
+
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable, "2023-02-08");
+		new SolverService().solver(request);
 	}
 	
 }
