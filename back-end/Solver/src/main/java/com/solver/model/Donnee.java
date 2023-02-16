@@ -14,10 +14,12 @@ import java.util.HashMap;
 public class Donnee {
 
 	private ArrayList<UE> Liste_UE;
-	private Calendrier calendrier;
+	private Calendrier calendrierN; //Calendrier général Nantes
+	private Calendrier calendrierB; //Calendrier Général Brest
+	private String debut;
 
 	public Donnee(ArrayList<Module> UE_A, ArrayList<Module> UE_B, ArrayList<Module> UE_C, int Nb_Semaines,
-			ArrayList<Integer> Dispo) {
+			ArrayList<Integer> DispoN, ArrayList<Integer> DispoB, String debut) {
 		this.Liste_UE = new ArrayList<UE>(3);
 		UE uea = new UE("UE_A", UE_A);
 		UE ueb = new UE("UE_B", UE_B);
@@ -25,11 +27,16 @@ public class Donnee {
 		this.Liste_UE.add(uea);
 		this.Liste_UE.add(ueb);
 		this.Liste_UE.add(uec);
-		this.calendrier = new Calendrier(Nb_Semaines, Dispo);
+		this.calendrierN = new Calendrier(Nb_Semaines, DispoN);
+		this.calendrierB = new Calendrier(Nb_Semaines, DispoB);
+		this.debut = debut;
+
 	}
 	
-	public Donnee() {
-		this.calendrier = new Calendrier(14);
+	public Donnee(String debut) {
+		this.calendrierN = new Calendrier(14);
+		this.calendrierB = new Calendrier(14);
+		this.debut = debut;
 		
 	}
 
@@ -67,23 +74,38 @@ public class Donnee {
 		return Result;
 	}
 
-	public int Nb_0() {
-		return getCalendrier().getNb_Creneaux() - Nb_cours();
+	public int Nb_0N() {
+		return getCalendrierN().getNb_Creneaux() - Nb_cours();
+	}
+	
+	public int Nb_0B() {
+		return getCalendrierB().getNb_Creneaux() - Nb_cours();
 	}
 
-	public int Nb_0Jour() {
-		return Nb_0() / getCalendrier().getNb_Jours();
+	public int Nb_0JourN() {
+		return Nb_0N() / getCalendrierN().getNb_Jours();
+	}
+	
+	public int Nb_0JourB() {
+		return Nb_0B() / getCalendrierB().getNb_Jours();
 	}
 
-	public Calendrier getCalendrier() {
-		return calendrier;
+	public Calendrier getCalendrierN() {
+		return calendrierN;
+	}
+	
+	public Calendrier getCalendrierB() {
+		return calendrierB;
 	}
 
-	public void setCalendrier(Calendrier calendrier) {
-		this.calendrier = calendrier;
+	public void setCalendrierN(Calendrier calendrier) {
+		this.calendrierN = calendrier;
+	}
+	public void setCalendrierB(Calendrier calendrier) {
+		this.calendrierB = calendrier;
 	}
 
-	public ArrayList<Integer> Traduction(ArrayList<Unavailable> a, String debut ){
+	public ArrayList<Integer> Traduction(ArrayList<Unavailable> a){
 		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
 		for(Unavailable el :a) {
 		d.add((LocalDate.of(Integer.valueOf(el.getDate().substring(0,4)),Integer.valueOf(el.getDate().substring(5,7)), Integer.valueOf(el.getDate().substring(8,10)))));
@@ -108,7 +130,7 @@ public class Donnee {
 				}}}
 			ArrayList<Integer>l_creneau=new ArrayList<Integer>();
 			//changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
-			for(int l=0;l<this.getCalendrier().getNb_Creneaux();l++) {
+			for(int l=0;l<this.getCalendrierN().getNb_Creneaux();l++) {
 					if(l_final.contains(l)) {
 					l_creneau.add(0);
 					}
@@ -135,8 +157,8 @@ public static void main(String args[]) {
 	e.add(un1);
 	e.add(un2);
 	String s1="2022-12-14";
-	Donnee t = new Donnee();
-		 System.out.println(t.Traduction(e,s1));
+	Donnee t = new Donnee(s1);
+		 System.out.println(t.Traduction(e));
 	}}
 		
 
