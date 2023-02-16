@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class Unavailable {
+public class Unavailability {
 
 	@NotBlank(message = "date is mandatory")
 	private String date;

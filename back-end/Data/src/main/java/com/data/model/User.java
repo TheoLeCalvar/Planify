@@ -12,7 +12,7 @@ public class User {
 	@Id
 	private String mail;
 	private Role role;
-	private ArrayList<Unavailable> unavailables;
+	private ArrayList<Unavailability> unavailabilities;
 	private Localisation localisation;
 
 	public String getMail() {
@@ -23,16 +23,16 @@ public class User {
 		return role;
 	}
 
-	public ArrayList<Unavailable> getUnavailables() {
-		return unavailables;
+	public ArrayList<Unavailability> getunavailabilities() {
+		return unavailabilities;
 	}
 
 	public Localisation getLocalisation() {
 		return localisation;
 	}
 
-	public void setUnavailables(ArrayList<Unavailable> unavailables) {
-		this.unavailables = unavailables;
+	public void setunavailabilities(ArrayList<Unavailability> unavailabilities) {
+		this.unavailabilities = unavailabilities;
 	}
 
 }

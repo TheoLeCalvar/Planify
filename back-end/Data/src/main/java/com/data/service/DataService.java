@@ -52,7 +52,7 @@ public class DataService {
 			throw new Error("mail is mandatory");
 		}
 		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + user.getMail(), User.class).getBody();
-		userDB.setUnavailables(user.getUnavailables());
+		userDB.setunavailabilities(user.getunavailabilities());
 		restTemplate.postForEntity(Constants.getUrlUser() + "/new", userDB, User.class).getBody();
 
 		DataCalendar dataCalendar = dataCalendarRepo.findTopByOrderByCreationDateDesc();

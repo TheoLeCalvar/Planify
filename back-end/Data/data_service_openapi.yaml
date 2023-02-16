@@ -113,7 +113,7 @@ components:
       - modulesUeA
       - modulesUeB
       - modulesUeC
-      - unavailables
+      - unavailabilities
       type: object
       properties:
         weeksNumber:
@@ -134,10 +134,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Module'
-        unavailables:
+        unavailabilities:
           type: array
           items:
-            $ref: '#/components/schemas/Unavailable'
+            $ref: '#/components/schemas/Unavailability'
     Module:
       required:
       - name
@@ -163,7 +163,7 @@ components:
         isSync:
           type: boolean
           example: true
-    Unavailable:
+    Unavailability:
       required:
       - date
       - slots
@@ -180,13 +180,13 @@ components:
     User:
       required:
       - mail
-      - unavailables
+      - unavailabilities
       type: object
       properties:
         mail:
           type: string
           example: mail1@test.com
-        unavailables:
+        unavailabilities:
           type: array
           items:
-            $ref: '#/components/schemas/Unavailable'
+            $ref: '#/components/schemas/Unavailability'
