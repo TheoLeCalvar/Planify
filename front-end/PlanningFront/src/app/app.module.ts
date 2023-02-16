@@ -15,9 +15,12 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule} from '@angular/material/menu';
 import { MatIconModule} from '@angular/material/icon';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+
 
 
 
@@ -32,6 +35,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    MatFormFieldModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
     ReactiveFormsModule,

@@ -1,11 +1,10 @@
 import { Component, Input, OnInit,ViewChild,ViewEncapsulation  } from '@angular/core';
-import { MatCalendar, MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import {  DateFilterFn, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
 import { DataService } from '../Services/data.service';
-import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
-import * as moment from 'moment';
+
 
 
 
@@ -16,8 +15,18 @@ import * as moment from 'moment';
   encapsulation: ViewEncapsulation.None
 })
 export class RtafFormComponent implements OnInit {
+    options = [
+        { label: 'Option 1', value: 1 },
+        { label: 'Option 2', value: 2 },
+        { label: 'Option 3', value: 3 }
+      ];
 
-    @ViewChild('picker1') private myCalendar: MatCalendar<Date>;
+    TeacherNames = [ "Sonda", "Sebas", "Arthur"];
+
+ 
+
+    //simultané Brest/Nantes
+    isChecked: boolean = false;
 
     indisponibility: Indisponibilite;
 
@@ -39,17 +48,19 @@ export class RtafFormComponent implements OnInit {
     selectedNumberModuleUEB : number =0;
     selectedNumberModuleUEC : number =0;
 
+    selectedTeacherNantes: string = this.TeacherNames[0];
+
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
     modulesUEC: Module[] = [];
 
     items = [
-        { label: 1, isChecked: false },
-        { label: 2, isChecked: false },
-        { label: 3, isChecked: false },
-        { label: 4, isChecked: false },
-        { label: 5, isChecked: false },
-        { label: 6, isChecked: false },
+        { label: 1 , temps:" : 8h -> 9h:15min" , isChecked: false },
+        { label: 2 , temps:" : 9h:30min -> 10h:45min" , isChecked: false },
+        { label: 3, temps:" : 11h -> 12h:15min",isChecked: false },
+        { label: 4, temps:" : 13h:45min -> 15h", isChecked: false },
+        { label: 5, temps:" : 15h:15min -> 16h:30min",  isChecked: false },
+        { label: 6, temps:" :  16h:45min -> 18h", isChecked: false },
     ];
  
 
@@ -77,12 +88,10 @@ export class RtafFormComponent implements OnInit {
         console.log(this.startAt);
     }
 
-    hideWeekends = (date: Date): MatCalendarCellCssClasses => {
-        console.log(moment(date).day());
-        return moment(date).day() === 2 || moment(date).day() === 5
-          ? 'weekend'
-          : '';
-    };
+    futureOnlyFilter(d: Date): boolean {
+        return d >= new Date();
+      }
+      
    
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -131,6 +140,10 @@ export class RtafFormComponent implements OnInit {
                 slotsNumber: 0
             })
         }
+    }
+
+    selectTeacherNantesChange(){
+        console.log(JSON.stringify(this.selectedTeacherNantes));
     }
 
     addFunction(){
