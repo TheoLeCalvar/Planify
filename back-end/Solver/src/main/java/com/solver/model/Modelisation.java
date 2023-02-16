@@ -380,6 +380,7 @@ public class Modelisation {
 	
 		
 	public static void main(String[] args) {
+//		Request ***********************************************************************************************
 		Map<Localisation, String> mails = new HashMap<>();
 		mails.put(Localisation.Nantes, "responsableNantes@test.com");
 		mails.put(Localisation.Brest, "responsableBrest@test.com");
@@ -409,6 +410,10 @@ public class Modelisation {
 		
 		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14");
 		
+//		*******************************************************************************************************
+
+//		Function solver() of SolverService ********************************************************************
+		
 		Donnee data = new Donnee(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(),
 				request.getWeeksNumber(), request.getUnavailabilities(), request.getUnavailabilities(),
 				request.getStartDate());
@@ -433,6 +438,8 @@ public class Modelisation {
 		test.solve();
 		test.getSolutionN();
 		test.getSolutionB();
+		
+//		*******************************************************************************************************
 	}
 
 }
