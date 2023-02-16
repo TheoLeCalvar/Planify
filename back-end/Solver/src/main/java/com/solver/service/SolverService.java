@@ -16,7 +16,7 @@ public class SolverService {
 	public String solver(Request request) {
 		int Nb_Semaines = request.getWeeksNumber();
 		
-		ArrayList<Integer> Dispo = new Donnee().Traduction(request.getUnavailables() , request.getStartDate() );
+		ArrayList<Integer> Dispo = new Donnee().Traduction(request.getUnavailables());
 		
 		ArrayList<Integer> DispoTest = new Donnee().Traduction(request.getUnavailables() , request.getStartDate() );
 		
@@ -78,7 +78,7 @@ public class SolverService {
 		}
 		System.out.println(Result);
 
-		Modelisation test = new Modelisation(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(), Nb_Semaines, Dispo);
+		Modelisation test = new Modelisation(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(), Nb_Semaines, Dispo,Dispo,request.getStartDate());
 
 		test.BuildModel();
 		test.addConstraints();
