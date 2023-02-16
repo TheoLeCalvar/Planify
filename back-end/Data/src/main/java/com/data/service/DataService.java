@@ -9,49 +9,73 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.data.model.Data;
-import com.data.repo.DataRepo;
+import com.data.model.DataCalendar;
+import com.data.model.User;
+import com.data.repo.DataCalendarRepo;
+import com.data.util.Constants;
 import com.google.gson.Gson;
 
 @Service
 public class DataService {
 
-	final private String URL_SOLVER = "http://solver:3201/solver";
-
 	@Autowired
 	protected RestTemplate restTemplate;
 
 	@Autowired
-	private DataRepo repo;
+	private DataCalendarRepo dataCalendarRepo;
 
-	public void save(Data data) {
-		repo.save(data);
+	public void save(DataCalendar dataCalendar) {
+		dataCalendarRepo.save(dataCalendar);
 	}
 
-	public List<Data> listAll() {
-		return repo.findAll();
+	public List<DataCalendar> listAll() {
+		return dataCalendarRepo.findAll();
 	}
 
-	public Data get(String id) {
-		return repo.findById(id).get();
+	public DataCalendar get(String id) {
+		return dataCalendarRepo.findById(id).get();
 	}
 
 	public void delete(String id) {
-		repo.deleteById(id);
+		dataCalendarRepo.deleteById(id);
 	}
 
-	public String solver(Data data) {
-		String requestBody = new Gson().toJson(data);
-		requestBody = requestBody.replaceAll("id", "numero_module");
+	public void saveDataCalendar(DataCalendar dataCalendar) {
+		dataCalendar.setCreationDate(System.currentTimeMillis());
+		dataCalendar.generateTeacherWaitingList();
+		save(dataCalendar);
+//		TODO: Notify all teachers by e-mail
+	}
+
+	public void savePreferences(User user) {
+		if (user.getMail().isBlank()) {
+			throw new Error("mail is mandatory");
+		}
+		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + user.getMail(), User.class).getBody();
+		userDB.setUnavailables(user.getUnavailables());
+		restTemplate.postForEntity(Constants.getUrlUser() + "/new", userDB, User.class).getBody();
+
+		DataCalendar dataCalendar = dataCalendarRepo.findTopByOrderByCreationDateDesc();
+		dataCalendar.deleteMailToList(user.getMail());
+		save(dataCalendar);
+	}
+
+	public String solver() {
+		DataCalendar dataCalendar = dataCalendarRepo.findTopByOrderByCreationDateDesc();
+		if (dataCalendar.getTeacherWaitingList().size() != 0) {
+			throw new Error("teacherWaitingList is not empty");
+		}
+
+		String requestBody = new Gson().toJson(dataCalendar);
 		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
-		String calendar = restTemplate.postForEntity(URL_SOLVER, request, String.class).getBody();
-		
-		data.setCalendar(calendar);
-		save(data);
+		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), request, String.class).getBody();
+
+		dataCalendar.setCalendar(calendar);
+		save(dataCalendar);
 		return calendar;
 	}
 

@@ -1,16 +1,10 @@
-package com.data.model;
+package com.user.model;
 
 import java.util.ArrayList;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 public class Unavailable {
 
-	@NotBlank(message = "date is mandatory")
 	private String date;
-
-	@NotNull(message = "slots is mandatory")
 	private ArrayList<Integer> slots;
 
 	public String getDate() {

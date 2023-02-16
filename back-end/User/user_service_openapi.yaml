@@ -1,0 +1,103 @@
+---
+openapi: 3.0.0
+info:
+  title: User API
+  description: This is the API of the User service
+  contact:
+    email: sebastian.romero@imt-atlantique.net
+  version: 1.0.0
+servers:
+- url: http://localhost:3202
+  description: For local tests
+paths:
+  /user/list:
+    get:
+      summary: get list of users
+      description: |
+        Get list of users
+      operationId: listUsers
+      responses:
+        "200":
+          description: list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /user/{mail}:
+    get:
+      summary: get user by mail
+      description: |
+        Get user by mail
+      operationId: getUser
+      parameters:
+      - name: mail
+        in: path
+        description: User mail.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: 1
+          minimum: 1
+          type: string
+          example: mail1@test.com
+      responses:
+        "200":
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/new:     
+    post:
+      summary: save user
+      description: Save user
+      operationId: saveUser
+      requestBody:
+        description: item to save
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: user saved
+components:
+  schemas:
+    User:
+      required:
+      - mail
+      - role
+      - unavailables
+      - localisation
+      type: object
+      properties:
+        mail:
+          type: string
+          example: mail1@test.com
+        role:
+          type: string
+          example: ResponsableTAF
+        unavailables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unavailable'
+        localisation:
+          type: string
+          example: Nantes
+    Unavailable:
+      required:
+      - date
+      - slots
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2023-02-14
+        slots:
+          type: array
+          items:
+            type: number
+            example: 1
