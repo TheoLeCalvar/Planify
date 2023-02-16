@@ -13,7 +13,7 @@ public class Donnee {
 	private ArrayList<Module> liste_modules;
 
 	public Donnee(ArrayList<Module> UE_A, ArrayList<Module> UE_B, ArrayList<Module> UE_C, int Nb_Semaines,
-			ArrayList<Integer> DispoN, ArrayList<Integer> DispoB, String debut) {
+			ArrayList<Unavailability> unavailabilitiesN, ArrayList<Unavailability> unavailabilitiesB, String debut) {
 		this.Liste_UE = new ArrayList<UE>(3);
 		UE uea = new UE("UE_A", UE_A);
 		UE ueb = new UE("UE_B", UE_B);
@@ -21,9 +21,9 @@ public class Donnee {
 		this.Liste_UE.add(uea);
 		this.Liste_UE.add(ueb);
 		this.Liste_UE.add(uec);
-		this.calendrierN = new Calendrier(Nb_Semaines, DispoN);
-		this.calendrierB = new Calendrier(Nb_Semaines, DispoB);
 		this.debut = debut;
+		this.calendrierN = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesN));
+		this.calendrierB = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesB));
 		this.liste_modules = new ArrayList<>();
 		for (UE ue : this.Liste_UE) {
 			for (Module module : ue.getListeModules()) {
@@ -94,6 +94,7 @@ public class Donnee {
 		this.calendrierB = calendrier;
 	}
 
+//	le return est le disponibilités ou l'indisponilités? 
 	public ArrayList<Integer> Traduction(ArrayList<Unavailability> a){
 		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
 		for(Unavailability el :a) {

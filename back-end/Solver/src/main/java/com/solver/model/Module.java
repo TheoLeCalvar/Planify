@@ -39,24 +39,4 @@ public class Module {
 		return 1; // this.getUserB().getEtalement_semaines();
 	}
 
-	public boolean Creneaux_dispoN(int i) { // Prend en entrée un créneaux et vérifie si il est dispo==true ou
-											// non==false
-//		if (this.getDispoN().get(i) == 1) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-		return true;
-	}
-
-	public boolean Creneaux_dispoB(int i) { // Prend en entrée un créneaux et vérifie si il est dispo==true ou
-											// non==false
-//		if (this.getDispoB().get(i) == 1) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-		return true;
-	}
-
 }

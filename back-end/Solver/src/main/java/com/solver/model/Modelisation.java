@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
@@ -14,6 +15,7 @@ import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.variables.IntVar;
 
 import com.solver.service.SolverService;
+import com.solver.util.Localisation;
 
 public class Modelisation {
 
@@ -33,9 +35,11 @@ public class Modelisation {
 	private IntVar[] nb0parjourB;
 	
 	private Donnee donnee;
+	private Map<String, User> userList;
 
-	public Modelisation(ArrayList<Module> UE_A, ArrayList<Module> UE_B, ArrayList<Module> UE_C, int Nb_Semaines, ArrayList<Integer> DispoN,ArrayList<Integer> DispoB, String debut) {
-		this.donnee = new Donnee(UE_A, UE_B, UE_C, Nb_Semaines, DispoN, DispoB, debut);
+	public Modelisation(Donnee donnee, Map<String, User> userList) {
+		this.donnee = donnee;
+		this.userList = userList;
 	}
 
 	public void BuildModel() {
@@ -221,7 +225,8 @@ public class Modelisation {
 		
 		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
 			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
-				if(!donnee.getListe_Module().get(j).Creneaux_dispoN(i)) {
+				String mailNantes = donnee.getListe_Module().get(j).getMails().get(Localisation.Nantes);
+				if(!userList.get(mailNantes).getAvailabilities().get(i).equals(1)) {
 					model.arithm(planning[i], "!=", j).post();
 				}
 			}
@@ -231,7 +236,8 @@ public class Modelisation {
 	public void Contrainte_Dispo_ModuleB() {
 		for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
 			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
-				if(!donnee.getListe_Module().get(j).Creneaux_dispoB(i)) {
+				String mailBrest = donnee.getListe_Module().get(j).getMails().get(Localisation.Brest);
+				if(!userList.get(mailBrest).getAvailabilities().get(i).equals(1)) {
 					model.arithm(planning[i], "!=", j).post();
 				}
 			}
@@ -485,12 +491,12 @@ public class Modelisation {
 		
 		String debut= "2022-12-14";
 		int Nb_semaine=14;
-		Modelisation test = new Modelisation(modulesUeA, modulesUeB, modulesUeC, Nb_semaine, DispoN,DispoB,debut);
-		test.BuildModel();
-		test.addConstraints();
-		test.solve();
-		test.getSolutionN();
-		test.getSolutionB();
+//		Modelisation test = new Modelisation(modulesUeA, modulesUeB, modulesUeC, Nb_semaine, DispoN,DispoB,debut);
+//		test.BuildModel();
+//		test.addConstraints();
+//		test.solve();
+//		test.getSolutionN();
+//		test.getSolutionB();
 
 		//ArrayList<Unavailable> unavailable = new ArrayList<Unavailable>();
 		//ArrayList<Integer> slots = new ArrayList<>();
