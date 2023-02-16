@@ -22,13 +22,10 @@ public class Module {
 		this.UserN=userN;
 		
 	}
-	
-	
 
 	public User getUserN() {
 		return UserN;
 	}
-
 
 
 	public void setUserN(User userN) {
