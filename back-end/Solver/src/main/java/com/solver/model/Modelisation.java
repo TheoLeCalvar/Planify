@@ -225,7 +225,7 @@ public class Modelisation {
 		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
 			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
 				String mailNantes = donnee.getListe_Module().get(j).getMails().get(Localisation.Nantes);
-				if(!userList.get(mailNantes).getAvailabilities().get(i).equals(1)) {
+				if(!userList.get(mailNantes).getUnavailabilitiesTraduction().get(i).equals(1)) {
 					model.arithm(planning[i], "!=", j).post();
 				}
 			}
@@ -236,7 +236,7 @@ public class Modelisation {
 		for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
 			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
 				String mailBrest = donnee.getListe_Module().get(j).getMails().get(Localisation.Brest);
-				if(!userList.get(mailBrest).getAvailabilities().get(i).equals(1)) {
+				if(!userList.get(mailBrest).getUnavailabilitiesTraduction().get(i).equals(1)) {
 					model.arithm(planning[i], "!=", j).post();
 				}
 			}
@@ -421,12 +421,12 @@ public class Modelisation {
 		ArrayList<Unavailability> unavailabilitiesUserNantes = new ArrayList<>();
 		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
 		User userNantes = new User("responsableNantes@test.com", Role.ResponsableTAF, unavailabilitiesUserNantes, Localisation.Nantes, 14);
-		userNantes.setAvailabilities(data.Traduction(userNantes.getUnavailables()));
+		userNantes.setUnavailabilitiesTraduction(data.Traduction(userNantes.getUnavailabilities()));
 		
 		ArrayList<Unavailability> unavailabilitiesUserBrest = new ArrayList<>();
 		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
 		User userBrest = new User("responsableBrest@test.com", Role.ResponsableTAF, unavailabilitiesUserBrest, Localisation.Brest, 14);
-		userBrest.setAvailabilities(data.Traduction(userBrest.getUnavailables()));
+		userBrest.setUnavailabilitiesTraduction(data.Traduction(userBrest.getUnavailabilities()));
 		
 		Map<String, User> userList = new HashMap<>();
 		userList.put(userNantes.getMail(), userNantes);

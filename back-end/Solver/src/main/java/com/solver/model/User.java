@@ -11,7 +11,7 @@ public class User {
 	private Role role;
 	private ArrayList<Unavailability> unavailabilities;
 	private Localisation localisation;
-	private ArrayList<Integer> availabilities;
+	private ArrayList<Integer> unavailabilitiesTraduction;
 	private int Etalement_semaines; // ??
 
 	public User(String mail, Role role, ArrayList<Unavailability> unavailables, Localisation localisation,
@@ -32,7 +32,7 @@ public class User {
 		return role;
 	}
 
-	public ArrayList<Unavailability> getUnavailables() {
+	public ArrayList<Unavailability> getUnavailabilities() {
 		return unavailabilities;
 	}
 
@@ -40,8 +40,8 @@ public class User {
 		return localisation;
 	}
 
-	public ArrayList<Integer> getAvailabilities() {
-		return availabilities;
+	public ArrayList<Integer> getUnavailabilitiesTraduction() {
+		return unavailabilitiesTraduction;
 	}
 
 	public int getEtalement_semaines() {
@@ -56,7 +56,7 @@ public class User {
 		this.role = role;
 	}
 
-	public void setUnavailables(ArrayList<Unavailability> unavailables) {
+	public void setUnavailabilities(ArrayList<Unavailability> unavailables) {
 		this.unavailabilities = unavailables;
 	}
 
@@ -64,8 +64,8 @@ public class User {
 		this.localisation = localisation;
 	}
 
-	public void setAvailabilities(ArrayList<Integer> availabilities) {
-		this.availabilities = availabilities;
+	public void setUnavailabilitiesTraduction(ArrayList<Integer> unavailabilitiesTraduction) {
+		this.unavailabilitiesTraduction = unavailabilitiesTraduction;
 	}
 
 	public void setEtalement_semaines(int etalement_semaines) {

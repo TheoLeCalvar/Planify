@@ -29,7 +29,7 @@ public class SolverService {
 		for (Module module : data.getListe_Module()) {
 			module.getMails().values().forEach((mail) -> {
 				User user = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + mail, User.class).getBody();
-				user.setAvailabilities(data.Traduction(user.getUnavailables()));
+				user.setUnavailabilitiesTraduction(data.Traduction(user.getUnavailabilities()));
 				userList.put(mail, user);
 			});
 		}
