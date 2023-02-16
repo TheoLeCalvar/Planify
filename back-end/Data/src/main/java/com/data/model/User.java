@@ -23,7 +23,7 @@ public class User {
 		return role;
 	}
 
-	public ArrayList<Unavailability> getunavailabilities() {
+	public ArrayList<Unavailability> getUnavailabilities() {
 		return unavailabilities;
 	}
 
@@ -31,7 +31,7 @@ public class User {
 		return localisation;
 	}
 
-	public void setunavailabilities(ArrayList<Unavailability> unavailabilities) {
+	public void setUnavailabilities(ArrayList<Unavailability> unavailabilities) {
 		this.unavailabilities = unavailabilities;
 	}
 
