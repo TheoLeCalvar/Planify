@@ -3,13 +3,6 @@ package com.solver.model;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
-import java.sql.Date;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 
 public class Donnee {
 
@@ -17,6 +10,7 @@ public class Donnee {
 	private Calendrier calendrierN; //Calendrier général Nantes
 	private Calendrier calendrierB; //Calendrier Général Brest
 	private String debut;
+	private ArrayList<Module> liste_modules;
 
 	public Donnee(ArrayList<Module> UE_A, ArrayList<Module> UE_B, ArrayList<Module> UE_C, int Nb_Semaines,
 			ArrayList<Integer> DispoN, ArrayList<Integer> DispoB, String debut) {
@@ -30,7 +24,12 @@ public class Donnee {
 		this.calendrierN = new Calendrier(Nb_Semaines, DispoN);
 		this.calendrierB = new Calendrier(Nb_Semaines, DispoB);
 		this.debut = debut;
-
+		this.liste_modules = new ArrayList<>();
+		for (UE ue : this.Liste_UE) {
+			for (Module module : ue.getListeModules()) {
+				this.liste_modules.add(module);
+			}
+		}
 	}
 	
 	public Donnee(String debut) {
@@ -45,17 +44,7 @@ public class Donnee {
 	}
 	
 	public ArrayList<Module> getListe_Module(){
-		ArrayList<Module> Liste_modules = new ArrayList<Module>();
-		for (UE ue:this.Liste_UE) {
-			for (Module module:ue.getListeModules()) {
-				Liste_modules.add(module);
-			}
-		}
-		return Liste_modules;
-	}
-
-	public void setListe_UE(ArrayList<UE> liste_UE) {
-		Liste_UE = liste_UE;
+		return liste_modules;
 	}
 
 	public int Nb_cour_different() {
@@ -105,9 +94,9 @@ public class Donnee {
 		this.calendrierB = calendrier;
 	}
 
-	public ArrayList<Integer> Traduction(ArrayList<Unavailable> a){
+	public ArrayList<Integer> Traduction(ArrayList<Unavailability> a){
 		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
-		for(Unavailable el :a) {
+		for(Unavailability el :a) {
 		d.add((LocalDate.of(Integer.valueOf(el.getDate().substring(0,4)),Integer.valueOf(el.getDate().substring(5,7)), Integer.valueOf(el.getDate().substring(8,10)))));
 		}
 		LocalDate local_debut= (LocalDate.of(Integer.valueOf(debut.substring(0,4)),Integer.valueOf(debut.substring(5,7)), Integer.valueOf(debut.substring(8,10))));
@@ -121,7 +110,7 @@ public class Donnee {
 		}
 
 			for(int i:l_int) {
-				for (Unavailable el : a) {
+				for (Unavailability el : a) {
 					ArrayList<Integer> slot =el.getSlots();
 				 {
 					for(Integer k : slot) {
@@ -147,12 +136,12 @@ public static void main(String args[]) {
 	ArrayList<Integer> i = new ArrayList<Integer>();
 	i.add(2);
 	i.add(4);
-	Unavailable un = new Unavailable(s,i);
-	Unavailable un1 = new Unavailable(s3,i);
-	Unavailable un2 = new Unavailable(s2,i);
+	Unavailability un = new Unavailability(s,i);
+	Unavailability un1 = new Unavailability(s3,i);
+	Unavailability un2 = new Unavailability(s2,i);
 
 	
-	ArrayList<Unavailable> e= new ArrayList<Unavailable>();
+	ArrayList<Unavailability> e= new ArrayList<Unavailability>();
 	e.add(un);
 	e.add(un1);
 	e.add(un2);

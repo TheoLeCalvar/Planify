@@ -57,9 +57,9 @@ public class Modelisation {
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_Seances[0], "=", donnee.Nb_0N()).post();
 		
-		for (Module j:donnee.getListe_Module()) {
-				model.arithm(Nb_Seances[j.getNumero_module()], "=", j.getNb_creneaux()).post();
-			}
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			model.arithm(Nb_Seances[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
+		}
 		// On rempli la variable planning en fonction de la variable Nb_Seances
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
 			model.count(i, planning, Nb_Seances[i]).post();
@@ -76,9 +76,9 @@ public class Modelisation {
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_SeancesB[0], "=", donnee.Nb_0B()).post();
 		
-		for (Module j:donnee.getListe_Module()) {
-				model.arithm(Nb_SeancesB[j.getNumero_module()], "=", j.getNb_creneaux()).post();
-			}
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			model.arithm(Nb_SeancesB[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
+		}
 		// On rempli la variable planning en fonction de la variable Nb_Seances
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
 			model.count(i, planningB, Nb_SeancesB[i]).post();
@@ -215,10 +215,14 @@ public class Modelisation {
 	}
 	
 	public void Contrainte_Dispo_ModuleN() {
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			model.arithm(Nb_Seances[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
+		}
+		
 		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
-			for (Module module:donnee.getListe_Module()) {
-				if(!module.Creneaux_dispoN(i)) {
-					model.arithm(planning[i], "!=", module.getNumero_module()).post();
+			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
+				if(!donnee.getListe_Module().get(j).Creneaux_dispoN(i)) {
+					model.arithm(planning[i], "!=", j).post();
 				}
 			}
 		}
@@ -226,27 +230,24 @@ public class Modelisation {
 	
 	public void Contrainte_Dispo_ModuleB() {
 		for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
-			for (Module module:donnee.getListe_Module()) {
-				if(!module.Creneaux_dispoB(i)) {
-					model.arithm(planningB[i], "!=", module.getNumero_module()).post();
+			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
+				if(!donnee.getListe_Module().get(j).Creneaux_dispoB(i)) {
+					model.arithm(planning[i], "!=", j).post();
 				}
 			}
 		}
 	}
 	
 	public void Contrainte_Sync() {
-		for (Module module:donnee.getListe_Module()) {
-			if(module.isSync()) {
-				int x = module.getNumero_module();
-				for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
-					model.ifThen(model.arithm(planning[i], "=", x), model.arithm(planningB[i], "=", x));
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			if(donnee.getListe_Module().get(i).getIsSync()) {
+				for (int j = 0; j < donnee.getCalendrierB().getNb_Creneaux(); j++) {
+					model.ifThen(model.arithm(planning[j], "=", i), model.arithm(planningB[j], "=", i));
 				}
 			}
 		}
 	}
 	
-	
-
 	public void addConstraints() {
 		Contrainte_DispoN();
 		Contrainte_nbcoursN();
@@ -268,8 +269,8 @@ public class Modelisation {
 	
 	public String getSolutionN() {
 		HashMap<Integer, String> num_nom= new HashMap<>();
-		for (Module module: donnee.getListe_Module()) {
-			num_nom.put(module.getNumero_module(), module.getName());
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			num_nom.put(i, donnee.getListe_Module().get(i).getName());
 		}
 		System.out.println("ici :"+num_nom);
 		
@@ -307,8 +308,8 @@ public class Modelisation {
 	
 	public String getSolutionB() {
 		HashMap<Integer, String> num_nom= new HashMap<>();
-		for (Module module: donnee.getListe_Module()) {
-			num_nom.put(module.getNumero_module(), module.getName());
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			num_nom.put(i, donnee.getListe_Module().get(i).getName());
 		}
 		System.out.println("ici :"+num_nom);
 		
@@ -469,17 +470,17 @@ public class Modelisation {
 				 1,1,1,1,1,1));
 		
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-		modulesUeA.add(new Module(1, "1", 7, Dispo, Dispo2, false,1));
-		modulesUeA.add(new Module(2, "2", 7,Dispo, Dispo2, false,1));
-		modulesUeA.add(new Module(3, "3", 8,Dispo, Dispo2, false,1));
+//		modulesUeA.add(new Module("1", 7, Dispo, Dispo2, false,1));
+//		modulesUeA.add(new Module("3", 8,Dispo, Dispo2, false,1));
+//		modulesUeA.add(new Module("2", 7,Dispo, Dispo2, false,1));
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-		modulesUeB.add(new Module(4, "4", 11,Dispo,Dispo2,false,1));
-		modulesUeB.add(new Module(5, "5", 11,Dispo,Dispo2,false,1));
-		modulesUeB.add(new Module(6, "6", 11,Dispo,Dispo2, false,1));
+//		modulesUeB.add(new Module("4", 11,Dispo,Dispo2,false,1));
+//		modulesUeB.add(new Module("5", 11,Dispo,Dispo2,false,1));
+//		modulesUeB.add(new Module("6", 11,Dispo,Dispo2, false,1));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
-		modulesUeC.add(new Module(7, "7", 4,Dispo,Dispo2,true,1));
-		modulesUeC.add(new Module(8, "8", 4,Dispo,Dispo2,false,1));
-		modulesUeC.add(new Module(9, "9", 3,Dispo,Dispo2,false,1));
+//		modulesUeC.add(new Module("7", 4,Dispo,Dispo2,true,1));
+//		modulesUeC.add(new Module("8", 4,Dispo,Dispo2,false,1));
+//		modulesUeC.add(new Module("9", 3,Dispo,Dispo2,false,1));
 		
 		
 		String debut= "2022-12-14";

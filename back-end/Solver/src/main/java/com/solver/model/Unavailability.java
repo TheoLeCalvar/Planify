@@ -1,15 +1,13 @@
 package com.solver.model;
 
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Unavailable {
+public class Unavailability {
 
 	private String date;
 	private ArrayList<Integer> slots;
 
-	public Unavailable(String date, ArrayList<Integer> slots) {
+	public Unavailability(String date, ArrayList<Integer> slots) {
 		this.date = date;
 		this.slots = slots;
 	}

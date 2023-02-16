@@ -9,10 +9,10 @@ public class Request {
 	private ArrayList<Module> modulesUeA;
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
-	private ArrayList<Unavailable> unavailables;
+	private ArrayList<Unavailability> unavailables;
 
 	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
-			ArrayList<Module> modulesUeC, ArrayList<Unavailable> unavailables, String startDate) {
+			ArrayList<Module> modulesUeC, ArrayList<Unavailability> unavailables, String startDate) {
 		super();
 		this.weeksNumber = weeksNumber;
 		this.modulesUeA = modulesUeA;
@@ -42,7 +42,7 @@ public class Request {
 		return modulesUeC;
 	}
 
-	public ArrayList<Unavailable> getUnavailables() {
+	public ArrayList<Unavailability> getUnavailables() {
 		return unavailables;
 	}
 
