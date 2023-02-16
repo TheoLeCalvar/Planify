@@ -22,6 +22,8 @@ public class Donnee {
 		this.Liste_UE.add(ueb);
 		this.Liste_UE.add(uec);
 		this.debut = debut;
+		this.calendrierN = new Calendrier(Nb_Semaines);
+		this.calendrierB = new Calendrier(Nb_Semaines);
 		this.calendrierN = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesN));
 		this.calendrierB = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesB));
 		this.liste_modules = new ArrayList<>();

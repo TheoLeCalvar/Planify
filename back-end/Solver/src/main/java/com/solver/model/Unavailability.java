@@ -19,7 +19,5 @@ public class Unavailability {
 	public ArrayList<Integer> getSlots() {
 		return slots;
 	}
+
 }
-
-
-

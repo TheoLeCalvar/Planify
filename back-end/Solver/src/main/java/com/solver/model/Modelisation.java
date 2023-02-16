@@ -1,11 +1,6 @@
 package com.solver.model;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,21 +9,21 @@ import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.variables.IntVar;
 
-import com.solver.service.SolverService;
 import com.solver.util.Localisation;
+import com.solver.util.Role;
 
 public class Modelisation {
 
 	private Model model;
 	private Solver solver;
 	
-	private IntVar[] X;
-	
 	private IntVar[] planning;
 	private IntVar[][] agendajour;
 	private IntVar[] Nb_Seances;
 	private IntVar[] nb0parjour;
-	
+	private IntVar[] debutmodules;
+	private IntVar[] finmodules;
+
 	private IntVar[] planningB;
 	private IntVar[][] agendajourB;
 	private IntVar[] Nb_SeancesB;
@@ -55,6 +50,10 @@ public class Modelisation {
 		agendajourB = model.intVarMatrix("agenda-Jour_Brest", donnee.getCalendrierB().getNb_Jours(), 6, 0, donnee.Nb_cour_different()); // Matrice contenant le nombre de jour, et pour chaque jour, 6 créneaux, qui contienne le cours affecté.
 		Nb_SeancesB = model.intVarArray("Nb_seances_Brest", donnee.Nb_cour_different(), 0, donnee.getCalendrierB().getNb_Creneaux()); // Liste contenant le nombre de séance part cours différents (Nb_seances[O] contient le nombre de cours vide
 		nb0parjourB = model.intVarArray("Nombre de 0 par jour_Brest", donnee.getCalendrierB().getNb_Jours(), 0, 6); // Liste contenant le nombre de cours vide à attribuer par jours (pour equilibrer)
+		
+		debutmodules = model.intVarArray("debut_modules", donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux());
+		finmodules = model.intVarArray("fin_modules", donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux());
+
 	}
 
 	public void Contrainte_nbcoursN() { // Contrainte permettant de remplir toute les variables avec le bon nombre de cours
@@ -68,7 +67,7 @@ public class Modelisation {
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
 			model.count(i, planning, Nb_Seances[i]).post();
 		}
-		// On rempli la variable agendajour en fonction de la variable planning
+		// On remplit la variable agendajour en fonction de la variable planning
 		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
 			for (int j = 0; j < 6; j++) {
 				model.arithm(agendajour[i][j], "=", planning[6 * i + j]).post();
@@ -254,6 +253,31 @@ public class Modelisation {
 		}
 	}
 	
+	public void Contrainte_debutmodules() {
+		for (int i=1; i<donnee.Nb_cour_different(); i++) {
+			for (int j=0; j< donnee.getCalendrierN().getNb_Creneaux(); j++) {
+				model.ifThen(model.arithm(planning[j],"=", i), model.arithm(debutmodules[i],"=",j));
+			}		
+		}
+	}
+	
+	public void Contrainte_finmodules() {
+		for (int i=1; i<donnee.Nb_cour_different(); i++) {
+			for (int j=donnee.getCalendrierN().getNb_Creneaux()-1; j>=0 ; j--) {
+				model.ifThen(model.arithm(planning[j],"=", i), model.arithm(finmodules[i],"=",j));
+			}		
+		}
+	}
+	
+	public void Contrainte_Etalement() {
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			String mailNates = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
+			int etalement = userList.get(mailNates).getEtalement_semaines();
+
+			model.arithm(finmodules[i], "-", debutmodules[i],"<=",etalement*12).post();
+		}
+	}
+
 	public void addConstraints() {
 		Contrainte_DispoN();
 		Contrainte_nbcoursN();
@@ -267,6 +291,9 @@ public class Modelisation {
 		Contrainte_mercredi_soir0B();
 		Contrainte_Dispo_ModuleB();
 		Contrainte_Sync();
+		Contrainte_debutmodules();
+		Contrainte_finmodules();
+		Contrainte_Etalement();
 	}
 
 	public void solve() {
@@ -311,7 +338,7 @@ public class Modelisation {
 
 		return res;
 	}
-	
+		
 	public String getSolutionB() {
 		HashMap<Integer, String> num_nom= new HashMap<>();
 		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
@@ -351,163 +378,61 @@ public class Modelisation {
 		return res;
 	}
 	
-	
 		
 	public static void main(String[] args) {
-		
-		ArrayList<Integer> DispoN = new ArrayList<>(Arrays.asList(
-				 0,0,0,0,0,0,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1));
-		
-		ArrayList<Integer> DispoB = new ArrayList<>(Arrays.asList(
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1));
-		
-		ArrayList<Integer> Dispo = new ArrayList<>(Arrays.asList(
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1,
-		 1,1,1,1,1,1));
-		
-		ArrayList<Integer> Dispo2 = new ArrayList<>(Arrays.asList(
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 0,0,0,0,0,0,
-				 0,0,0,0,0,0,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1,
-				 1,1,1,1,1,1));
+		Map<Localisation, String> mails = new HashMap<>();
+		mails.put(Localisation.Nantes, "responsableNantes@test.com");
+		mails.put(Localisation.Brest, "responsableBrest@test.com");
 		
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-//		modulesUeA.add(new Module("1", 7, Dispo, Dispo2, false,1));
-//		modulesUeA.add(new Module("3", 8,Dispo, Dispo2, false,1));
-//		modulesUeA.add(new Module("2", 7,Dispo, Dispo2, false,1));
+		modulesUeA.add(new Module("moduleA1", 7, mails, false));
+		modulesUeA.add(new Module("moduleA2", 7, mails, false));
+		modulesUeA.add(new Module("moduleA3", 8, mails, false));
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-//		modulesUeB.add(new Module("4", 11,Dispo,Dispo2,false,1));
-//		modulesUeB.add(new Module("5", 11,Dispo,Dispo2,false,1));
-//		modulesUeB.add(new Module("6", 11,Dispo,Dispo2, false,1));
+		modulesUeB.add(new Module("moduleB1", 11, mails, false));
+		modulesUeB.add(new Module("moduleB2", 11, mails, false));
+		modulesUeB.add(new Module("moduleB3", 11, mails, false));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
-//		modulesUeC.add(new Module("7", 4,Dispo,Dispo2,true,1));
-//		modulesUeC.add(new Module("8", 4,Dispo,Dispo2,false,1));
-//		modulesUeC.add(new Module("9", 3,Dispo,Dispo2,false,1));
+		modulesUeC.add(new Module("moduleB1", 4, mails, true));
+		modulesUeC.add(new Module("moduleB2", 4, mails, false));
+		modulesUeC.add(new Module("moduleB3", 3, mails, false));
 		
+		ArrayList<Unavailability> unavailabilities = new ArrayList<>();
+		ArrayList<Integer> slots = new ArrayList<>();
+		slots.add(1);
+		slots.add(2);
+		slots.add(3);
+		slots.add(4);
+		slots.add(5);
+		slots.add(6);
+		unavailabilities.add(new Unavailability("2022-12-20", slots));
 		
-		String debut= "2022-12-14";
-		int Nb_semaine=14;
-//		Modelisation test = new Modelisation(modulesUeA, modulesUeB, modulesUeC, Nb_semaine, DispoN,DispoB,debut);
-//		test.BuildModel();
-//		test.addConstraints();
-//		test.solve();
-//		test.getSolutionN();
-//		test.getSolutionB();
-
-		//ArrayList<Unavailable> unavailable = new ArrayList<Unavailable>();
-		//ArrayList<Integer> slots = new ArrayList<>();
-		//slots.add(1);
-		//slots.add(2);
-		//slots.add(3);
-		//slots.add(4);
-		//unavailable.add(new Unavailable("2023-02-08", slots));
-
-		//Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailable, "2023-02-08");
-		//new SolverService().solver(request);
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14");
+		
+		Donnee data = new Donnee(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(),
+				request.getWeeksNumber(), request.getUnavailabilities(), request.getUnavailabilities(),
+				request.getStartDate());
+		
+		ArrayList<Unavailability> unavailabilitiesUserNantes = new ArrayList<>();
+		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
+		User userNantes = new User("responsableNantes@test.com", Role.ResponsableTAF, unavailabilitiesUserNantes, Localisation.Nantes, 14);
+		userNantes.setAvailabilities(data.Traduction(userNantes.getUnavailables()));
+		
+		ArrayList<Unavailability> unavailabilitiesUserBrest = new ArrayList<>();
+		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
+		User userBrest = new User("responsableBrest@test.com", Role.ResponsableTAF, unavailabilitiesUserBrest, Localisation.Brest, 14);
+		userBrest.setAvailabilities(data.Traduction(userBrest.getUnavailables()));
+		
+		Map<String, User> userList = new HashMap<>();
+		userList.put(userNantes.getMail(), userNantes);
+		userList.put(userBrest.getMail(), userBrest);
+		
+		Modelisation test = new Modelisation(data, userList);
+		test.BuildModel();
+		test.addConstraints();
+		test.solve();
+		test.getSolutionN();
+		test.getSolutionB();
 	}
-	
+
 }
