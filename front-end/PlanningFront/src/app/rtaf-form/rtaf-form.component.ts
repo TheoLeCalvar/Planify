@@ -1,9 +1,11 @@
-import { Component, Input, OnInit,ViewChild,ViewEncapsulation  } from '@angular/core';
-import {  DateFilterFn, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
+import { User } from '../Models/User';
 import { DataService } from '../Services/data.service';
+import { UserService } from '../Services/user.service';
 
 
 
@@ -15,25 +17,19 @@ import { DataService } from '../Services/data.service';
   encapsulation: ViewEncapsulation.None
 })
 export class RtafFormComponent implements OnInit {
-    options = [
-        { label: 'Option 1', value: 1 },
-        { label: 'Option 2', value: 2 },
-        { label: 'Option 3', value: 3 }
-      ];
 
-    TeacherNames = [ "Sonda", "Sebas", "Arthur"];
+   
+    
+   // TeachersNantesName : string[] = ["yossr", "habib", "derbel"];
+   TeachersNantesName : string[] = [];
+   TeachersBrestName : string[] = [];
+    
+   // TeachersBrestName : string[] = ["sonda", "Sebas", "Arthur", "Maxime"];
 
- 
-
-    //simultané Brest/Nantes
-    isChecked: boolean = false;
 
     indisponibility: Indisponibilite;
 
     tableData : Indisponibilite[] = [];
-    input1Value: string;
-    input2Value: string;
-    input3Value: string;
 
     debut: Date = new Date();
     startDate : string; 
@@ -48,7 +44,6 @@ export class RtafFormComponent implements OnInit {
     selectedNumberModuleUEB : number =0;
     selectedNumberModuleUEC : number =0;
 
-    selectedTeacherNantes: string = this.TeacherNames[0];
 
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
@@ -64,35 +59,36 @@ export class RtafFormComponent implements OnInit {
     ];
  
 
-    countId: number = 1;
- 
-
-    constructor(private  service: DataService) { }
+    constructor(private  dataService: DataService, private userService: UserService) { }
 
     ngOnInit(): void {
-        let month = this.debut.getMonth() ; 
-        let year = this.debut.getUTCFullYear();
-        let day = this.debut.getDay();
         this.startAt = new Date(this.debut);
-        //console.log(this.startAt);
+        //get user list 
+        this.userService.getUsers().subscribe(
+            (data) => {
+            console.log(data)
+            //populate TeachersNantesName and TeachersBrestName lists
+            data.forEach(e => {
+                console.log("user", e);
+                if(e.localisation === "Nantes"){
+                    this.TeachersNantesName.push(e.mail);
+                }
+                else if(e.localisation === "Brest"){
+                    this.TeachersBrestName.push(e.mail);
+                }
+
+            });
+        });
+        
     }
 
     changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
         this.startDate = new Date(this.debut.getTime() - this.debut.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
         console.log("debut: ",this.debut);
         console.log("startDate: ",this.startDate);
-        let month = this.debut.getMonth() ; 
-        let year = this.debut.getUTCFullYear();
-        let day = this.debut.getDay();
         this.startAt = new Date(this.debut);
         console.log(this.startAt);
     }
-
-    futureOnlyFilter(d: Date): boolean {
-        return d >= new Date();
-      }
-      
-   
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
         this.indisponibilityDate = new Date(this.indisponible.getTime() - this.indisponible.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
@@ -109,10 +105,15 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEA = [];
         for(let i=1; i <= this.selectedNumberModuleUEA ; i++){
             this.modulesUEA.push({
-                id: this.countId++,
                 name: "",
-                slotsNumber: 0
+                slotsNumber: 0,
+                mails: {
+                    Nantes: "",
+                    Brest: ""
+                },
+                isSync: false
             })
+
         }
        
     }
@@ -122,9 +123,13 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEB = [];
         for(let i=1; i <= this.selectedNumberModuleUEB ; i++){
             this.modulesUEB.push({
-                id: this.countId++,
                 name: "",
-                slotsNumber: 0
+                slotsNumber: 0,
+                mails: {
+                    Nantes: "",
+                    Brest: ""
+                },
+                isSync: false
             })
         }
        
@@ -135,16 +140,18 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEC = [];
         for(let i=1; i <= this.selectedNumberModuleUEC ; i++){
             this.modulesUEC.push({
-                id: this.countId++,
                 name: "",
-                slotsNumber: 0
+                slotsNumber: 0,
+                mails: {
+                    Nantes: "",
+                    Brest: ""
+                },
+                isSync: false
             })
+            
         }
     }
 
-    selectTeacherNantesChange(){
-        console.log(JSON.stringify(this.selectedTeacherNantes));
-    }
 
     addFunction(){
         console.log("date indisponible: ", this.indisponibilityDate);
@@ -190,14 +197,16 @@ export class RtafFormComponent implements OnInit {
             unavailables: this.tableData
         }
 
-        this.service.addData(data).subscribe(
+        console.log(data);
+
+        this.dataService.addData(data).subscribe(
             (dataForm: any) => {
               console.log(dataForm.reponse.replaceAll("   ", "\n"))
             },
             erreur =>{
               console.log(erreur)
             }
-          )  
+        ) 
 
     }
 
