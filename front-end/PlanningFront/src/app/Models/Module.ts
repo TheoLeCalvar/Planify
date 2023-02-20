@@ -1,5 +1,9 @@
 export interface Module {
-    id: number;
     name: string;
-    slotsNumber: number
+    slotsNumber: number;
+    mails: {
+        Nantes: string,
+        Brest: string
+    };
+    isSync:boolean
 }

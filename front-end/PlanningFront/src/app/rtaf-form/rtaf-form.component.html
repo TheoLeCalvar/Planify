@@ -1,5 +1,5 @@
 <h1 class="title">Responsable TAF</h1>
-<hr>
+<hr class="hr">
 <div class="mb-3 row center">
     <label for="dureePlanning" class="w-25 col-form-label text-end">Durée du planning (nombre de semaines) : </label>
     <div class="w-25">
@@ -41,10 +41,33 @@
     </div>
 </div>
 <div class="mb-3 row center" *ngFor="let module of modulesUEA">
-    <label class="w-25 col-form-label text-end">Module UE A- {{module.id}} : </label>
-    <hr/>
-    <label class="w-25 col-form-label text-end">Nom module :</label> <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
-    <label class="w-25 col-form-label ">Nombre de creneau :</label> <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
+    <label class="w-25 col-form-label text-end">Module UE A- : </label>
+
+    <hr class="hr"/>
+    
+    <label class="w-25 col-form-label text-end">Nom module :</label> 
+    <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+
+    <label class="w-25 col-form-label text-end ">Nombre de creneau :</label> 
+    <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
+
+    <p></p>
+
+    <label class="w-25 col-form-label text-end">Enseignant Nantes :</label> 
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="module.mails.Nantes" >
+            <option *ngFor="let name of TeachersNantesName" [value]="name" >{{ name }}</option>
+        </select>
+    </div>
+    
+    <label class="w-25 col-form-label text-end">Enseignant Brest :</label> 
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="module.mails.Brest" >
+            <option *ngFor="let name of TeachersBrestName" [value]="name" >{{ name }}</option>
+        </select>
+    </div>
+    <p></p>
+    <input class="w-25" type="checkbox" aria-label="Default select example"  [(ngModel)]="module.isSync"/> Simultaniété Brest/Nantes
 </div>
 <div class="mb-3 row center">
     <label for="staticEmail" class="w-25 col-form-label text-end">Nombre de modules UE B : </label>
@@ -62,12 +85,37 @@
         </select>
     </div>
 </div>
+
 <div class="mb-3 row center" *ngFor="let module of modulesUEB">
-    <label class="w-25 col-form-label text-end">Module UE B- {{module.id}} : </label>
-    <hr/>
-    <label class="w-25 col-form-label text-end">Nom module :</label> <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
-    <label class="w-25 col-form-label ">Nombre de creneau :</label> <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
+    <label class="w-25 col-form-label text-end">Module UE B-  : </label>
+
+    <hr class="hr"/>
+    
+    <label class="w-25 col-form-label text-end">Nom module :</label> 
+    <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+
+    <label class="w-25 col-form-label text-end ">Nombre de creneau :</label> 
+    <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
+
+    <p></p>
+
+    <label class="w-25 col-form-label text-end">Enseignant Nantes :</label> 
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="module.mails.Nantes" >
+            <option *ngFor="let name of TeachersNantesName" [value]="name" >{{ name }}</option>
+        </select>
+    </div>
+    
+    <label class="w-25 col-form-label text-end">Enseignant Brest :</label> 
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="module.mails.Brest" >
+            <option *ngFor="let name of TeachersBrestName" [value]="name" >{{ name }}</option>
+        </select>
+    </div>
+    <p></p>
+    <input class="w-25" type="checkbox" aria-label="Default select example"  [(ngModel)]="module.isSync"/> Simultaniété Brest/Nantes
 </div>
+
 <div class="mb-3 row center">
     <label for="UEC" class="w-25 col-form-label text-end">Nombre de modules UE C : </label>
     <div class="w-25">
@@ -84,25 +132,54 @@
         </select>
     </div>
 </div>
+
 <div class="mb-3 row center" *ngFor="let module of modulesUEC">
-    <label class="w-25 col-form-label text-end">Module UE C- {{module.id}} : </label>
-    <hr/>
-    <label class="w-25 col-form-label text-end">Nom module :</label> <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
-    <label class="w-25 col-form-label ">Nombre de creneau :</label> <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
+    <label class="w-25 col-form-label text-end">Module UE C- : </label>
+
+    <hr class="hr"/>
+    
+    <label class="w-25 col-form-label text-end">Nom module :</label> 
+    <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="module.name" />
+
+    <label class="w-25 col-form-label text-end ">Nombre de creneau :</label> 
+    <input class="w-25" type="number" aria-label="Default select example" [(ngModel)]="module.slotsNumber" />
+
+    <p></p>
+    
+    <label class="w-25 col-form-label text-end">Enseignant Nantes :</label> 
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example"[(ngModel)]="module.mails.Nantes">
+            <option *ngFor="let name of TeachersNantesName" [value]="name" >{{ name }}</option>
+        </select>
+    </div>
+    
+    <label class="w-25 col-form-label text-end">Enseignant Brest :</label> 
+    <div class="w-25">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="module.mails.Brest" >
+            <option *ngFor="let name of TeachersBrestName" [value]="name" >{{ name }}</option>
+        </select>
+    </div>
+
+    <p></p>
+
+    <input class="w-25" type="checkbox" aria-label="Default select example"  [(ngModel)]="module.isSync"/> Simultaniété Brest/Nantes
 </div>
+
 <div class="mb-3 row center">
     <label for="disponibilités" class="w-25 col-form-label text-end">Les indisponibilités: </label>
     <div class="w-25">
         <mat-form-field>
             <mat-label>Choisir date indisponible</mat-label>
-            <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
+            <input matInput  [matDatepicker]="picker1" 
+                placeholder="Choisir date indisponible" 
+                [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker [startAt]="startAt" #picker1></mat-datepicker>
+            <mat-datepicker [startAt]="startAt" #picker1  ></mat-datepicker>
         </mat-form-field>
     </div>
     <div class="w-25 ">
-        <div *ngFor="let item of items">
-            <input type="checkbox" [(ngModel)]="item.isChecked"> {{ item.label }}
+        <div  *ngFor="let item of items">
+            <input type="checkbox" [(ngModel)]="item.isChecked"> {{ item.label }}   {{item.temps}}
         </div>
     </div>
 

@@ -1,9 +1,12 @@
 import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
-import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
+import { User } from '../Models/User';
 import { DataService } from '../Services/data.service';
+import { UserService } from '../Services/user.service';
+
 
 
 
@@ -15,13 +18,18 @@ import { DataService } from '../Services/data.service';
 })
 export class RtafFormComponent implements OnInit {
 
+   
+    
+   // TeachersNantesName : string[] = ["yossr", "habib", "derbel"];
+   TeachersNantesName : string[] = [];
+   TeachersBrestName : string[] = [];
+    
+   // TeachersBrestName : string[] = ["sonda", "Sebas", "Arthur", "Maxime"];
+
 
     indisponibility: Indisponibilite;
 
     tableData : Indisponibilite[] = [];
-    input1Value: string;
-    input2Value: string;
-    input3Value: string;
 
     debut: Date = new Date();
     startDate : string; 
@@ -36,40 +44,48 @@ export class RtafFormComponent implements OnInit {
     selectedNumberModuleUEB : number =0;
     selectedNumberModuleUEC : number =0;
 
+
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
     modulesUEC: Module[] = [];
 
     items = [
-        { label: 1, isChecked: false },
-        { label: 2, isChecked: false },
-        { label: 3, isChecked: false },
-        { label: 4, isChecked: false },
-        { label: 5, isChecked: false },
-        { label: 6, isChecked: false },
+        { label: 1 , temps:" : 8h -> 9h:15min" , isChecked: false },
+        { label: 2 , temps:" : 9h:30min -> 10h:45min" , isChecked: false },
+        { label: 3, temps:" : 11h -> 12h:15min",isChecked: false },
+        { label: 4, temps:" : 13h:45min -> 15h", isChecked: false },
+        { label: 5, temps:" : 15h:15min -> 16h:30min",  isChecked: false },
+        { label: 6, temps:" :  16h:45min -> 18h", isChecked: false },
     ];
  
 
-    countId: number = 1;
- 
-
-    constructor(private  service: DataService) { }
+    constructor(private  dataService: DataService, private userService: UserService) { }
 
     ngOnInit(): void {
-        let month = this.debut.getMonth() ; 
-        let year = this.debut.getUTCFullYear();
-        let day = this.debut.getDay();
         this.startAt = new Date(this.debut);
-        //console.log(this.startAt);
+        //get user list 
+        this.userService.getUsers().subscribe(
+            (data) => {
+            console.log(data)
+            //populate TeachersNantesName and TeachersBrestName lists
+            data.forEach(e => {
+                console.log("user", e);
+                if(e.localisation === "Nantes"){
+                    this.TeachersNantesName.push(e.mail);
+                }
+                else if(e.localisation === "Brest"){
+                    this.TeachersBrestName.push(e.mail);
+                }
+
+            });
+        });
+        
     }
 
     changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
         this.startDate = new Date(this.debut.getTime() - this.debut.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
         console.log("debut: ",this.debut);
         console.log("startDate: ",this.startDate);
-        let month = this.debut.getMonth() ; 
-        let year = this.debut.getUTCFullYear();
-        let day = this.debut.getDay();
         this.startAt = new Date(this.debut);
         console.log(this.startAt);
     }
@@ -89,10 +105,15 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEA = [];
         for(let i=1; i <= this.selectedNumberModuleUEA ; i++){
             this.modulesUEA.push({
-                id: this.countId++,
                 name: "",
-                slotsNumber: 0
+                slotsNumber: 0,
+                mails: {
+                    Nantes: "",
+                    Brest: ""
+                },
+                isSync: false
             })
+
         }
        
     }
@@ -102,9 +123,13 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEB = [];
         for(let i=1; i <= this.selectedNumberModuleUEB ; i++){
             this.modulesUEB.push({
-                id: this.countId++,
                 name: "",
-                slotsNumber: 0
+                slotsNumber: 0,
+                mails: {
+                    Nantes: "",
+                    Brest: ""
+                },
+                isSync: false
             })
         }
        
@@ -115,12 +140,18 @@ export class RtafFormComponent implements OnInit {
         this.modulesUEC = [];
         for(let i=1; i <= this.selectedNumberModuleUEC ; i++){
             this.modulesUEC.push({
-                id: this.countId++,
                 name: "",
-                slotsNumber: 0
+                slotsNumber: 0,
+                mails: {
+                    Nantes: "",
+                    Brest: ""
+                },
+                isSync: false
             })
+            
         }
     }
+
 
     addFunction(){
         console.log("date indisponible: ", this.indisponibilityDate);
@@ -166,14 +197,16 @@ export class RtafFormComponent implements OnInit {
             unavailables: this.tableData
         }
 
-        this.service.addData(data).subscribe(
+        console.log(data);
+
+        this.dataService.addData(data).subscribe(
             (dataForm: any) => {
               console.log(dataForm.reponse.replaceAll("   ", "\n"))
             },
             erreur =>{
               console.log(erreur)
             }
-          )  
+        ) 
 
     }
 
