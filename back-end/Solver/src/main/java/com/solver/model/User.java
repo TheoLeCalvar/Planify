@@ -14,9 +14,12 @@ public class User {
 	private ArrayList<Integer> unavailabilitiesTraduction;
 	private int Etalement_semaines; // ??
 
+	public User() {
+		super();
+	}
+
 	public User(String mail, Role role, ArrayList<Unavailability> unavailables, Localisation localisation,
 			int etalement_semaines) {
-		super();
 		this.mail = mail;
 		this.role = role;
 		this.unavailabilities = unavailables;

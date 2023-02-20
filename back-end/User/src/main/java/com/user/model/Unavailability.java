@@ -2,7 +2,7 @@ package com.user.model;
 
 import java.util.ArrayList;
 
-public class Unavailable {
+public class Unavailability {
 
 	private String date;
 	private ArrayList<Integer> slots;

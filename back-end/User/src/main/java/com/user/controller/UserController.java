@@ -38,7 +38,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(path = "/new", produces = "application/json")
+	@PostMapping(path = "/save", produces = "application/json")
 	public void saveUser(@RequestBody User user) {
 		service.save(user);
 	}
