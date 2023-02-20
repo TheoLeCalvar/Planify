@@ -3,9 +3,6 @@ package com.data.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,7 +10,6 @@ import com.data.model.DataCalendar;
 import com.data.model.User;
 import com.data.repo.DataCalendarRepo;
 import com.data.util.Constants;
-import com.google.gson.Gson;
 
 @Service
 public class DataService {
@@ -51,7 +47,8 @@ public class DataService {
 		if (user.getMail().isBlank()) {
 			throw new Error("mail is mandatory");
 		}
-		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + user.getMail(), User.class).getBody();
+		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + user.getMail(), User.class)
+				.getBody();
 		userDB.setUnavailabilities(user.getUnavailabilities());
 		restTemplate.postForEntity(Constants.getUrlUser() + "/new", userDB, User.class).getBody();
 
@@ -66,13 +63,7 @@ public class DataService {
 			throw new Error("teacherWaitingList is not empty");
 		}
 
-		String requestBody = new Gson().toJson(dataCalendar);
-		requestBody = requestBody.replaceAll("slotsNumber", "nb_creneaux");
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<String>(requestBody, headers);
-		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), request, String.class).getBody();
+		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), dataCalendar, String.class).getBody();
 
 		dataCalendar.setCalendar(calendar);
 		save(dataCalendar);
