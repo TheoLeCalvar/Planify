@@ -50,7 +50,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /user/new:     
+  /user/save:     
     post:
       summary: save user
       description: Save user
