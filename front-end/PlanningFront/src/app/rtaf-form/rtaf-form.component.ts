@@ -201,14 +201,14 @@ export class RtafFormComponent implements OnInit {
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailables: this.tableData
+            unavailabilities : this.tableData
         }
 
         console.log(data);
 
         this.dataService.addData(data).subscribe(
             (dataForm: any) => {
-              console.log(dataForm.reponse.replaceAll("   ", "\n"))
+              console.log("OK")
             },
             erreur =>{
               console.log(erreur)
