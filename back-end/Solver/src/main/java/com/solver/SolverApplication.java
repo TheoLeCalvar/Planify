@@ -13,7 +13,7 @@ public class SolverApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SolverApplication.class, args);
 	}
-	
+
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplate();
