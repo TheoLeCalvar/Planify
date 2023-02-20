@@ -32,6 +32,7 @@ docker-compose down
 
 ## Tests
 
+Run this command to initialize the database with some users for testing.
 ```bash
 bash create-test-users.sh 
 ```

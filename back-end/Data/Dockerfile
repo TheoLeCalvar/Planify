@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app
 
-RUN mvn package 
+RUN mvn package
 
 
 FROM openjdk:17-jdk-alpine

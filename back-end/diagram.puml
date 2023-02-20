@@ -1,19 +1,27 @@
 @startuml Diagramme
 
 title Diagramme de sequences
+
 actor ResponsableTAF
 actor Enseignant
-entity FrontEnd
-entity DataService
-entity SolverService
-entity UserService
-database MongoDB #LightBlue
+
+box "Front-End" #FFEEEE
+    entity FrontEnd
+end box
+
+box "Back-End" #EEF5EE
+    entity DataService
+    entity SolverService
+    entity UserService
+    database dataCalendar #LightBlue
+    database user #LightBlue
+end box
 
 alt ResponsableTAF
     ResponsableTAF -> FrontEnd: Submit()
     FrontEnd -> DataService: Information générale
-    DataService -> MongoDB: Information générale
-    MongoDB -> DataService: OK
+    DataService -> dataCalendar: Information générale
+    dataCalendar -> DataService: OK
     DataService -> DataService
     note right
         Notifier tous les enseignants
@@ -26,15 +34,17 @@ alt Enseignant
     Enseignant -> FrontEnd: Submit()
     FrontEnd -> DataService: Préférences
     DataService -> UserService: mail
+    UserService -> user: GET - Utilisateur par mail
+    user -> UserService: Utilisateur
     UserService -> DataService: Utilisateur
     DataService -> UserService: Utilisateur avec de préférences
-    UserService -> MongoDB: Mise à jour de préférences
-    MongoDB -> UserService: OK
+    UserService -> user: Mise à jour de préférences
+    user -> UserService: OK
     UserService -> DataService: OK
-    DataService -> MongoDB: GET - liste d'attente
-    MongoDB -> DataService: liste d'attente
-    DataService -> MongoDB: Mise à jour de la liste d'attente
-    MongoDB -> DataService: OK
+    DataService -> dataCalendar: GET - liste d'attente
+    dataCalendar -> DataService: liste d'attente
+    DataService -> dataCalendar: Mise à jour de la liste d'attente
+    dataCalendar -> DataService: OK
     DataService -> FrontEnd: OK
     FrontEnd -> Enseignant: OK
 end
@@ -42,12 +52,12 @@ end
 alt Si la liste d'attende est vide
     ResponsableTAF -> FrontEnd: Solve()
     FrontEnd -> DataService: Solve
-    DataService -> MongoDB: GET - DataCalendar
-    MongoDB -> DataService: DataCalendar
+    DataService -> dataCalendar: GET - DataCalendar
+    dataCalendar -> DataService: DataCalendar
     DataService -> SolverService: Solve(DataCalendar)
     SolverService -> DataService: Calendrier
-    DataService -> MongoDB: DataCalendar avec Calendrier
-    MongoDB -> DataService: OK
+    DataService -> dataCalendar: DataCalendar avec Calendrier
+    dataCalendar -> DataService: OK
     DataService -> FrontEnd: Calendrier
     FrontEnd -> ResponsableTAF: Calendrier
 end

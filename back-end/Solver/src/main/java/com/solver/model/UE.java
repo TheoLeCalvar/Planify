@@ -36,7 +36,7 @@ public class UE {
 	public int getNb_cours() {
 		int Result = 0;
 		for (Module i : liste_modules) {
-			Result = Result + i.getNb_creneaux();
+			Result = Result + i.getSlotsNumber();
 		}
 		return Result;
 	}

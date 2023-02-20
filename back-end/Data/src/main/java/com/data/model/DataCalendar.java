@@ -31,8 +31,8 @@ public class DataCalendar {
 	@NotNull(message = "modulesUeC is mandatory")
 	private ArrayList<@Valid Module> modulesUeC;
 
-	@NotNull(message = "unavailables is mandatory")
-	private ArrayList<@Valid Unavailable> unavailables;
+	@NotNull(message = "unavailabilities is mandatory")
+	private ArrayList<@Valid Unavailability> unavailabilities;
 
 	private long creationDate;
 	private ArrayList<String> teacherWaitingList;
@@ -62,8 +62,8 @@ public class DataCalendar {
 		return modulesUeC;
 	}
 
-	public ArrayList<Unavailable> getUnavailables() {
-		return unavailables;
+	public ArrayList<Unavailability> getUnavailabilities() {
+		return unavailabilities;
 	}
 
 	public long getCreationDate() {
