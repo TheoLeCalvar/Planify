@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
@@ -31,12 +32,16 @@ export class RtafFormComponent implements OnInit {
 
     tableData : Indisponibilite[] = [];
 
-    debut: Date = new Date();
-    startDate : string; 
-    startAt: Date;
+    //test picker 1
     
-    indisponible: Date = new Date();
-    indisponibilityDate : string; 
+
+    
+    debut: Date ;
+    startAt: Date;
+    indisponible: Date ;
+
+    startDateString : string; 
+    indisponibilityDateString : string; 
     
 
     selectedNumberWeek: number =0 ;
@@ -62,7 +67,6 @@ export class RtafFormComponent implements OnInit {
     constructor(private  dataService: DataService, private userService: UserService) { }
 
     ngOnInit(): void {
-        this.startAt = new Date(this.debut);
         //get user list 
         this.userService.getUsers().subscribe(
             (data) => {
@@ -83,17 +87,20 @@ export class RtafFormComponent implements OnInit {
     }
 
     changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
-        this.startDate = new Date(this.debut.getTime() - this.debut.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-        console.log("debut: ",this.debut);
-        console.log("startDate: ",this.startDate);
+
+        this.startDateString = formatDate(this.debut, 'yyyy-MM-dd', 'en-US');
         this.startAt = new Date(this.debut);
-        console.log(this.startAt);
+        this.startAt.setDate(this.startAt.getDate() + 1);
+
+        console.log(this.startDateString);
     }
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-        this.indisponibilityDate = new Date(this.indisponible.getTime() - this.indisponible.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-        console.log("indisponible: ",this.indisponible);
-        console.log("indisponibilityDate: ",this.indisponibilityDate);
+
+        this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
+
+        console.log(this.indisponibilityDateString);
+
     }
 
 
@@ -154,7 +161,7 @@ export class RtafFormComponent implements OnInit {
 
 
     addFunction(){
-        console.log("date indisponible: ", this.indisponibilityDate);
+        console.log("date indisponible: ", this.indisponibilityDateString);
         let selectedCreneaux = [];
         for(let item of this.items){
             if(item.isChecked){
@@ -163,7 +170,7 @@ export class RtafFormComponent implements OnInit {
         }
         console.log("creneaux: ", selectedCreneaux);
         this.indisponibility= {
-            date: this.indisponibilityDate,
+            date: this.indisponibilityDateString,
             slots : selectedCreneaux
         }
         console.log(this.indisponibility);
@@ -182,7 +189,7 @@ export class RtafFormComponent implements OnInit {
 
     clickFunction() {
         console.log("number of week :",this.selectedNumberWeek);
-        console.log("start date: ", this.startAt);
+        console.log("start date: ", this.startDateString);
         console.log("modules UEA",this.modulesUEA);
         console.log("modules UEB",this.modulesUEB);
         console.log("modules UEC",this.modulesUEC);
@@ -190,18 +197,18 @@ export class RtafFormComponent implements OnInit {
 
         let data : Data = {
             weeksNumber : this.selectedNumberWeek,
-            startDate: this.startDate,
+            startDate: this.startDateString,
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailables: this.tableData
+            unavailabilities : this.tableData
         }
 
         console.log(data);
 
         this.dataService.addData(data).subscribe(
             (dataForm: any) => {
-              console.log(dataForm.reponse.replaceAll("   ", "\n"))
+              console.log("OK")
             },
             erreur =>{
               console.log(erreur)

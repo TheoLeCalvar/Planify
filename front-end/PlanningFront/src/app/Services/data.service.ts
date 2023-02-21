@@ -17,12 +17,12 @@ let config = {
 })
 export class DataService {
 
-  baseUrl : string = "http://localhost:3200/data/solver";
+  baseUrl : string = "http://localhost:3200/data";
 
   constructor(private http:HttpClient) { }
 
   addData(data: Data) {
     //send body with request
-    return this.http.post<String>(this.baseUrl, data, config);
+    return this.http.post<String>(this.baseUrl+"/save-data-calendar", data, config);
   }
 }

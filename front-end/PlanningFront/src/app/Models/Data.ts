@@ -7,5 +7,5 @@ export class Data {
     modulesUeA: Module[];
     modulesUeB: Module[];
     modulesUeC: Module[];
-    unavailables : Indisponibilite[] 
+    unavailabilities : Indisponibilite[] 
 }
