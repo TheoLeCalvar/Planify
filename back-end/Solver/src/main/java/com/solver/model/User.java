@@ -12,7 +12,7 @@ public class User {
 	private ArrayList<Unavailability> unavailabilities;
 	private Localisation localisation;
 	private ArrayList<Integer> unavailabilitiesTraduction;
-	private int Etalement_semaines; // ??
+	private int Etalement_semaines;
 
 	public User() {
 		super();

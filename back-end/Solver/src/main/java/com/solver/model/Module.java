@@ -1,5 +1,6 @@
 package com.solver.model;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.solver.util.Localisation;
@@ -35,8 +36,8 @@ public class Module {
 		return isSync;
 	}
 
-	public int getEtalement_semaines() {
-		return 1; // this.getUserB().getEtalement_semaines();
+	public void setSync(boolean isSync) {
+		this.isSync = isSync;
 	}
 
 }

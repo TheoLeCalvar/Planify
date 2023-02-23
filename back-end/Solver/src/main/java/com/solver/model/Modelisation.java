@@ -3,6 +3,7 @@ package com.solver.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
@@ -16,14 +17,11 @@ public class Modelisation {
 
 	private Model model;
 	private Solver solver;
-	
+		
 	private IntVar[] planning;
 	private IntVar[][] agendajour;
 	private IntVar[] Nb_Seances;
 	private IntVar[] nb0parjour;
-	private IntVar[] debutmodules;
-	private IntVar[] finmodules;
-
 	private IntVar[] planningB;
 	private IntVar[][] agendajourB;
 	private IntVar[] Nb_SeancesB;
@@ -51,8 +49,7 @@ public class Modelisation {
 		Nb_SeancesB = model.intVarArray("Nb_seances_Brest", donnee.Nb_cour_different(), 0, donnee.getCalendrierB().getNb_Creneaux()); // Liste contenant le nombre de séance part cours différents (Nb_seances[O] contient le nombre de cours vide
 		nb0parjourB = model.intVarArray("Nombre de 0 par jour_Brest", donnee.getCalendrierB().getNb_Jours(), 0, 6); // Liste contenant le nombre de cours vide à attribuer par jours (pour equilibrer)
 		
-		debutmodules = model.intVarArray("debut_modules", donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux());
-		finmodules = model.intVarArray("fin_modules", donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux());
+		model.intVarArray(donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux());
 
 	}
 
@@ -145,61 +142,71 @@ public class Modelisation {
 		}
 	}
 
-	public void Contraintes_Automate1() { // pas de trous dans une journée + même créneaux de cours collés
-		// Création des expressions régulières pour les contraintes de cours
-		StringBuilder regexp0 = new StringBuilder("0*[^0]{0,4}0*");
-		StringBuilder regexp1 = new StringBuilder("[^1]*1{0,3}[^1]*");
-		StringBuilder regexp2 = new StringBuilder("[^2]*2{0,3}[^2]*");
-		StringBuilder regexp3 = new StringBuilder("[^3]*3{0,3}[^3]*");
-		StringBuilder regexp4 = new StringBuilder("[^4]*4{0,3}[^4]*");
-		StringBuilder regexp5 = new StringBuilder("[^5]*5{0,3}[^5]*");
-		StringBuilder regexp6 = new StringBuilder("[^6]*6{0,3}[^6]*");
-		StringBuilder regexp7 = new StringBuilder("[^7]*7{0,3}[^7]*");
-		StringBuilder regexp8 = new StringBuilder("[^8]*8{0,3}[^8]*");
-		StringBuilder regexp9 = new StringBuilder("[^9]*9{0,3}[^9]*");
+	public void Contraintes_Automate1_v2() {
 		
-
-
-		// Création des automates représentant les expressions régulières
-		FiniteAutomaton auto0 = new FiniteAutomaton(regexp0.toString(), 0, 6);
-		FiniteAutomaton auto1 = new FiniteAutomaton(regexp1.toString(), 0, 6);
-		FiniteAutomaton auto2 = new FiniteAutomaton(regexp2.toString(), 0, 6);
-		FiniteAutomaton auto3 = new FiniteAutomaton(regexp3.toString(), 0, 6);
-		FiniteAutomaton auto4 = new FiniteAutomaton(regexp4.toString(), 0, 6);
-		FiniteAutomaton auto5 = new FiniteAutomaton(regexp5.toString(), 0, 6);
-		FiniteAutomaton auto6 = new FiniteAutomaton(regexp6.toString(), 0, 6);
-		FiniteAutomaton auto7 = new FiniteAutomaton(regexp7.toString(), 0, 6);
-		FiniteAutomaton auto8 = new FiniteAutomaton(regexp8.toString(), 0, 6);
-		FiniteAutomaton auto9 = new FiniteAutomaton(regexp9.toString(), 0, 6);
-
-		// On post les contraintes de chaques automates pour Nantes
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
-			model.regular(agendajour[i], auto0).post();
-			model.regular(agendajour[i], auto1).post();
-			model.regular(agendajour[i], auto2).post();
-			model.regular(agendajour[i], auto3).post();
-			model.regular(agendajour[i], auto4).post();
-			model.regular(agendajour[i], auto5).post();
-			model.regular(agendajour[i], auto6).post();
-			model.regular(agendajour[i], auto7).post();
-			model.regular(agendajour[i], auto8).post();
-			model.regular(agendajour[i], auto9).post();
+		ArrayList<StringBuilder> l= new ArrayList<StringBuilder>();
+		StringBuilder expression0 = new StringBuilder ();
+		String Cours_0 = new String ("0*[^0]{0,4}0*");
+		expression0.append(Cours_0);
+		l.add(expression0);
+		ArrayList<FiniteAutomaton> l_auto = new ArrayList<FiniteAutomaton>();
+		for (int i=1;i<donnee.Nb_cour_different();i++) {
+			StringBuilder expression = new StringBuilder ();
+			String automat = new String ("[^"+i+"]*"+i+"{0,3}[^"+i+"]*");
+			expression.append(automat);
+			l.add(expression);
 		}
 		
-		// On post les contraintes de chaques automates pour Brest
-				for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
-					model.regular(agendajourB[i], auto0).post();
-					model.regular(agendajourB[i], auto1).post();
-					model.regular(agendajourB[i], auto2).post();
-					model.regular(agendajourB[i], auto3).post();
-					model.regular(agendajourB[i], auto4).post();
-					model.regular(agendajourB[i], auto5).post();
-					model.regular(agendajourB[i], auto6).post();
-					model.regular(agendajourB[i], auto7).post();
-					model.regular(agendajourB[i], auto8).post();
-					model.regular(agendajourB[i], auto9).post();
-				}
+		for(int i=0;i<l.size();i++) {
+			l_auto.add(new FiniteAutomaton((l.get(i)).toString(),0,6));
+		}
+		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+			for(int j=0;j<l.size();j++) {
+				model.regular(agendajour[i],l_auto.get(j)).post();
+			}
+		}
+		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+			for(int j=0;j<l.size();j++) {
+				model.regular(agendajourB[i],l_auto.get(j)).post();
+			}
+		}
 	}
+	
+public void Contraintes_Automate2_v2() {
+		
+		ArrayList<StringBuilder> l= new ArrayList<StringBuilder>();
+		ArrayList<FiniteAutomaton> l_autoN = new ArrayList<FiniteAutomaton>();
+		ArrayList<FiniteAutomaton> l_autoB = new ArrayList<FiniteAutomaton>();
+
+		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+			String mailBrest = donnee.getListe_Module().get(i).getMails().get(Localisation.Brest);
+			String mailNantes = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
+			
+			System.out.println(i+"NUMMODULE  "+userList.get(mailBrest).getEtalement_semaines()+"  ");
+			StringBuilder expression = new StringBuilder ();
+			String automat = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getEtalement_semaines()*12-1)+"}[^"+i+"]*");
+			expression.append(automat);
+			l.add(expression);
+		}
+		
+	for(int i=0;i<l.size();i++) {
+			System.out.println(donnee.getCalendrierN().getNb_Creneaux());
+			System.out.println(l.get(i)+"   ");
+			l_autoN.add(new FiniteAutomaton((l.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
+			l_autoB.add(new FiniteAutomaton((l.get(i)).toString(),donnee.getCalendrierB().getNb_Creneaux(),donnee.getCalendrierB().getNb_Creneaux()));
+
+		}
+		l = new ArrayList<StringBuilder>();
+			for(int j=0;j<l_autoN.size();j++) {
+		//	System.out.println(l_auto.get(0));
+				model.regular(planning,l_autoN.get(j)).post();
+		}
+			for(int j=0;j<l_autoB.size();j++) {
+				System.out.println(l_autoB.get(j)+"B");
+				model.regular(planningB,l_autoB.get(j)).post();
+		}
+	}
+	
 
 	public void Contrainte_DispoN() {
 		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
@@ -214,6 +221,26 @@ public class Modelisation {
 			if (!donnee.getCalendrierB().Creneaux_dispo(i)) {
 				model.arithm(planningB[i], "=", 0).post();
 			}
+		}
+	}
+	
+	public void precedence() {
+		ArrayList<Integer> l = new ArrayList<Integer>();
+		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
+			l.add(i);
+		}
+		IntVar[] starts = IntStream.range(0, donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> model.intVar( "S_"+ i, l.get(i))).toArray(IntVar[]::new);
+		IntVar[] sortedplanning = model.intVarArray("SP", donnee.getCalendrierN().getNb_Creneaux(), 0,donnee.Nb_cour_different());
+		IntVar[] permutation = model.intVarArray("P", donnee.getCalendrierN().getNb_Creneaux(),0,donnee.getCalendrierN().getNb_Creneaux());
+		model.keySort(IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{starts[i],planning[i]} ).toArray(IntVar[][]::new), permutation, IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{starts[i],sortedplanning[i]} ).toArray(IntVar[][]::new),2).post();
+
+		
+		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
+			System.out.print(planning[i].getValue());
+		}
+		System.out.println(" ");
+		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
+			System.out.print(sortedplanning[i].getValue());
 		}
 	}
 	
@@ -252,38 +279,12 @@ public class Modelisation {
 			}
 		}
 	}
-	
-	public void Contrainte_debutmodules() {
-		for (int i=1; i<donnee.Nb_cour_different(); i++) {
-			for (int j=0; j< donnee.getCalendrierN().getNb_Creneaux(); j++) {
-				model.ifThen(model.arithm(planning[j],"=", i), model.arithm(debutmodules[i],"=",j));
-			}		
-		}
-	}
-	
-	public void Contrainte_finmodules() {
-		for (int i=1; i<donnee.Nb_cour_different(); i++) {
-			for (int j=donnee.getCalendrierN().getNb_Creneaux()-1; j>=0 ; j--) {
-				model.ifThen(model.arithm(planning[j],"=", i), model.arithm(finmodules[i],"=",j));
-			}		
-		}
-	}
-	
-	public void Contrainte_Etalement() {
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
-			String mailNates = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
-			int etalement = userList.get(mailNates).getEtalement_semaines();
-
-			model.arithm(finmodules[i], "-", debutmodules[i],"<=",etalement*12).post();
-		}
-	}
 
 	public void addConstraints() {
 		Contrainte_DispoN();
 		Contrainte_nbcoursN();
 		Contrainte_Equilibrage0N();
 		Contrainte_mercredi_soir0N();
-		Contraintes_Automate1();
 		Contrainte_Dispo_ModuleN();
 		Contrainte_DispoB();
 		Contrainte_nbcoursB();
@@ -291,21 +292,25 @@ public class Modelisation {
 		Contrainte_mercredi_soir0B();
 		Contrainte_Dispo_ModuleB();
 		Contrainte_Sync();
-		Contrainte_debutmodules();
-		Contrainte_finmodules();
-		Contrainte_Etalement();
+		Contraintes_Automate1_v2();
+		Contraintes_Automate2_v2();
 	}
 
 	public void solve() {
 		solver.findSolution();
 	}
 	
-	public String getSolutionN() {
-		HashMap<Integer, String> num_nom= new HashMap<>();
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
-			num_nom.put(i, donnee.getListe_Module().get(i).getName());
+	
+	public String num_nom(int i){
+		for (int j = 0; j < donnee.getListe_Module().size(); j++) {
+			if (j==i) {
+				return donnee.getListe_Module().get(j).getName();
+			}
 		}
-		System.out.println("ici :"+num_nom);
+		return "0";
+		
+	}
+	public String getSolutionN() {
 		
 		String res = "";
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
@@ -329,7 +334,7 @@ public class Modelisation {
 		res += "\n";
 		for (int j = 0; j < 6; j++) {
 			for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
-				res+= agendajour[i][j].getValue()+"        ";
+				res+= num_nom(agendajour[i][j].getValue())+"        ";
 			}
 			res += "\n";
 		}
