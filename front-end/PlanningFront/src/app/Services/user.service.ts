@@ -17,12 +17,26 @@ let config = {
 })
 export class UserService {
 
-    baseUrl : string = "http://localhost:3202/user";
+    baseUrl : string = "http://localhost:3202/user/";
 
     constructor(private http:HttpClient) { }
 
+    private userEmail: string;
+
+    setUserEmail(email: string) {
+        this.userEmail = email;
+    }
+
+    getUserEmail() {
+        return this.userEmail;
+    }
+
     getUsers(){
-        return this.http.get<User[]>( this.baseUrl+"/list", config)
+        return this.http.get<User[]>( this.baseUrl+"list", config)
+    }
+
+    getUserByMail(mail:string){
+      return this.http.get<User>( this.baseUrl+mail, config)
     }
  
 }

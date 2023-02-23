@@ -4,7 +4,7 @@
 }
 
 .w-25 {
-  width: 18% !important;
+  width: 25% !important;
 }
 
 .hr {
@@ -57,8 +57,6 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
-
 
 
 .user-container {

@@ -1,4 +1,10 @@
 <h1 class="title">Responsable TAF</h1>
+<div class="user-container">
+    <div class="user-name">
+      <span>{{ userEmail }}</span>
+    </div>
+    <button class="logout-button" (click)="logout()">Logout</button>
+</div>
 <hr class="hr">
 <div class="mb-3 row center">
     <label for="dureePlanning" class="w-25 col-form-label text-end">Durée du planning (nombre de semaines) : </label>
@@ -207,5 +213,6 @@
 
 <div class="mb-3 row center">
     <div class="w-25"></div>
-    <button (click)="clickFunction()" class="btn border title w-25">Click Me</button>
+    <button (click)="clickFunction()" class="btn border title w-25"> Envoyer </button>
 </div>
+
