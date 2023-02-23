@@ -1,6 +1,5 @@
 package com.solver.model;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import com.solver.util.Localisation;

@@ -24,7 +24,7 @@ public class User {
 		this.role = role;
 		this.unavailabilities = unavailables;
 		this.localisation = localisation;
-		Etalement_semaines = etalement_semaines;
+		this.Etalement_semaines = etalement_semaines;
 	}
 
 	public String getMail() {
@@ -72,7 +72,7 @@ public class User {
 	}
 
 	public void setEtalement_semaines(int etalement_semaines) {
-		Etalement_semaines = etalement_semaines;
+		this.Etalement_semaines = etalement_semaines;
 	}
 
 }

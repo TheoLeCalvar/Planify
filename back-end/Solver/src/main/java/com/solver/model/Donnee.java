@@ -27,6 +27,7 @@ public class Donnee {
 		this.calendrierN = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesN));
 		this.calendrierB = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesB));
 		this.liste_modules = new ArrayList<>();
+		this.liste_modules.add(null);
 		for (UE ue : this.Liste_UE) {
 			for (Module module : ue.getListeModules()) {
 				this.liste_modules.add(module);

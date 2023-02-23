@@ -57,7 +57,7 @@ public class Modelisation {
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_Seances[0], "=", donnee.Nb_0N()).post();
 		
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			model.arithm(Nb_Seances[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
 		}
 		// On rempli la variable planning en fonction de la variable Nb_Seances
@@ -76,7 +76,7 @@ public class Modelisation {
 		// On pose la contrainte sur la variable Nb_Seances
 		model.arithm(Nb_SeancesB[0], "=", donnee.Nb_0B()).post();
 		
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			model.arithm(Nb_SeancesB[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
 		}
 		// On rempli la variable planning en fonction de la variable Nb_Seances
@@ -178,7 +178,7 @@ public void Contraintes_Automate2_v2() {
 		ArrayList<FiniteAutomaton> l_autoN = new ArrayList<FiniteAutomaton>();
 		ArrayList<FiniteAutomaton> l_autoB = new ArrayList<FiniteAutomaton>();
 
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			String mailBrest = donnee.getListe_Module().get(i).getMails().get(Localisation.Brest);
 			String mailNantes = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
 			
@@ -245,12 +245,12 @@ public void Contraintes_Automate2_v2() {
 	}
 	
 	public void Contrainte_Dispo_ModuleN() {
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			model.arithm(Nb_Seances[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
 		}
 		
 		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
-			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
+			for (int j = 1; j < donnee.getListe_Module().size(); j++) {
 				String mailNantes = donnee.getListe_Module().get(j).getMails().get(Localisation.Nantes);
 				if(!userList.get(mailNantes).getUnavailabilitiesTraduction().get(i).equals(1)) {
 					model.arithm(planning[i], "!=", j).post();
@@ -261,7 +261,7 @@ public void Contraintes_Automate2_v2() {
 	
 	public void Contrainte_Dispo_ModuleB() {
 		for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
-			for (int j = 0; j < donnee.getListe_Module().size(); j++) {
+			for (int j = 1; j < donnee.getListe_Module().size(); j++) {
 				String mailBrest = donnee.getListe_Module().get(j).getMails().get(Localisation.Brest);
 				if(!userList.get(mailBrest).getUnavailabilitiesTraduction().get(i).equals(1)) {
 					model.arithm(planning[i], "!=", j).post();
@@ -271,7 +271,7 @@ public void Contraintes_Automate2_v2() {
 	}
 	
 	public void Contrainte_Sync() {
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			if(donnee.getListe_Module().get(i).getIsSync()) {
 				for (int j = 0; j < donnee.getCalendrierB().getNb_Creneaux(); j++) {
 					model.ifThen(model.arithm(planning[j], "=", i), model.arithm(planningB[j], "=", i));
@@ -302,7 +302,7 @@ public void Contraintes_Automate2_v2() {
 	
 	
 	public String num_nom(int i){
-		for (int j = 0; j < donnee.getListe_Module().size(); j++) {
+		for (int j = 1; j < donnee.getListe_Module().size(); j++) {
 			if (j==i) {
 				return donnee.getListe_Module().get(j).getName();
 			}
@@ -346,7 +346,7 @@ public void Contraintes_Automate2_v2() {
 		
 	public String getSolutionB() {
 		HashMap<Integer, String> num_nom= new HashMap<>();
-		for (int i = 0; i < donnee.getListe_Module().size(); i++) {
+		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			num_nom.put(i, donnee.getListe_Module().get(i).getName());
 		}
 		System.out.println("ici :"+num_nom);
@@ -411,7 +411,7 @@ public void Contraintes_Automate2_v2() {
 		slots.add(4);
 		slots.add(5);
 		slots.add(6);
-		unavailabilities.add(new Unavailability("2022-12-20", slots));
+//		unavailabilities.add(new Unavailability("2022-12-20", slots));
 		
 		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14");
 		
@@ -424,12 +424,12 @@ public void Contraintes_Automate2_v2() {
 				request.getStartDate());
 		
 		ArrayList<Unavailability> unavailabilitiesUserNantes = new ArrayList<>();
-		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
+//		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
 		User userNantes = new User("responsableNantes@test.com", Role.ResponsableTAF, unavailabilitiesUserNantes, Localisation.Nantes, 14);
 		userNantes.setUnavailabilitiesTraduction(data.Traduction(userNantes.getUnavailabilities()));
 		
 		ArrayList<Unavailability> unavailabilitiesUserBrest = new ArrayList<>();
-		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
+//		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
 		User userBrest = new User("responsableBrest@test.com", Role.ResponsableTAF, unavailabilitiesUserBrest, Localisation.Brest, 14);
 		userBrest.setUnavailabilitiesTraduction(data.Traduction(userBrest.getUnavailabilities()));
 		
