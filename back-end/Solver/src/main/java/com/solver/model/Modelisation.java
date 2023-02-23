@@ -182,9 +182,9 @@ public void Contraintes_Automate2_v2() {
 			String mailBrest = donnee.getListe_Module().get(i).getMails().get(Localisation.Brest);
 			String mailNantes = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
 			
-			System.out.println(i+"NUMMODULE  "+userList.get(mailBrest).getEtalement_semaines()+"  ");
+			System.out.println(i+"NUMMODULE  "+userList.get(mailBrest).getSpreadWeeks()+"  ");
 			StringBuilder expression = new StringBuilder ();
-			String automat = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getEtalement_semaines()*12-1)+"}[^"+i+"]*");
+			String automat = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getSpreadWeeks()*12-1)+"}[^"+i+"]*");
 			expression.append(automat);
 			l.add(expression);
 		}
@@ -411,7 +411,7 @@ public void Contraintes_Automate2_v2() {
 		slots.add(4);
 		slots.add(5);
 		slots.add(6);
-//		unavailabilities.add(new Unavailability("2022-12-20", slots));
+		unavailabilities.add(new Unavailability("2022-12-20", slots));
 		
 		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14");
 		
@@ -424,12 +424,12 @@ public void Contraintes_Automate2_v2() {
 				request.getStartDate());
 		
 		ArrayList<Unavailability> unavailabilitiesUserNantes = new ArrayList<>();
-//		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
+		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
 		User userNantes = new User("responsableNantes@test.com", Role.ResponsableTAF, unavailabilitiesUserNantes, Localisation.Nantes, 14);
 		userNantes.setUnavailabilitiesTraduction(data.Traduction(userNantes.getUnavailabilities()));
 		
 		ArrayList<Unavailability> unavailabilitiesUserBrest = new ArrayList<>();
-//		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
+		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
 		User userBrest = new User("responsableBrest@test.com", Role.ResponsableTAF, unavailabilitiesUserBrest, Localisation.Brest, 14);
 		userBrest.setUnavailabilitiesTraduction(data.Traduction(userBrest.getUnavailabilities()));
 		
