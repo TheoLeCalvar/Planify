@@ -2,16 +2,22 @@
 
 ## Requirements
 
-| For Development | For Deploy |
-| --------------- | ---------- |
-| Java | Docker |
-| Spring Boot |
-| Maven |
+|             | For Development | For Deploy |
+| ----------- | --------------- | ---------- |
+| Docker      | &#10004; | &#10004; |
+| Java        | &#10004; |
+| Maven       | &#10004; |
+| Spring Boot | &#10004; |
+
+### IDE recommended :
+
+* Spring Tools 4 for Eclipse ([download here](https://spring.io/tools))
 
 ## Services
 
 * [Data](Data)
 * [Solver](Solver)
+* [User](User)
 
 ## Deployment
 
