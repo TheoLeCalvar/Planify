@@ -181,6 +181,7 @@ components:
       required:
       - mail
       - unavailabilities
+      - spreadWeeks
       type: object
       properties:
         mail:
@@ -190,3 +191,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Unavailability'
+        spreadWeeks:
+          type: number
+          example: 14

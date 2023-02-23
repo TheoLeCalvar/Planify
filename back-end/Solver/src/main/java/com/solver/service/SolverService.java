@@ -28,7 +28,7 @@ public class SolverService {
 		Map<String, User> userList = new HashMap<>();
 		for (Module module : data.getListe_Module()) {
 			module.getMails().values().forEach((mail) -> {
-				User user = restTemplate.getForEntity(Constants.getUrlUser() + "/get/" + mail, User.class).getBody();
+				User user = restTemplate.getForEntity(Constants.getUrlUser() + "/" + mail, User.class).getBody();
 				user.setUnavailabilitiesTraduction(data.Traduction(user.getUnavailabilities()));
 				userList.put(mail, user);
 			});

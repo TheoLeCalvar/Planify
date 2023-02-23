@@ -50,7 +50,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /user/new:     
+  /user/save:     
     post:
       summary: save user
       description: Save user
@@ -72,6 +72,7 @@ components:
       - role
       - unavailables
       - localisation
+      - spreadWeeks
       type: object
       properties:
         mail:
@@ -87,6 +88,9 @@ components:
         localisation:
           type: string
           example: Nantes
+        spreadWeeks:
+          type: number
+          example: 14
     Unavailable:
       required:
       - date

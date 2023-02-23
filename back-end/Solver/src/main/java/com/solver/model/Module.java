@@ -35,8 +35,8 @@ public class Module {
 		return isSync;
 	}
 
-	public int getEtalement_semaines() {
-		return 1; // this.getUserB().getEtalement_semaines();
+	public void setSync(boolean isSync) {
+		this.isSync = isSync;
 	}
 
 }
