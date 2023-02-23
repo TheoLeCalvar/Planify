@@ -5,5 +5,5 @@ export class User {
     role?: string;
     unavailable : Indisponibilite[] ;
     localisation?: string;
-    etalement:number;
+    spreadWeeks:number;
 }
