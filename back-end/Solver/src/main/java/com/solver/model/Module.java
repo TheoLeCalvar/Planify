@@ -46,8 +46,11 @@ public class Module {
 
 
 
-	public int getEtalement_semaines() {
+	public int getEtalement_semainesB() {
 		return this.getUserB().getEtalement_semaines();
+	}
+	public int getEtalement_semainesN() {
+		return this.getUserN().getEtalement_semaines();
 	}
 
 	public boolean isSync() {
