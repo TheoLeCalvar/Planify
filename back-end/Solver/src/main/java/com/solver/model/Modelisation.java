@@ -403,7 +403,7 @@ public void Contraintes_Automate2_v2() {
 		modulesUeC.add(new Module("moduleB2", 4, mails, false));
 		modulesUeC.add(new Module("moduleB3", 3, mails, false));
 		
-		ArrayList<Unavailability> unavailabilities = new ArrayList<>();
+		Map<Localisation, ArrayList<Unavailability>> unavailabilities = new HashMap<>();
 		ArrayList<Integer> slots = new ArrayList<>();
 		slots.add(1);
 		slots.add(2);
@@ -411,7 +411,12 @@ public void Contraintes_Automate2_v2() {
 		slots.add(4);
 		slots.add(5);
 		slots.add(6);
-		unavailabilities.add(new Unavailability("2022-12-20", slots));
+		ArrayList<Unavailability> unavailabilitiesNantes = new ArrayList<>();
+		unavailabilitiesNantes.add(new Unavailability("2022-12-20", slots));
+		unavailabilities.put(Localisation.Nantes, unavailabilitiesNantes);
+		ArrayList<Unavailability> unavailabilitiesBrest = new ArrayList<>();
+		unavailabilitiesBrest.add(new Unavailability("2022-12-20", slots));
+		unavailabilities.put(Localisation.Brest, unavailabilitiesBrest);
 		
 		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14");
 		
@@ -420,8 +425,8 @@ public void Contraintes_Automate2_v2() {
 //		Function solver() of SolverService ********************************************************************
 		
 		Donnee data = new Donnee(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(),
-				request.getWeeksNumber(), request.getUnavailabilities(), request.getUnavailabilities(),
-				request.getStartDate());
+				request.getWeeksNumber(), request.getUnavailabilities().get(Localisation.Nantes),
+				request.getUnavailabilities().get(Localisation.Brest), request.getStartDate());
 		
 		ArrayList<Unavailability> unavailabilitiesUserNantes = new ArrayList<>();
 		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
