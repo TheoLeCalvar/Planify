@@ -135,9 +135,29 @@ components:
           items:
             $ref: '#/components/schemas/Module'
         unavailabilities:
+          required:
+          - Nantes
+          - Brest
+          type: object
+          properties:
+            Nantes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Unavailability'
+            Brest:
+              type: array
+              items:
+                $ref: '#/components/schemas/Unavailability'
+        creationDate:
+          type: number
+          example: 1677503867443
+        teacherWaitingList:
           type: array
           items:
-            $ref: '#/components/schemas/Unavailability'
+            type: string
+            example: mail1@test.com
+        calendar:
+          type: string
     Module:
       required:
       - name
@@ -152,6 +172,9 @@ components:
           type: number
           example: 7
         mails:
+          required:
+          - Nantes
+          - Brest
           type: object
           properties:
             Nantes:

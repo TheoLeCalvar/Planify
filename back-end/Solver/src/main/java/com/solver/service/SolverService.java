@@ -13,6 +13,7 @@ import com.solver.model.Module;
 import com.solver.model.Request;
 import com.solver.model.User;
 import com.solver.util.Constants;
+import com.solver.util.Localisation;
 
 @Service
 public class SolverService {
@@ -22,16 +23,18 @@ public class SolverService {
 
 	public String solver(Request request) {
 		Donnee data = new Donnee(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(),
-				request.getWeeksNumber(), request.getUnavailabilities(), request.getUnavailabilities(),
-				request.getStartDate());
+				request.getWeeksNumber(), request.getUnavailabilities().get(Localisation.Nantes),
+				request.getUnavailabilities().get(Localisation.Brest), request.getStartDate());
 
 		Map<String, User> userList = new HashMap<>();
 		for (Module module : data.getListe_Module()) {
-			module.getMails().values().forEach((mail) -> {
-				User user = restTemplate.getForEntity(Constants.getUrlUser() + "/" + mail, User.class).getBody();
-				user.setUnavailabilitiesTraduction(data.Traduction(user.getUnavailabilities()));
-				userList.put(mail, user);
-			});
+			if (module != null) {
+				module.getMails().values().forEach((mail) -> {
+					User user = restTemplate.getForEntity(Constants.getUrlUser() + "/" + mail, User.class).getBody();
+					user.setUnavailabilitiesTraduction(data.Traduction(user.getUnavailabilities()));
+					userList.put(mail, user);
+				});
+			}
 		}
 
 		Modelisation test = new Modelisation(data, userList);

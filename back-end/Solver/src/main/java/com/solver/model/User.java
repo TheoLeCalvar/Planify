@@ -19,12 +19,12 @@ public class User {
 	}
 
 	public User(String mail, Role role, ArrayList<Unavailability> unavailables, Localisation localisation,
-			int etalement_semaines) {
+			int spreadWeeks) {
 		this.mail = mail;
 		this.role = role;
 		this.unavailabilities = unavailables;
 		this.localisation = localisation;
-		this.spreadWeeks = etalement_semaines;
+		this.spreadWeeks = spreadWeeks;
 	}
 
 	public String getMail() {
@@ -47,7 +47,7 @@ public class User {
 		return unavailabilitiesTraduction;
 	}
 
-	public int getEtalement_semaines() {
+	public int getSpreadWeeks() {
 		return spreadWeeks;
 	}
 
@@ -71,8 +71,8 @@ public class User {
 		this.unavailabilitiesTraduction = unavailabilitiesTraduction;
 	}
 
-	public void setEtalement_semaines(int etalement_semaines) {
-		this.spreadWeeks = etalement_semaines;
+	public void setSpreadWeeks(int spreadWeeks) {
+		this.spreadWeeks = spreadWeeks;
 	}
 
 }
