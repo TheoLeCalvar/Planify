@@ -3,7 +3,7 @@ import { Indisponibilite } from "./Indisponibilite";
 export class User {  
     mail: string;
     role?: string;
-    unavailable : Indisponibilite[] ;
+    unavailabilities : Indisponibilite[] ;
     localisation?: string;
     spreadWeeks:number;
 }

@@ -200,7 +200,10 @@ export class RtafFormComponent implements OnInit {
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailabilities : this.tableData
+            unavailabilities : {
+                Brest: this.tableData,
+                Nantes: this.tableData
+            }
         }
 
         console.log(data);

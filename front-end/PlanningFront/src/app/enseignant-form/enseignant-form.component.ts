@@ -85,7 +85,7 @@ export class EnseignantFormComponent implements OnInit {
 
         let userPreferences : User = {
             mail: this.userEmail,
-            unavailable : this.tableData,
+            unavailabilities : this.tableData,
             spreadWeeks:this.etalement
         }
 

@@ -7,5 +7,8 @@ export class Data {
     modulesUeA: Module[];
     modulesUeB: Module[];
     modulesUeC: Module[];
-    unavailabilities : Indisponibilite[] 
+    unavailabilities : {
+        Brest: Indisponibilite[],
+        Nantes: Indisponibilite[]
+    } 
 }
