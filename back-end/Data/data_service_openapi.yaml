@@ -148,6 +148,16 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Unavailability'
+        creationDate:
+          type: number
+          example: 1677503867443
+        teacherWaitingList:
+          type: array
+          items:
+            type: string
+            example: mail1@test.com
+        calendar:
+          type: string
     Module:
       required:
       - name
