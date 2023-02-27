@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Router } from '@angular/router';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
@@ -19,21 +20,17 @@ import { UserService } from '../Services/user.service';
 })
 export class RtafFormComponent implements OnInit {
 
-   
+    userEmail: string;
     
-   // TeachersNantesName : string[] = ["yossr", "habib", "derbel"];
    TeachersNantesName : string[] = [];
    TeachersBrestName : string[] = [];
     
-   // TeachersBrestName : string[] = ["sonda", "Sebas", "Arthur", "Maxime"];
 
 
     indisponibility: Indisponibilite;
 
     tableData : Indisponibilite[] = [];
 
-    //test picker 1
-    
 
     
     debut: Date ;
@@ -64,7 +61,9 @@ export class RtafFormComponent implements OnInit {
     ];
  
 
-    constructor(private  dataService: DataService, private userService: UserService) { }
+    constructor(private  dataService: DataService, private userService: UserService, private router: Router) { 
+        this.userEmail = this.userService.getUserEmail();
+    }
 
     ngOnInit(): void {
         //get user list 
@@ -215,6 +214,12 @@ export class RtafFormComponent implements OnInit {
             }
         ) 
 
+    }
+
+    logout() {
+
+        this.router.navigate(['/login']);
+        // Redirect to login page
     }
 
 }
