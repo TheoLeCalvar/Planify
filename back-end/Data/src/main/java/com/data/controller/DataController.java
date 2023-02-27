@@ -65,8 +65,12 @@ public class DataController {
 
 	@PostMapping(path = "/solver", produces = "application/json")
 	public ResponseEntity<String> solver() {
-		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver().replaceAll("\n", "   ") + "\"}",
-				HttpStatus.OK);
+		try {
+			return new ResponseEntity<String>("{\"reponse\":\"" + service.solver().replaceAll("\n", "   ") + "\"}",
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
