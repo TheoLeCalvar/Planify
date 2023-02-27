@@ -1,7 +1,6 @@
 package com.data.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,8 @@ public class DataController {
 	private DataService service;
 
 	@GetMapping(path = "/list", produces = "application/json")
-	public ResponseEntity<List<DataCalendar>> listCalendars() {
-		return new ResponseEntity<List<DataCalendar>>(service.listAll(), HttpStatus.OK);
+	public ResponseEntity<String> listCalendars() {
+		return new ResponseEntity<String>(service.listAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{id}", produces = "application/json")

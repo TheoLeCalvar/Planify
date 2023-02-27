@@ -1,6 +1,7 @@
 package com.data.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,17 @@ public class DataService {
 		dataCalendarRepo.save(dataCalendar);
 	}
 
-	public List<DataCalendar> listAll() {
-		return dataCalendarRepo.findAll();
+	public String listAll() {
+		List<DataCalendar> list = dataCalendarRepo.findAll();
+		String res = "[";
+		for (DataCalendar dataCalendar : list) {
+			String teacherWaitingList = dataCalendar.getTeacherWaitingList().stream().map(Object::toString)
+					.collect(Collectors.joining("\",\""));
+			res += "{\"id\":\"" + dataCalendar.getId() + "\",\"creationDate\":" + dataCalendar.getCreationDate()
+					+ ",\"teacherWaitingList\":["
+					+ (teacherWaitingList.length() > 0 ? "\"" + teacherWaitingList + "\"" : "") + "]}";
+		}
+		return res + "]";
 	}
 
 	public DataCalendar get(String id) {
@@ -47,8 +57,7 @@ public class DataService {
 		if (user.getMail().isBlank()) {
 			throw new Error("mail is mandatory");
 		}
-		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/" + user.getMail(), User.class)
-				.getBody();
+		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/" + user.getMail(), User.class).getBody();
 		userDB.setUnavailabilities(user.getUnavailabilities());
 		restTemplate.postForEntity(Constants.getUrlUser() + "/save", userDB, User.class).getBody();
 

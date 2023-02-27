@@ -24,7 +24,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataCalendar'
+                  $ref: '#/components/schemas/ListDataCalendar'
   /data/{id}:
     get:
       summary: get calendar by id
@@ -106,6 +106,24 @@ paths:
           description: solver executed
 components:
   schemas:
+    ListDataCalendar:
+      required:
+      - id
+      - creationDate
+      - teacherWaitingList
+      type: object
+      properties:
+        id:
+          type: string
+          example: 63fccbbeb4e55b0366e14b7b
+        creationDate:
+          type: number
+          example: 1677503867443
+        teacherWaitingList:
+          type: array
+          items:
+            type: string
+            example: mail1@test.com
     DataCalendar:
       required:
       - weeksNumber
