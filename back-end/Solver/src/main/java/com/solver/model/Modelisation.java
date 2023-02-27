@@ -174,7 +174,9 @@ public class Modelisation {
 	
 public void Contraintes_Automate2_v2() {
 		
-		ArrayList<StringBuilder> l= new ArrayList<StringBuilder>();
+		ArrayList<StringBuilder> lN= new ArrayList<StringBuilder>();
+		ArrayList<StringBuilder> lB= new ArrayList<StringBuilder>();
+
 		ArrayList<FiniteAutomaton> l_autoN = new ArrayList<FiniteAutomaton>();
 		ArrayList<FiniteAutomaton> l_autoB = new ArrayList<FiniteAutomaton>();
 
@@ -182,21 +184,32 @@ public void Contraintes_Automate2_v2() {
 			String mailBrest = donnee.getListe_Module().get(i).getMails().get(Localisation.Brest);
 			String mailNantes = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
 			
-			System.out.println(i+"NUMMODULE  "+userList.get(mailBrest).getSpreadWeeks()+"  ");
-			StringBuilder expression = new StringBuilder ();
-			String automat = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getSpreadWeeks()*12-1)+"}[^"+i+"]*");
-			expression.append(automat);
-			l.add(expression);
+			StringBuilder expressionN = new StringBuilder ();
+			String automatN = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getSpreadWeeks()*12-1)+"}[^"+i+"]*");
+			expressionN.append(automatN);
+			lN.add(expressionN);
+			
+			StringBuilder expressionB = new StringBuilder ();
+			String automatB = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailBrest).getSpreadWeeks()*12-1)+"}[^"+i+"]*");
+			expressionB.append(automatB);
+			lB.add(expressionB);
 		}
 		
-	for(int i=0;i<l.size();i++) {
+	for(int i=0;i<lN.size();i++) {
 			System.out.println(donnee.getCalendrierN().getNb_Creneaux());
-			System.out.println(l.get(i)+"   ");
-			l_autoN.add(new FiniteAutomaton((l.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
-			l_autoB.add(new FiniteAutomaton((l.get(i)).toString(),donnee.getCalendrierB().getNb_Creneaux(),donnee.getCalendrierB().getNb_Creneaux()));
+			System.out.println(lN.get(i)+"   ");
+			l_autoN.add(new FiniteAutomaton((lN.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
 
 		}
-		l = new ArrayList<StringBuilder>();
+	for(int i=0;i<lB.size();i++) {
+		System.out.println(donnee.getCalendrierN().getNb_Creneaux());
+		System.out.println(lB.get(i)+"   ");
+		l_autoB.add(new FiniteAutomaton((lB.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
+
+	}
+		lN = new ArrayList<StringBuilder>();
+		lB = new ArrayList<StringBuilder>();
+
 			for(int j=0;j<l_autoN.size();j++) {
 		//	System.out.println(l_auto.get(0));
 				model.regular(planning,l_autoN.get(j)).post();
@@ -334,7 +347,7 @@ public void Contraintes_Automate2_v2() {
 		res += "\n";
 		for (int j = 0; j < 6; j++) {
 			for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
-				res+= num_nom(agendajour[i][j].getValue())+"        ";
+				res+= agendajour[i][j].getValue()+"        ";
 			}
 			res += "\n";
 		}
