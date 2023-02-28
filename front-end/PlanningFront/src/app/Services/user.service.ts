@@ -21,16 +21,6 @@ export class UserService {
 
     constructor(private http:HttpClient) { }
 
-    private userEmail: string;
-
-    setUserEmail(email: string) {
-        this.userEmail = email;
-    }
-
-    getUserEmail() {
-        return this.userEmail;
-    }
-
     getUsers(){
         return this.http.get<User[]>( this.baseUrl+"list", config)
     }

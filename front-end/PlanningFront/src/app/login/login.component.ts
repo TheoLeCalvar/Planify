@@ -8,38 +8,33 @@ import { UserService } from '../Services/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent  implements OnInit {
 
-    mail: string;
+  mail: string;
 
-    constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) {}
 
-    ngOnInit(): void {
-        
-    }
+  ngOnInit(): void {}
 
-
-    Login(){
-         this.userService.getUserByMail(this.mail).subscribe(
-            (user: User) => {
-              console.log(user);
-              if(user.role == "Enseignant"){
-                this.router.navigate(['/enseignant']);
-                
-              }
-              else if (user.role=="ResponsableTAF"){
-                this.router.navigate(['/responsableTAF']);
-                console.log("aaaaaa")
-                console.log(this.router.navigate(['/responsableTAF']));
-              }
-
-              this.userService.setUserEmail(this.mail);
-
-            },
-            erreur =>{
-              console.log(erreur)
-            }
-        ) 
-    }
+  Login() {
+    this.userService.getUserByMail(this.mail).subscribe({
+      next: (user: User) => {
+        console.log(user);
+        if (!!user && !!user.mail) {
+          sessionStorage.setItem('userMail', user.mail);
+          if(user.role == "Enseignant"){
+            this.router.navigate(['/enseignant']);  
+          } else if (user.role == "ResponsableTAF"){
+            this.router.navigate(['/responsableTAF']);
+          }
+        }
+      },
+      error: erreur => {
+        sessionStorage.removeItem('userMail');
+        console.log(erreur)
+      }
+    })
+  }
 
 }

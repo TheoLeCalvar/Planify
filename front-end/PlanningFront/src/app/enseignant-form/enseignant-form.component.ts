@@ -13,13 +13,12 @@ import { UserService } from '../Services/user.service';
 })
 export class EnseignantFormComponent implements OnInit {
 
-    userEmail: string;
+    userMail: string;
 
     etalement: number;
 
     indisponible: Date ;
     indisponibilityDateString:string;
-
 
     items = [
         { label: 1 , temps:" : 8h -> 9h:15min" , isChecked: false },
@@ -34,12 +33,10 @@ export class EnseignantFormComponent implements OnInit {
 
     tableData : Indisponibilite[] = [];
 
-    constructor(private userService: UserService, private  dataService: DataService) {
-        this.userEmail = this.userService.getUserEmail();
-    }
+    constructor(private userService: UserService, private  dataService: DataService) {}
 
     ngOnInit(): void {
-        
+        this.userMail = sessionStorage.getItem("userMail") || "";
     }
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -78,12 +75,12 @@ export class EnseignantFormComponent implements OnInit {
     }
 
     clickFunction() {
-        console.log("user mail :", this.userEmail);
+        console.log("user mail :", this.userMail);
         console.log("etalement du cours: ", this.etalement);
         console.log("les indisponibilités",this.tableData);
 
         let userPreferences : User = {
-            mail: this.userEmail,
+            mail: this.userMail,
             unavailabilities : this.tableData,
             spreadWeeks:this.etalement
         }

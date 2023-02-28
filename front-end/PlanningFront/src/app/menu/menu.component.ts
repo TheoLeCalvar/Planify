@@ -13,8 +13,7 @@ export class MenuComponent {
   constructor(private router: Router) {}
 
   logout() {
-      this.router.navigate(['/login']);
-      //this.userService.setUserEmail(null);
-      // Redirect to login page
+    sessionStorage.removeItem('userMail');
+    this.router.navigate(['/login']);
   }
 }

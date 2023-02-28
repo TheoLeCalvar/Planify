@@ -23,12 +23,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { EnseignantFormComponent } from './enseignant-form/enseignant-form.component';
 import { LoginComponent } from './login/login.component';
-import { RouterModule } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -42,13 +37,6 @@ import { MenuComponent } from './menu/menu.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'enseignant', component: EnseignantFormComponent },
-      { path: 'responsableTAF', component: RtafFormComponent },
-      //{ path: '**', redirectTo: 'login', pathMatch: 'full' }
-    ]),
     FormsModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
