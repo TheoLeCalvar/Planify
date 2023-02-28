@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { EnseignantFormComponent } from './enseignant-form/enseignant-form.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
+import { MenuComponent } from './menu/menu.component';
 
 
 
@@ -34,7 +35,8 @@ import { RouterModule } from '@angular/router';
     AppComponent,
     RtafFormComponent,
     EnseignantFormComponent,
-    LoginComponent
+    LoginComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

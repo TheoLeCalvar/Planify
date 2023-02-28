@@ -1,7 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Router } from '@angular/router';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
@@ -61,7 +60,7 @@ export class RtafFormComponent implements OnInit {
     ];
  
 
-    constructor(private  dataService: DataService, private userService: UserService, private router: Router) { 
+    constructor(private  dataService: DataService, private userService: UserService) { 
         this.userEmail = this.userService.getUserEmail();
     }
 
@@ -217,12 +216,6 @@ export class RtafFormComponent implements OnInit {
             }
         ) 
 
-    }
-
-    logout() {
-
-        this.router.navigate(['/login']);
-        // Redirect to login page
     }
 
 }

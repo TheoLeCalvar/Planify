@@ -1,61 +1,61 @@
+<app-menu [mail]="userEmail"></app-menu>
+<br/>
+<br/>
+<br/>
+
 <h1 class="title">Enseignant Chercheur</h1>
-<div class="user-container">
-    <div class="user-name">
-      <span>{{ userEmail }}</span>
-    </div>
-    <button class="logout-button" (click)="logout()">Logout</button>
-</div>
 <hr class="hr">
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <div class="mb-3 row center">
 
-<div class="mb-3 row center">
+            <label class="w-25 col-form-label text-end">Etalement du cours (nombre de semaines) :</label>
+            <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="etalement" />
 
-    <label class="w-25 col-form-label text-end">Etalement du cours (nombre de semaines) :</label> 
-    <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="etalement" />
+        </div>
 
-</div>
+        <div class="mb-3 row center">
+            <label for="disponibilités" class="w-25 col-form-label text-end">Les indisponibilités: </label>
+            <div class="w-25">
+                <mat-form-field>
+                    <mat-label>Choisir date indisponible</mat-label>
+                    <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="w-25 ">
+                <div *ngFor="let item of items">
+                    <input type="checkbox" [(ngModel)]="item.isChecked"> {{ item.label }} {{item.temps}}
+                </div>
+            </div>
 
-<div class="mb-3 row center">
-    <label for="disponibilités" class="w-25 col-form-label text-end">Les indisponibilités: </label>
-    <div class="w-25">
-        <mat-form-field>
-            <mat-label>Choisir date indisponible</mat-label>
-            <input matInput  [matDatepicker]="picker1" 
-                placeholder="Choisir date indisponible" 
-                [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1  ></mat-datepicker>
-        </mat-form-field>
-    </div>
-    <div class="w-25 ">
-        <div  *ngFor="let item of items">
-            <input type="checkbox" [(ngModel)]="item.isChecked"> {{ item.label }}   {{item.temps}}
+            <div class="w-25">
+                <button (click)="addFunction()" class="btn border title w-25">Ajouter</button>
+
+            </div>
+
+        </div>
+        <div>
+
+            <table class="table">
+                <tr class="table-header">
+                    <th>Date de l'indisponibilité</th>
+                    <th>Les créneaux</th>
+                    <th></th>
+                </tr>
+                <tr *ngFor="let row of tableData" class="table-row">
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.slots }}</td>
+                    <td><button class="delete-button" (click)="deleteRow(row)">Supprimer</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="mb-3 row center">
+            <div class="w-25"></div>
+            <button (click)="clickFunction()" class="btn border title w-25"> Envoyer </button>
         </div>
     </div>
-
-    <div class="w-25">
-        <button (click)="addFunction()" class="btn border title w-25">Ajouter</button>
-
-    </div>
-
 </div>
-<div>
-
-    <table class="table">
-        <tr class="table-header">
-            <th>Date de l'indisponibilité</th>
-            <th>Les créneaux</th>
-            <th></th>
-        </tr>
-        <tr *ngFor="let row of tableData" class="table-row">
-            <td>{{ row.date }}</td>
-            <td>{{ row.slots }}</td>
-            <td><button class="delete-button" (click)="deleteRow(row)">Supprimer</button></td>
-        </tr>
-    </table>
-</div>
-
-<div class="mb-3 row center">
-    <div class="w-25"></div>
-    <button (click)="clickFunction()" class="btn border title w-25"> Envoyer </button>
-</div>
-

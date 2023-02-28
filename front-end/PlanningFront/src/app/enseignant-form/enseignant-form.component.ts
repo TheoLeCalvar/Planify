@@ -1,7 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Router } from '@angular/router';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { User } from '../Models/User';
 import { DataService } from '../Services/data.service';
@@ -35,7 +34,7 @@ export class EnseignantFormComponent implements OnInit {
 
     tableData : Indisponibilite[] = [];
 
-    constructor(private userService: UserService, private router: Router, private  dataService: DataService) {
+    constructor(private userService: UserService, private  dataService: DataService) {
         this.userEmail = this.userService.getUserEmail();
     }
 
@@ -100,13 +99,6 @@ export class EnseignantFormComponent implements OnInit {
             }
         ) 
 
-    }
-
-    logout() {
-
-        this.router.navigate(['/login']);
-        //this.userService.setUserEmail(null);
-        // Redirect to login page
     }
 
 }
