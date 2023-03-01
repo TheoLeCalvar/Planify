@@ -51,7 +51,7 @@ import { HistoriqueComponent } from './historique/historique.component';
   
   ],
   providers: [],
-  bootstrap: [AppComponent, RtafFormComponent, EnseignantFormComponent, LoginComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 

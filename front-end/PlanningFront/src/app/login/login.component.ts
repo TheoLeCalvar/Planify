@@ -21,13 +21,15 @@ export class LoginComponent  implements OnInit {
     this.userService.getUserByMail(this.mail).subscribe({
       next: (user: User) => {
         console.log(user);
-        if (!!user && !!user.mail) {
+        if (!!user && !!user.mail && !!user.role) {
           sessionStorage.setItem('userMail', user.mail);
+          sessionStorage.setItem('userRole', user.role);
           this.router.navigate(['/historique']);
         }
       },
       error: erreur => {
         sessionStorage.removeItem('userMail');
+        sessionStorage.removeItem('userRole');
         console.log(erreur)
       }
     })
