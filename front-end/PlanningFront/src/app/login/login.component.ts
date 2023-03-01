@@ -23,7 +23,7 @@ export class LoginComponent  implements OnInit {
          this.userService.getUserByMail(this.mail).subscribe(
             (user: User) => {
               console.log(user);
-              if(user.role == "Enseignant"){
+              /*if(user.role == "Enseignant"){
                 this.router.navigate(['/enseignant']);
                 
               }
@@ -31,8 +31,8 @@ export class LoginComponent  implements OnInit {
                 this.router.navigate(['/responsableTAF']);
                 console.log("aaaaaa")
                 console.log(this.router.navigate(['/responsableTAF']));
-              }
-
+              }*/
+              this.router.navigate(['/historique']);
               this.userService.setUserEmail(this.mail);
 
             },

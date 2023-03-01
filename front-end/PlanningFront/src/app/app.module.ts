@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { EnseignantFormComponent } from './enseignant-form/enseignant-form.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
+import { HistoriqueComponent } from './historique/historique.component';
 
 
 
@@ -34,7 +35,8 @@ import { RouterModule } from '@angular/router';
     AppComponent,
     RtafFormComponent,
     EnseignantFormComponent,
-    LoginComponent
+    LoginComponent,
+    HistoriqueComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,7 @@ import { RouterModule } from '@angular/router';
       { path: 'login', component: LoginComponent },
       { path: 'enseignant', component: EnseignantFormComponent },
       { path: 'responsableTAF', component: RtafFormComponent },
+      { path: 'historique', component: HistoriqueComponent },
       //{ path: '**', redirectTo: 'login', pathMatch: 'full' }
     ]),
     FormsModule,
