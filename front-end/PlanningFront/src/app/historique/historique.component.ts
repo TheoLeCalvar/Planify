@@ -13,28 +13,24 @@ import { User } from '../Models/User';
 export class HistoriqueComponent {
 
     data: any[];
-    userEmail: string;
+    userMail: string;
 
-    constructor(private http: HttpClient, private userService: UserService, private router: Router, private dataService:DataService) {
-        this.userEmail = sessionStorage.getItem('userMail') || '';
-    }
+    constructor(private http: HttpClient, private userService: UserService, private router: Router, private dataService:DataService) { }
 
     ngOnInit() {
-
-        this.dataService.listData().subscribe(
-            (data:any) => {
-                console.log(data)
-            },
-            erreur =>{
-              console.log(erreur)
-            }
-        ) 
-        
-        
+      this.userMail = sessionStorage.getItem('userMail') || '';
+      this.dataService.listData().subscribe(
+          (data:any) => {
+              console.log(data)
+          },
+          erreur =>{
+            console.log(erreur)
+          }
+      ) 
     }
 
     goToFormulaire() {
-        this.userService.getUserByMail(this.userEmail).subscribe(
+        this.userService.getUserByMail(this.userMail).subscribe(
             (user: User) => {
               console.log(user);
               if(user.role == "Enseignant"){
