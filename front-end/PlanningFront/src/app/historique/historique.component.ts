@@ -51,11 +51,6 @@ export class HistoriqueComponent {
         ) 
         //this.router.navigate(['/responsableTAF']);
     }
-    logout() {
-
-        this.router.navigate(['/login']);
-        // Redirect to login page
-    }
     viewCalendar(row:any){
 
     }
