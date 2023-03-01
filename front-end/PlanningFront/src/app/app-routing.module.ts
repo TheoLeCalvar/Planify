@@ -4,6 +4,7 @@ import { EnseignantFormComponent } from './enseignant-form/enseignant-form.compo
 import { AuthGuard } from './guards/auth/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { RtafFormComponent } from './rtaf-form/rtaf-form.component';
+import { HistoriqueComponent } from './historique/historique.component';
 
 export const routes: Routes = [
   { 
@@ -18,6 +19,11 @@ export const routes: Routes = [
   { 
     path: 'enseignant',
     component: EnseignantFormComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'historique',
+    component: HistoriqueComponent,
     canActivate: [AuthGuard]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

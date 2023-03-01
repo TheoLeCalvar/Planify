@@ -29,4 +29,8 @@ export class DataService {
   addPreferences(user:User){
     return this.http.post<String>(this.baseUrl+"/save-preferences", user, config);
   }
+
+  listData(){
+    return this.http.get<Data[]>( this.baseUrl+"/list", config)
+  }
 }

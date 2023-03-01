@@ -23,11 +23,7 @@ export class LoginComponent  implements OnInit {
         console.log(user);
         if (!!user && !!user.mail) {
           sessionStorage.setItem('userMail', user.mail);
-          if(user.role == "Enseignant"){
-            this.router.navigate(['/enseignant']);  
-          } else if (user.role == "ResponsableTAF"){
-            this.router.navigate(['/responsableTAF']);
-          }
+          this.router.navigate(['/historique']);
         }
       },
       error: erreur => {
