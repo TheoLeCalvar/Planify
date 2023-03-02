@@ -425,7 +425,7 @@ public void Contraintes_Automate2_v2() {
 	}
 
 	
-	public void ecrireN() throws IOException {
+	public void ecrire() throws IOException {
 		
 		String SEPARATOR = "\n";
 		String DELIMITER = ",";
@@ -474,6 +474,40 @@ public void Contraintes_Automate2_v2() {
 
 			
 		}
+		
+		fileWriter.write(SEPARATOR);
+		fileWriter.write(SEPARATOR);
+		
+		fileWriter.write("Brest");
+
+		fileWriter.write(DELIMITER);
+
+        for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+        	
+
+        	fileWriter.write(Jour(i));
+			fileWriter.write(DELIMITER);
+        }
+        fileWriter.write(SEPARATOR);
+		for (int j = 0; j < 6; j++) {
+			
+        	fileWriter.write(l.get(j));
+			fileWriter.write(DELIMITER);
+
+
+			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		        String res = "";
+
+				res+= num_nom(agendajourB[i][j].getValue());
+				fileWriter.write(res);
+				fileWriter.write(DELIMITER);
+			}
+
+			
+			fileWriter.write(SEPARATOR);
+		
+		}
+		
         fileWriter.close();
 
 		}
@@ -594,8 +628,7 @@ public void ecrireB() throws IOException {
 		test.solve();
 		test.getSolutionN();
 		test.getSolutionB();
-		test.ecrireN();
-		test.ecrireB();
+		test.ecrire();
 
 		
 //		*******************************************************************************************************
