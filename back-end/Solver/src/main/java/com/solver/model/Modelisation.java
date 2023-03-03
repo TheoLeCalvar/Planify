@@ -1,5 +1,10 @@
 package com.solver.model;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +54,6 @@ public class Modelisation {
 		Nb_SeancesB = model.intVarArray("Nb_seances_Brest", donnee.Nb_cour_different(), 0, donnee.getCalendrierB().getNb_Creneaux()); // Liste contenant le nombre de séance part cours différents (Nb_seances[O] contient le nombre de cours vide
 		nb0parjourB = model.intVarArray("Nombre de 0 par jour_Brest", donnee.getCalendrierB().getNb_Jours(), 0, 6); // Liste contenant le nombre de cours vide à attribuer par jours (pour equilibrer)
 		
-		model.intVarArray(donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux());
 
 	}
 
@@ -196,14 +200,10 @@ public void Contraintes_Automate2_v2() {
 		}
 		
 	for(int i=0;i<lN.size();i++) {
-			System.out.println(donnee.getCalendrierN().getNb_Creneaux());
-			System.out.println(lN.get(i)+"   ");
 			l_autoN.add(new FiniteAutomaton((lN.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
 
 		}
 	for(int i=0;i<lB.size();i++) {
-		System.out.println(donnee.getCalendrierN().getNb_Creneaux());
-		System.out.println(lB.get(i)+"   ");
 		l_autoB.add(new FiniteAutomaton((lB.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
 
 	}
@@ -211,11 +211,9 @@ public void Contraintes_Automate2_v2() {
 		lB = new ArrayList<StringBuilder>();
 
 			for(int j=0;j<l_autoN.size();j++) {
-		//	System.out.println(l_auto.get(0));
 				model.regular(planning,l_autoN.get(j)).post();
 		}
 			for(int j=0;j<l_autoB.size();j++) {
-				System.out.println(l_autoB.get(j)+"B");
 				model.regular(planningB,l_autoB.get(j)).post();
 		}
 	}
@@ -320,9 +318,41 @@ public void Contraintes_Automate2_v2() {
 				return donnee.getListe_Module().get(j).getName();
 			}
 		}
-		return "0";
-		
+		return "-";	
 	}
+	
+	public String Jour(int i) {
+		
+		LocalDate Datedebut = LocalDate.of(Integer.valueOf(donnee.getDebut().substring(0,4)),Integer.valueOf(donnee.getDebut().substring(5,7)), Integer.valueOf(donnee.getDebut().substring(8,10)));
+		LocalDate Date = Datedebut;
+		if(Datedebut.getDayOfWeek().getValue() == 3) {
+			if(i%2==0) {
+				Date = Datedebut.plusDays(7*(i/2));
+		}
+		else if(i%2!=0) {
+			Date = Datedebut.plusDays(6+7*(i/2));
+		}
+		}
+		if(Datedebut.getDayOfWeek().getValue() == 2) {
+			if(i%2==0) {
+				Date = Datedebut.plusDays(7*(i/2));
+		}
+		else if(i%2!=0) {
+			Date = Datedebut.plusDays(1+7*(i/2));
+		}
+		}
+
+		
+		
+		
+		String res = "";
+
+		res += Date;
+		return res;
+		
+		}
+	
+	
 	public String getSolutionN() {
 		
 		String res = "";
@@ -361,9 +391,7 @@ public void Contraintes_Automate2_v2() {
 		HashMap<Integer, String> num_nom= new HashMap<>();
 		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			num_nom.put(i, donnee.getListe_Module().get(i).getName());
-		}
-		System.out.println("ici :"+num_nom);
-		
+		}		
 		String res = "";
 		for (int i = 0; i < donnee.Nb_cour_different(); i++) {
 			res += Nb_SeancesB[i] + "\n";
@@ -395,9 +423,153 @@ public void Contraintes_Automate2_v2() {
 
 		return res;
 	}
+
 	
+	public void ecrire() throws IOException {
 		
-	public static void main(String[] args) {
+		String SEPARATOR = "\n";
+		String DELIMITER = ",";
+	
+		File outFile = new File("/Users/maximelizot/Desktop/CalendrierNantes.csv");
+		outFile.getParentFile().mkdirs();
+        FileWriter fileWriter = new FileWriter(outFile);
+        
+        System.out.println("Writer file: " + outFile.getAbsolutePath());
+        System.out.println("With encoding: " + fileWriter.getEncoding());
+        ArrayList<String> l=new ArrayList<String>();
+        l.add("8h-9h15");
+        l.add("9h30-10h45");
+        l.add("11h-12h15");
+        l.add("13h45-15h");
+        l.add("15h15-16h30");
+        l.add("16h45-18h");
+        
+		fileWriter.write("Nantes");
+
+		fileWriter.write(DELIMITER);
+
+        for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+        	
+
+        	fileWriter.write(Jour(i));
+			fileWriter.write(DELIMITER);
+        }
+        fileWriter.write(SEPARATOR);
+		for (int j = 0; j < 6; j++) {
+			
+        	fileWriter.write(l.get(j));
+			fileWriter.write(DELIMITER);
+
+
+			for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		        String res = "";
+
+				res+= num_nom(agendajour[i][j].getValue());
+				fileWriter.write(res);
+				fileWriter.write(DELIMITER);
+			}
+
+			
+			fileWriter.write(SEPARATOR);
+
+			
+		}
+		
+		fileWriter.write(SEPARATOR);
+		fileWriter.write(SEPARATOR);
+		
+		fileWriter.write("Brest");
+
+		fileWriter.write(DELIMITER);
+
+        for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+        	
+
+        	fileWriter.write(Jour(i));
+			fileWriter.write(DELIMITER);
+        }
+        fileWriter.write(SEPARATOR);
+		for (int j = 0; j < 6; j++) {
+			
+        	fileWriter.write(l.get(j));
+			fileWriter.write(DELIMITER);
+
+
+			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		        String res = "";
+
+				res+= num_nom(agendajourB[i][j].getValue());
+				fileWriter.write(res);
+				fileWriter.write(DELIMITER);
+			}
+
+			
+			fileWriter.write(SEPARATOR);
+		
+		}
+		
+        fileWriter.close();
+
+		}
+
+public void ecrireB() throws IOException {
+		
+		String SEPARATOR = "\n";
+		String DELIMITER = ",";
+	
+		File outFile = new File("/Users/maximelizot/Desktop/CalendrierBrest.csv");
+		outFile.getParentFile().mkdirs();
+        FileWriter fileWriter = new FileWriter(outFile);
+        
+        System.out.println("Writer file: " + outFile.getAbsolutePath());
+        System.out.println("With encoding: " + fileWriter.getEncoding());
+        ArrayList<String> l=new ArrayList<String>();
+        l.add("8h-9h15");
+        l.add("9h30-10h45");
+        l.add("11h-12h15");
+        l.add("13h45-15h");
+        l.add("15h15-16h30");
+        l.add("16h45-18h");
+        
+		fileWriter.write("Brest");
+
+		fileWriter.write(DELIMITER);
+
+        for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+        	
+
+        	fileWriter.write(Jour(i));
+			fileWriter.write(DELIMITER);
+        }
+        fileWriter.write(SEPARATOR);
+		for (int j = 0; j < 6; j++) {
+			
+        	fileWriter.write(l.get(j));
+			fileWriter.write(DELIMITER);
+
+
+			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		        String res = "";
+
+				res+= num_nom(agendajourB[i][j].getValue());
+				fileWriter.write(res);
+				fileWriter.write(DELIMITER);
+			}
+
+			
+			fileWriter.write(SEPARATOR);
+
+			
+		}
+        fileWriter.close();
+
+		}
+		
+	
+	
+
+		
+	public static void main(String[] args) throws IOException {
 //		Request ***********************************************************************************************
 		Map<Localisation, String> mails = new HashMap<>();
 		mails.put(Localisation.Nantes, "responsableNantes@test.com");
@@ -461,6 +633,8 @@ public void Contraintes_Automate2_v2() {
 		test.solve();
 		test.getSolutionN();
 		test.getSolutionB();
+		test.ecrire();
+
 		
 //		*******************************************************************************************************
 	}
