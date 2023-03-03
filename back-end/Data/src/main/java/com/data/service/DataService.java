@@ -32,7 +32,7 @@ public class DataService {
 			String teacherWaitingList = dataCalendar.getTeacherWaitingList().stream().map(Object::toString)
 					.collect(Collectors.joining("\",\""));
 			res += "{\"id\":\"" + dataCalendar.getId() + "\",\"creationDate\":" + dataCalendar.getCreationDate()
-					+ ",\"teacherWaitingList\":["
+					+ ",\"existCalendar\":" + (dataCalendar.getCalendar() != null) + ",\"teacherWaitingList\":["
 					+ (teacherWaitingList.length() > 0 ? "\"" + teacherWaitingList + "\"" : "") + "]}";
 		}
 		return res + "]";
