@@ -3,7 +3,6 @@ package com.solver.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -425,12 +424,11 @@ public void Contraintes_Automate2_v2() {
 	}
 
 	
-	public void ecrire() throws IOException {
-		
+	public void ecrire(String fileName) throws IOException {
 		String SEPARATOR = "\n";
 		String DELIMITER = ",";
 	
-		File outFile = new File("/Users/maximelizot/Desktop/CalendrierNantes.csv");
+		File outFile = new File("/var/lib/data/files/" + fileName);
 		outFile.getParentFile().mkdirs();
         FileWriter fileWriter = new FileWriter(outFile);
         
@@ -603,7 +601,7 @@ public void ecrireB() throws IOException {
 		unavailabilitiesBrest.add(new Unavailability("2022-12-20", slots));
 		unavailabilities.put(Localisation.Brest, unavailabilitiesBrest);
 		
-		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14");
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14", 12345);
 		
 //		*******************************************************************************************************
 
@@ -633,7 +631,7 @@ public void ecrireB() throws IOException {
 		test.solve();
 		test.getSolutionN();
 		test.getSolutionB();
-		test.ecrire();
+		test.ecrire(request.getCreationDate() + ".csv");
 
 		
 //		*******************************************************************************************************

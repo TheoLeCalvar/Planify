@@ -1,9 +1,13 @@
 package com.data.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,8 +42,9 @@ public class DataService {
 		return res + "]";
 	}
 
-	public DataCalendar get(String id) {
-		return dataCalendarRepo.findById(id).get();
+	public InputStreamResource getFileCalendar(String fileName) throws FileNotFoundException {
+		File file = new File("/var/lib/data/files/" + fileName);
+		return new InputStreamResource(new FileInputStream(file));
 	}
 
 	public void delete(String id) {

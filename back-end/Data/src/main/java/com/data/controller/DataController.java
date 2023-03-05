@@ -1,9 +1,12 @@
 package com.data.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -38,12 +41,15 @@ public class DataController {
 		return new ResponseEntity<String>(service.listAll(), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/{id}", produces = "application/json")
-	public ResponseEntity<DataCalendar> getCalendar(@PathVariable("id") String id) {
+	@GetMapping(path = "/{id}", produces = "application/csv")
+	public ResponseEntity<Resource> getCalendar(@PathVariable("id") String id) {
+		String fileName = id + ".csv";
 		try {
-			return new ResponseEntity<DataCalendar>(service.get(id), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<DataCalendar>(new DataCalendar(), HttpStatus.BAD_REQUEST);
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+					.body(service.getFileCalendar(fileName));
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
@@ -65,8 +71,7 @@ public class DataController {
 	@PostMapping(path = "/solver", produces = "application/json")
 	public ResponseEntity<String> solver() {
 		try {
-			return new ResponseEntity<String>("{\"reponse\":\"" + service.solver().replaceAll("\n", "   ") + "\"}",
-					HttpStatus.OK);
+			return new ResponseEntity<String>("{\"fileName\":\"" + service.solver(), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
 		}

@@ -13,16 +13,18 @@ public class Request {
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
 	private Map<Localisation, ArrayList<Unavailability>> unavailabilities;
+	private long creationDate;
 
 	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
 			ArrayList<Module> modulesUeC, Map<Localisation, ArrayList<Unavailability>> unavailabilities,
-			String startDate) {
+			String startDate, long creationDate) {
 		this.weeksNumber = weeksNumber;
 		this.modulesUeA = modulesUeA;
 		this.modulesUeB = modulesUeB;
 		this.modulesUeC = modulesUeC;
 		this.unavailabilities = unavailabilities;
 		this.startDate = startDate;
+		this.creationDate = creationDate;
 	}
 
 	public int getWeeksNumber() {
@@ -47,6 +49,10 @@ public class Request {
 
 	public Map<Localisation, ArrayList<Unavailability>> getUnavailabilities() {
 		return unavailabilities;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
 	}
 
 }

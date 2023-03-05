@@ -1,5 +1,6 @@
 package com.solver.service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class SolverService {
 	@Autowired
 	protected RestTemplate restTemplate;
 
-	public String solver(Request request) {
+	public String solver(Request request) throws IOException {
 		Donnee data = new Donnee(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(),
 				request.getWeeksNumber(), request.getUnavailabilities().get(Localisation.Nantes),
 				request.getUnavailabilities().get(Localisation.Brest), request.getStartDate());
@@ -41,7 +42,10 @@ public class SolverService {
 		test.BuildModel();
 		test.addConstraints();
 		test.solve();
-		return test.getSolutionN();
+
+		String fileName = request.getCreationDate() + ".csv";
+		test.ecrire(fileName);
+		return fileName;
 	}
 
 }
