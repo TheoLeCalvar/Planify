@@ -41,12 +41,21 @@ public class DataController {
 		return new ResponseEntity<String>(service.listAll(), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/{id}", produces = "application/csv")
-	public ResponseEntity<Resource> getCalendar(@PathVariable("id") String id) {
+	@GetMapping(path = "/{id}", produces = "application/json")
+	public ResponseEntity<DataCalendar> getCalendar(@PathVariable("id") String id) {
+		try {
+			return new ResponseEntity<DataCalendar>(service.get(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<DataCalendar>(new DataCalendar(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(path = "file/{id}", produces = "application/csv")
+	public ResponseEntity<Resource> getCalendarFile(@PathVariable("id") String id) {
 		String fileName = id + ".csv";
 		try {
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-					.body(service.getFileCalendar(fileName));
+					.body(service.getCalendarFile(fileName));
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 			return ResponseEntity.badRequest().body(null);

@@ -39,7 +39,7 @@ public class DataCalendar {
 
 	private long creationDate;
 	private ArrayList<String> teacherWaitingList;
-	private String calendar;
+	private boolean existCalendarFile;
 
 	public String getId() {
 		return id;
@@ -77,8 +77,8 @@ public class DataCalendar {
 		return teacherWaitingList;
 	}
 
-	public String getCalendar() {
-		return calendar;
+	public boolean existCalendarFile() {
+		return existCalendarFile;
 	}
 
 	public void setCreationDate(long creationDate) {
@@ -89,8 +89,8 @@ public class DataCalendar {
 		this.teacherWaitingList = teacherWaitingList;
 	}
 
-	public void setCalendar(String calendar) {
-		this.calendar = calendar;
+	public void setExistCalendarFile(boolean existCalendarFile) {
+		this.existCalendarFile = existCalendarFile;
 	}
 
 	public void generateTeacherWaitingList() {

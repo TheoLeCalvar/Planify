@@ -36,13 +36,17 @@ public class DataService {
 			String teacherWaitingList = dataCalendar.getTeacherWaitingList().stream().map(Object::toString)
 					.collect(Collectors.joining("\",\""));
 			res += "{\"id\":\"" + dataCalendar.getId() + "\",\"creationDate\":" + dataCalendar.getCreationDate()
-					+ ",\"existCalendar\":" + (dataCalendar.getCalendar() != null) + ",\"teacherWaitingList\":["
+					+ ",\"existCalendarFile\":" + dataCalendar.existCalendarFile() + ",\"teacherWaitingList\":["
 					+ (teacherWaitingList.length() > 0 ? "\"" + teacherWaitingList + "\"" : "") + "]}";
 		}
 		return res + "]";
 	}
+	
+	public DataCalendar get(String id) {
+		return dataCalendarRepo.findById(id).get();
+	}
 
-	public InputStreamResource getFileCalendar(String fileName) throws FileNotFoundException {
+	public InputStreamResource getCalendarFile(String fileName) throws FileNotFoundException {
 		File file = new File("/var/lib/data/files/" + fileName);
 		return new InputStreamResource(new FileInputStream(file));
 	}
@@ -77,11 +81,11 @@ public class DataService {
 			throw new Error("teacherWaitingList is not empty");
 		}
 
-		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), dataCalendar, String.class).getBody();
+		String fileName = restTemplate.postForEntity(Constants.getUrlSolver(), dataCalendar, String.class).getBody();
 
-		dataCalendar.setCalendar(calendar);
+		dataCalendar.setExistCalendarFile(true);
 		save(dataCalendar);
-		return calendar;
+		return fileName;
 	}
 
 }
