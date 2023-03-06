@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../Services/user.service';
 import { DataService } from '../Services/data.service';
 import { User } from '../Models/User';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-historique',
@@ -12,21 +13,30 @@ import { User } from '../Models/User';
 })
 export class HistoriqueComponent {
 
-    data: any[];
+    dataTable: any[];
     userMail: string;
+    isTeachersListEmpty: boolean; // un booléen pour vérifier si la liste "TeachersList" est vide ou non
 
     constructor(private http: HttpClient, private userService: UserService, private router: Router, private dataService:DataService) { }
 
     ngOnInit() {
-      this.userMail = sessionStorage.getItem('userMail') || '';
-      this.dataService.listData().subscribe(
+        this.userMail = sessionStorage.getItem('userMail') || '';
+        this.dataService.listData().subscribe(
           (data:any) => {
-              console.log(data)
-          },
+            console.log(data)
+            this.dataTable = data;
+            this.dataTable.forEach(calendrier => {
+                calendrier.creationDate = formatDate(calendrier.creationDate, 'yyyy-MM-dd', 'en-US')
+            });
+            console.log(this.dataTable); 
+            this.isTeachersListEmpty = this.dataTable.every(
+                (calendar) => calendar.teacherWaitingList.length === 0
+            );
+            },
           erreur =>{
             console.log(erreur)
           }
-      ) 
+        ) 
     }
 
     goToFormulaire() {
@@ -53,6 +63,16 @@ export class HistoriqueComponent {
     }
     viewCalendar(row:any){
 
+    }
+    solve(){
+        this.dataService.solve().subscribe(
+            (dataForm: any) => {
+              console.log("OK")
+            },
+            erreur =>{
+              console.log(erreur)
+            }
+        ) 
     }
 
 }

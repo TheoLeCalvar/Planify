@@ -24,6 +24,9 @@ import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { HistoriqueComponent } from './historique/historique.component';
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,

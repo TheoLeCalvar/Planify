@@ -33,4 +33,9 @@ export class DataService {
   listData(){
     return this.http.get<Data[]>( this.baseUrl+"/list", config)
   }
+
+  solve() {
+    //send body with request
+    return this.http.post<String>(this.baseUrl+"/solver", config);
+  }
 }
