@@ -510,62 +510,6 @@ public void Contraintes_Automate2_v2() {
 
 		}
 
-public void ecrireB() throws IOException {
-		
-		String SEPARATOR = "\n";
-		String DELIMITER = ",";
-	
-		File outFile = new File("/Users/maximelizot/Desktop/CalendrierBrest.csv");
-		outFile.getParentFile().mkdirs();
-        FileWriter fileWriter = new FileWriter(outFile);
-        
-        System.out.println("Writer file: " + outFile.getAbsolutePath());
-        System.out.println("With encoding: " + fileWriter.getEncoding());
-        ArrayList<String> l=new ArrayList<String>();
-        l.add("8h-9h15");
-        l.add("9h30-10h45");
-        l.add("11h-12h15");
-        l.add("13h45-15h");
-        l.add("15h15-16h30");
-        l.add("16h45-18h");
-        
-		fileWriter.write("Brest");
-
-		fileWriter.write(DELIMITER);
-
-        for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
-        	
-
-        	fileWriter.write(Jour(i));
-			fileWriter.write(DELIMITER);
-        }
-        fileWriter.write(SEPARATOR);
-		for (int j = 0; j < 6; j++) {
-			
-        	fileWriter.write(l.get(j));
-			fileWriter.write(DELIMITER);
-
-
-			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
-		        String res = "";
-
-				res+= num_nom(agendajourB[i][j].getValue());
-				fileWriter.write(res);
-				fileWriter.write(DELIMITER);
-			}
-
-			
-			fileWriter.write(SEPARATOR);
-
-			
-		}
-        fileWriter.close();
-
-		}
-		
-	
-	
-
 		
 	public static void main(String[] args) throws IOException {
 //		Request ***********************************************************************************************
