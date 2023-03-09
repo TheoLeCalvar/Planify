@@ -4,12 +4,8 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
-import { User } from '../Models/User';
 import { DataService } from '../Services/data.service';
 import { UserService } from '../Services/user.service';
-
-
-
 
 @Component({
   selector: 'app-rtaf-form',
@@ -19,22 +15,14 @@ import { UserService } from '../Services/user.service';
 })
 export class RtafFormComponent implements OnInit {
 
-   
+    userMail: string;
     
-   // TeachersNantesName : string[] = ["yossr", "habib", "derbel"];
-   TeachersNantesName : string[] = [];
-   TeachersBrestName : string[] = [];
-    
-   // TeachersBrestName : string[] = ["sonda", "Sebas", "Arthur", "Maxime"];
-
+    TeachersNantesName : string[] = [];
+    TeachersBrestName : string[] = [];
 
     indisponibility: Indisponibilite;
 
     tableData : Indisponibilite[] = [];
-
-    //test picker 1
-    
-
     
     debut: Date ;
     startAt: Date;
@@ -42,13 +30,11 @@ export class RtafFormComponent implements OnInit {
 
     startDateString : string; 
     indisponibilityDateString : string; 
-    
 
     selectedNumberWeek: number =0 ;
     selectedNumberModuleUEA : number =0;
     selectedNumberModuleUEB : number =0;
     selectedNumberModuleUEC : number =0;
-
 
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
@@ -64,9 +50,10 @@ export class RtafFormComponent implements OnInit {
     ];
  
 
-    constructor(private  dataService: DataService, private userService: UserService) { }
+    constructor(private  dataService: DataService, private userService: UserService) {}
 
     ngOnInit(): void {
+        this.userMail = sessionStorage.getItem("userMail") || "";
         //get user list 
         this.userService.getUsers().subscribe(
             (data) => {
@@ -83,11 +70,9 @@ export class RtafFormComponent implements OnInit {
 
             });
         });
-        
     }
 
     changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
-
         this.startDateString = formatDate(this.debut, 'yyyy-MM-dd', 'en-US');
         this.startAt = new Date(this.debut);
         this.startAt.setDate(this.startAt.getDate() + 1);
@@ -96,11 +81,9 @@ export class RtafFormComponent implements OnInit {
     }
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-
         this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
 
         console.log(this.indisponibilityDateString);
-
     }
 
 
@@ -122,7 +105,6 @@ export class RtafFormComponent implements OnInit {
             })
 
         }
-       
     }
 
     selectModuleUEBChange(){
@@ -139,7 +121,6 @@ export class RtafFormComponent implements OnInit {
                 isSync: false
             })
         }
-       
     }
 
     selectModuleUECChange(){
@@ -155,7 +136,6 @@ export class RtafFormComponent implements OnInit {
                 },
                 isSync: false
             })
-            
         }
     }
 
@@ -174,7 +154,6 @@ export class RtafFormComponent implements OnInit {
             slots : selectedCreneaux
         }
         console.log(this.indisponibility);
-
 
         this.tableData.push(this.indisponibility);
         console.log(this.tableData)
@@ -201,7 +180,10 @@ export class RtafFormComponent implements OnInit {
             modulesUeA : this.modulesUEA,
             modulesUeB : this.modulesUEB,
             modulesUeC : this.modulesUEC,
-            unavailabilities : this.tableData
+            unavailabilities : {
+                Brest: this.tableData,
+                Nantes: this.tableData
+            }
         }
 
         console.log(data);
@@ -214,7 +196,6 @@ export class RtafFormComponent implements OnInit {
               console.log(erreur)
             }
         ) 
-
     }
 
 }

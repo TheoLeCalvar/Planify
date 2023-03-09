@@ -55,9 +55,19 @@ components:
           items:
             $ref: '#/components/schemas/Module'
         unavailabilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Unavailable'
+          required:
+          - Nantes
+          - Brest
+          type: object
+          properties:
+            Nantes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Unavailability'
+            Brest:
+              type: array
+              items:
+                $ref: '#/components/schemas/Unavailability'
     Module:
       required:
       - name
@@ -72,6 +82,9 @@ components:
           type: number
           example: 7
         mails:
+          required:
+          - Nantes
+          - Brest
           type: object
           properties:
             Nantes:
@@ -83,7 +96,7 @@ components:
         isSync:
           type: boolean
           example: true
-    Unavailable:
+    Unavailability:
       required:
       - date
       - slots

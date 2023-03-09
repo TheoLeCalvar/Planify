@@ -11,11 +11,15 @@ services:
       - mongo
     ports:
       - "3200:3200"
+    volumes:
+      - db-data:/var/lib/data/files
   solver:
     container_name: solver
     build: ./Solver/
     ports:
       - "3201:3201"
+    volumes:
+      - db-data:/var/lib/data/files
   user:
     container_name: user
     build: ./User/

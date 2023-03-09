@@ -14,6 +14,7 @@ public class User {
 	private Role role;
 	private ArrayList<Unavailability> unavailabilities;
 	private Localisation localisation;
+	private int spreadWeeks;
 
 	public String getMail() {
 		return mail;
@@ -29,6 +30,10 @@ public class User {
 
 	public Localisation getLocalisation() {
 		return localisation;
+	}
+
+	public int getSpreadWeeks() {
+		return spreadWeeks;
 	}
 
 	public void setUnavailabilities(ArrayList<Unavailability> unavailabilities) {

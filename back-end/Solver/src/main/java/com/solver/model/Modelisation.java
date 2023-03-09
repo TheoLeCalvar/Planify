@@ -196,12 +196,12 @@ public void Contraintes_Automate2_v2() {
 			String mailNantes = donnee.getListe_Module().get(i).getMails().get(Localisation.Nantes);
 			
 			StringBuilder expressionN = new StringBuilder ();
-			String automatN = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getEtalement_semaines()*12-1)+"}[^"+i+"]*");
+			String automatN = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailNantes).getSpreadWeeks()*12-1)+"}[^"+i+"]*");
 			expressionN.append(automatN);
 			lN.add(expressionN);
 			
 			StringBuilder expressionB = new StringBuilder ();
-			String automatB = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailBrest).getEtalement_semaines()*12-1)+"}[^"+i+"]*");
+			String automatB = new String ("[^"+i+"]*"+i+"{1}.{0,"+(userList.get(mailBrest).getSpreadWeeks()*12-1)+"}[^"+i+"]*");
 			expressionB.append(automatB);
 			lB.add(expressionB);
 		}
@@ -348,6 +348,7 @@ public void Contraintes_Automate2_v2() {
 	}
 
 	public void addConstraints() {
+		test_key();
 		Contrainte_DispoN();
 		Contrainte_DispoB();
 		Contrainte_nbcoursN();
@@ -361,14 +362,13 @@ public void Contraintes_Automate2_v2() {
 		Contrainte_Sync();
 		Contraintes_Automate1_v2();
 		Contraintes_Automate2_v2();
-		test_key();
 	}
 
 	public void solve() {
 		solver.printShortFeatures();
 		solver.showShortStatistics();
-		solver.setSearch(Search.inputOrderLBSearch(planning)); // ,Search.inputOrderLBSearch(planningB
-		//solver.showDashboard();
+		solver.setSearch(Search.inputOrderLBSearch(planning), Search.inputOrderLBSearch(planningB));
+		solver.showDashboard();
 		solver.findSolution();
 	}
 	
@@ -383,7 +383,7 @@ public void Contraintes_Automate2_v2() {
 	}
 	
 	
-	/*
+	
 	public String Jour(int i) {
 		
 		LocalDate Datedebut = LocalDate.of(Integer.valueOf(donnee.getDebut().substring(0,4)),Integer.valueOf(donnee.getDebut().substring(5,7)), Integer.valueOf(donnee.getDebut().substring(8,10)));
@@ -415,9 +415,7 @@ public void Contraintes_Automate2_v2() {
 		
 		}
 	
-	 * 
-	 */
-	
+		
 	public String getSolutionN() {
 		
 		String res = "";
@@ -489,8 +487,57 @@ public void Contraintes_Automate2_v2() {
 		return res;
 	}
 
-	
+	/*
 	public void ecrireN() throws IOException {
+	public void ecrire(String fileName) throws IOException {
+		String SEPARATOR = "\n";
+		String DELIMITER = ",";
+	
+		File outFile = new File("/var/lib/data/files/" + fileName);
+		outFile.getParentFile().mkdirs();
+        FileWriter fileWriter = new FileWriter(outFile);
+        
+        System.out.println("Writer file: " + outFile.getAbsolutePath());
+        System.out.println("With encoding: " + fileWriter.getEncoding());
+        ArrayList<String> l=new ArrayList<String>();
+        l.add("8h-9h15");
+        l.add("9h30-10h45");
+        l.add("11h-12h15");
+        l.add("13h45-15h");
+        l.add("15h15-16h30");
+        l.add("16h45-18h");
+        
+		fileWriter.write("Nantes");
+
+		fileWriter.write(DELIMITER);
+
+        for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+        	
+
+        	fileWriter.write(Jour(i));
+			fileWriter.write(DELIMITER);
+        }
+        fileWriter.write(SEPARATOR);
+		for (int j = 0; j < 6; j++) {
+			
+        	fileWriter.write(l.get(j));
+			fileWriter.write(DELIMITER);
+
+
+			for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		        String res = "";
+
+				res+= num_nom(agendajour[i][j].getValue());
+				fileWriter.write(res);
+				fileWriter.write(DELIMITER);
+			}
+
+			
+			fileWriter.write(SEPARATOR);
+
+			
+		}
+	}
 		
 		String SEPARATOR = "\n";
 		String DELIMITER = ",";
@@ -542,6 +589,8 @@ public void Contraintes_Automate2_v2() {
         fileWriter.close();
 
 		}
+	 */
+	
 	public int Nb_Seance(int i) {
 		int k=donnee.Nb_0B();
 		for(int j=1;j<i;j++) {
@@ -549,6 +598,7 @@ public void Contraintes_Automate2_v2() {
 		}
 		return k;
 	}
+	/*
 public void ecrireB() throws IOException {
 		
 		String SEPARATOR = "\n";
@@ -600,11 +650,44 @@ public void ecrireB() throws IOException {
 		}
         fileWriter.close();
 
+
+		fileWriter.write(SEPARATOR);
+		fileWriter.write(SEPARATOR);
+		
+		fileWriter.write("Brest");
+
+		fileWriter.write(DELIMITER);
+
+        for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+        	
+
+        	fileWriter.write(Jour(i));
+			fileWriter.write(DELIMITER);
+        }
+        fileWriter.write(SEPARATOR);
+		for (int j = 0; j < 6; j++) {
+			
+        	fileWriter.write(l.get(j));
+			fileWriter.write(DELIMITER);
+
+
+			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		        String res = "";
+
+				res+= num_nom(agendajourB[i][j].getValue());
+				fileWriter.write(res);
+				fileWriter.write(DELIMITER);
+			}
+
+			
+			fileWriter.write(SEPARATOR);
+		
 		}
 		
-	
-	
+        fileWriter.close();
 
+		}
+*/
 		
 	public static void main(String[] args) throws IOException {
 //		Request ***********************************************************************************************
@@ -613,21 +696,21 @@ public void ecrireB() throws IOException {
 		mails.put(Localisation.Brest, "responsableBrest@test.com");
 		
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-		modulesUeA.add(new Module("moduleA1", 1, mails, false));
-		modulesUeA.add(new Module("moduleA2", 2, mails, false));
-		modulesUeA.add(new Module("moduleA3", 1, mails, false));
+		modulesUeA.add(new Module("moduleA1", 6, mails, false)); //6
+		modulesUeA.add(new Module("moduleA2", 6, mails, false)); //6
+		modulesUeA.add(new Module("moduleA3", 6, mails, false)); //6
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-		modulesUeB.add(new Module("moduleB1", 1, mails, false));//11
-		modulesUeB.add(new Module("moduleB2", 1, mails, false));
-		modulesUeB.add(new Module("moduleB3", 1, mails, false));
+		modulesUeB.add(new Module("moduleB1", 11, mails, false));//11
+		modulesUeB.add(new Module("moduleB2", 11, mails, false));
+		modulesUeB.add(new Module("moduleB3", 11, mails, false));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
-		modulesUeC.add(new Module("moduleB1", 1, mails, true));//4
-		modulesUeC.add(new Module("moduleB2", 1, mails, false));//4
-		modulesUeC.add(new Module("moduleB3", 1, mails, false));//3
+		modulesUeC.add(new Module("moduleB1", 4, mails, true));//4
+		modulesUeC.add(new Module("moduleB2", 4, mails, false));//4
+		modulesUeC.add(new Module("moduleB3", 3, mails, false));//3
 
 		 
 		
-		ArrayList<Unavailability> unavailabilities = new ArrayList<>();
+		Map<Localisation, ArrayList<Unavailability>> unavailabilities = new HashMap<>();
 		ArrayList<Integer> slots = new ArrayList<>();
 		slots.add(1);
 		slots.add(2);
@@ -635,25 +718,30 @@ public void ecrireB() throws IOException {
 		slots.add(4);
 		slots.add(5);
 		slots.add(6);
-		unavailabilities.add(new Unavailability("2022-12-20", slots));
+		ArrayList<Unavailability> unavailabilitiesNantes = new ArrayList<>();
+		unavailabilitiesNantes.add(new Unavailability("2022-12-20", slots));
+		unavailabilities.put(Localisation.Nantes, unavailabilitiesNantes);
+		ArrayList<Unavailability> unavailabilitiesBrest = new ArrayList<>();
+		unavailabilitiesBrest.add(new Unavailability("2022-12-20", slots));
+		unavailabilities.put(Localisation.Brest, unavailabilitiesBrest);
 		
-		Request request = new Request(2, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14"); //14
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14"); //14
 		
 //		*******************************************************************************************************
 
 //		Function solver() of SolverService ********************************************************************
 		
 		Donnee data = new Donnee(request.getModulesUeA(), request.getModulesUeB(), request.getModulesUeC(),
-				request.getWeeksNumber(), request.getUnavailabilities(), request.getUnavailabilities(),
-				request.getStartDate());
+				request.getWeeksNumber(), request.getUnavailabilities().get(Localisation.Nantes),
+				request.getUnavailabilities().get(Localisation.Brest), request.getStartDate());
 		
 		ArrayList<Unavailability> unavailabilitiesUserNantes = new ArrayList<>();
-//		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
-		User userNantes = new User("responsableNantes@test.com", Role.ResponsableTAF, unavailabilitiesUserNantes, Localisation.Nantes, 5);
+		unavailabilitiesUserNantes.add(new Unavailability("2022-12-27", slots));
+		User userNantes = new User("responsableNantes@test.com", Role.ResponsableTAF, unavailabilitiesUserNantes, Localisation.Nantes, 14);
 		userNantes.setUnavailabilitiesTraduction(data.Traduction(userNantes.getUnavailabilities()));
 		
 		ArrayList<Unavailability> unavailabilitiesUserBrest = new ArrayList<>();
-//		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
+		unavailabilitiesUserBrest.add(new Unavailability("2022-12-28", slots));
 		User userBrest = new User("responsableBrest@test.com", Role.ResponsableTAF, unavailabilitiesUserBrest, Localisation.Brest, 14);
 		userBrest.setUnavailabilitiesTraduction(data.Traduction(userBrest.getUnavailabilities()));
 		
@@ -690,6 +778,7 @@ public void ecrireB() throws IOException {
 		test.getSolutionB();
 		//test.ecrireN();
 		//test.ecrireB();
+		//test.ecrire(request.getCreationDate() + ".csv");
 
 		
 //		*******************************************************************************************************

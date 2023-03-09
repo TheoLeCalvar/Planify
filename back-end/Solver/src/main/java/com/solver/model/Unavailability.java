@@ -6,7 +6,7 @@ public class Unavailability {
 
 	private String date;
 	private ArrayList<Integer> slots;
-	
+
 	public Unavailability() {
 		super();
 	}

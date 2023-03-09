@@ -17,4 +17,4 @@ COPY --from=maven /usr/src/app/target/Solver-0.0.1-SNAPSHOT.jar /opt/app/
 
 EXPOSE 3201
 
-ENTRYPOINT ["java","-jar","Solver-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-Xmx3g","-jar","Solver-0.0.1-SNAPSHOT.jar"]

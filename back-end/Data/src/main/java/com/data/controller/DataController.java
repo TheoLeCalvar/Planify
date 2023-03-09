@@ -1,10 +1,12 @@
 package com.data.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -35,8 +37,8 @@ public class DataController {
 	private DataService service;
 
 	@GetMapping(path = "/list", produces = "application/json")
-	public ResponseEntity<List<DataCalendar>> listCalendars() {
-		return new ResponseEntity<List<DataCalendar>>(service.listAll(), HttpStatus.OK);
+	public ResponseEntity<String> listCalendars() {
+		return new ResponseEntity<String>(service.listAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{id}", produces = "application/json")
@@ -45,6 +47,18 @@ public class DataController {
 			return new ResponseEntity<DataCalendar>(service.get(id), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<DataCalendar>(new DataCalendar(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(path = "file/{id}", produces = "application/csv")
+	public ResponseEntity<Resource> getCalendarFile(@PathVariable("id") String id) {
+		String fileName = id + ".csv";
+		try {
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+					.body(service.getCalendarFile(fileName));
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
@@ -65,8 +79,11 @@ public class DataController {
 
 	@PostMapping(path = "/solver", produces = "application/json")
 	public ResponseEntity<String> solver() {
-		return new ResponseEntity<String>("{\"reponse\":\"" + service.solver().replaceAll("\n", "   ") + "\"}",
-				HttpStatus.OK);
+		try {
+			return new ResponseEntity<String>("{\"fileName\":\"" + service.solver(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

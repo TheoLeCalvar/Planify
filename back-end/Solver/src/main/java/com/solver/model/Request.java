@@ -1,6 +1,9 @@
 package com.solver.model;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import com.solver.util.Localisation;
 
 public class Request {
 
@@ -9,11 +12,24 @@ public class Request {
 	private ArrayList<Module> modulesUeA;
 	private ArrayList<Module> modulesUeB;
 	private ArrayList<Module> modulesUeC;
-	private ArrayList<Unavailability> unavailabilities;
+	private Map<Localisation, ArrayList<Unavailability>> unavailabilities;
+	private long creationDate;
 
 	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
-			ArrayList<Module> modulesUeC, ArrayList<Unavailability> unavailabilities, String startDate) {
-		super();
+			ArrayList<Module> modulesUeC, Map<Localisation, ArrayList<Unavailability>> unavailabilities,
+			String startDate, long creationDate) {
+		this.weeksNumber = weeksNumber;
+		this.modulesUeA = modulesUeA;
+		this.modulesUeB = modulesUeB;
+		this.modulesUeC = modulesUeC;
+		this.unavailabilities = unavailabilities;
+		this.startDate = startDate;
+		this.creationDate = creationDate;
+	}
+	
+	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
+			ArrayList<Module> modulesUeC, Map<Localisation, ArrayList<Unavailability>> unavailabilities,
+			String startDate) {
 		this.weeksNumber = weeksNumber;
 		this.modulesUeA = modulesUeA;
 		this.modulesUeB = modulesUeB;
@@ -42,8 +58,12 @@ public class Request {
 		return modulesUeC;
 	}
 
-	public ArrayList<Unavailability> getUnavailabilities() {
+	public Map<Localisation, ArrayList<Unavailability>> getUnavailabilities() {
 		return unavailabilities;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
 	}
 
 }

@@ -152,6 +152,14 @@ public static void main(String args[]) {
 	String s1="2022-12-14";
 	Donnee t = new Donnee(s1);
 		 System.out.println(t.Traduction(e));
-	}}
+	}
+
+public String getDebut() {
+	return debut;
+}
+
+public void setDebut(String debut) {
+	this.debut = debut;
+}}
 		
 

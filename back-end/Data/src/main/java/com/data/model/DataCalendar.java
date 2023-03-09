@@ -1,8 +1,11 @@
 package com.data.model;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
+
+import com.data.util.Localisation;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -32,11 +35,11 @@ public class DataCalendar {
 	private ArrayList<@Valid Module> modulesUeC;
 
 	@NotNull(message = "unavailabilities is mandatory")
-	private ArrayList<@Valid Unavailability> unavailabilities;
+	private Map<Localisation, ArrayList<@Valid Unavailability>> unavailabilities;
 
 	private long creationDate;
 	private ArrayList<String> teacherWaitingList;
-	private String calendar;
+	private boolean existCalendarFile;
 
 	public String getId() {
 		return id;
@@ -62,7 +65,7 @@ public class DataCalendar {
 		return modulesUeC;
 	}
 
-	public ArrayList<Unavailability> getUnavailabilities() {
+	public Map<Localisation, ArrayList<Unavailability>> getUnavailabilities() {
 		return unavailabilities;
 	}
 
@@ -74,8 +77,8 @@ public class DataCalendar {
 		return teacherWaitingList;
 	}
 
-	public String getCalendar() {
-		return calendar;
+	public boolean existCalendarFile() {
+		return existCalendarFile;
 	}
 
 	public void setCreationDate(long creationDate) {
@@ -86,8 +89,8 @@ public class DataCalendar {
 		this.teacherWaitingList = teacherWaitingList;
 	}
 
-	public void setCalendar(String calendar) {
-		this.calendar = calendar;
+	public void setExistCalendarFile(boolean existCalendarFile) {
+		this.existCalendarFile = existCalendarFile;
 	}
 
 	public void generateTeacherWaitingList() {

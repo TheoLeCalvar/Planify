@@ -1,8 +1,13 @@
 package com.data.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,12 +29,26 @@ public class DataService {
 		dataCalendarRepo.save(dataCalendar);
 	}
 
-	public List<DataCalendar> listAll() {
-		return dataCalendarRepo.findAll();
+	public String listAll() {
+		List<DataCalendar> list = dataCalendarRepo.findAll();
+		String res = "[";
+		for (DataCalendar dataCalendar : list) {
+			String teacherWaitingList = dataCalendar.getTeacherWaitingList().stream().map(Object::toString)
+					.collect(Collectors.joining("\",\""));
+			res += "{\"id\":\"" + dataCalendar.getId() + "\",\"creationDate\":" + dataCalendar.getCreationDate()
+					+ ",\"existCalendarFile\":" + dataCalendar.existCalendarFile() + ",\"teacherWaitingList\":["
+					+ (teacherWaitingList.length() > 0 ? "\"" + teacherWaitingList + "\"" : "") + "]}";
+		}
+		return res + "]";
 	}
-
+	
 	public DataCalendar get(String id) {
 		return dataCalendarRepo.findById(id).get();
+	}
+
+	public InputStreamResource getCalendarFile(String fileName) throws FileNotFoundException {
+		File file = new File("/var/lib/data/files/" + fileName);
+		return new InputStreamResource(new FileInputStream(file));
 	}
 
 	public void delete(String id) {
@@ -47,8 +66,7 @@ public class DataService {
 		if (user.getMail().isBlank()) {
 			throw new Error("mail is mandatory");
 		}
-		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/" + user.getMail(), User.class)
-				.getBody();
+		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/" + user.getMail(), User.class).getBody();
 		userDB.setUnavailabilities(user.getUnavailabilities());
 		restTemplate.postForEntity(Constants.getUrlUser() + "/save", userDB, User.class).getBody();
 
@@ -63,11 +81,11 @@ public class DataService {
 			throw new Error("teacherWaitingList is not empty");
 		}
 
-		String calendar = restTemplate.postForEntity(Constants.getUrlSolver(), dataCalendar, String.class).getBody();
+		String fileName = restTemplate.postForEntity(Constants.getUrlSolver(), dataCalendar, String.class).getBody();
 
-		dataCalendar.setCalendar(calendar);
+		dataCalendar.setExistCalendarFile(true);
 		save(dataCalendar);
-		return calendar;
+		return fileName;
 	}
 
 }
