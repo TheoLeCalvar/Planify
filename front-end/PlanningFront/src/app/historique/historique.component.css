@@ -91,3 +91,7 @@ button:disabled {
     background-color: #006c81 !important;
     cursor: not-allowed;
 }
+
+ul {
+    line-height: 20%
+}

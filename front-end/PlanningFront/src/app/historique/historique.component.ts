@@ -52,21 +52,16 @@ export class HistoriqueComponent {
       return calendar.existCalendarFile;
     }
 
+    showTeacherList(calendar: any) {
+      return this.showButtonSolve(calendar) && !this.isTeachersListEmpty;
+    }
+
     goToFormulaire() {
       this.router.navigate(['/responsableTAF']);
     }
 
     downloadCsv(row: any){
       this.dataService.getCalendarFile(row.creationDate);
-      
-      // .subscribe({
-      //   next: (res: any) => {
-      //     console.log("OK");
-      //   },
-      //   error: erreur => {
-      //     console.log(erreur);
-      //   }
-      // });
     }
     
     solve(){

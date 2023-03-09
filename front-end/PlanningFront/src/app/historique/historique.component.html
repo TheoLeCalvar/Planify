@@ -21,6 +21,13 @@
                 <td>
                     <button [disabled]="!isTeachersListEmpty" (click)="solve()" *ngIf="showButtonSolve(row)">Solve</button>
                     <button (click)="downloadCsv(row)" *ngIf="showButtonDownloadCsv(row)">Télécharger le csv</button>
+                    <div *ngIf="showTeacherList(row)">
+                        <a>Attendre des préférences de la part de :</a>
+                        <br /><br />
+                        <ul *ngFor="let mail of row.teacherWaitingList">
+                            <li>{{ mail }}</li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         </table>
