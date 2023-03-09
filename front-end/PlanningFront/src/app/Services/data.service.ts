@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import{HttpClient, HttpHeaders} from '@angular/common/http';
+import{HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Data } from '../Models/Data';
 import { User } from '../Models/User';
@@ -38,4 +38,9 @@ export class DataService {
     //send body with request
     return this.http.post<String>(this.baseUrl+"/solver", config);
   }
+
+  getCalendarFile(fileName: string) {
+    window.open(this.baseUrl+"/file/"+fileName, "_blank");
+  }
+
 }

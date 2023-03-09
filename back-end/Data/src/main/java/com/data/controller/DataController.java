@@ -49,10 +49,10 @@ public class DataController {
 			return new ResponseEntity<DataCalendar>(new DataCalendar(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@GetMapping(path = "file/{id}", produces = "application/csv")
-	public ResponseEntity<Resource> getCalendarFile(@PathVariable("id") String id) {
-		String fileName = id + ".csv";
+
+	@GetMapping(path = "file/{fileName}", produces = "application/csv")
+	public ResponseEntity<Resource> getCalendarFile(@PathVariable("fileName") String fileName) {
+		fileName += ".csv";
 		try {
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
 					.body(service.getCalendarFile(fileName));
@@ -80,7 +80,7 @@ public class DataController {
 	@PostMapping(path = "/solver", produces = "application/json")
 	public ResponseEntity<String> solver() {
 		try {
-			return new ResponseEntity<String>("{\"fileName\":\"" + service.solver(), HttpStatus.OK);
+			return new ResponseEntity<String>("{\"fileName\":\"" + service.solver() + "\"}", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
 		}

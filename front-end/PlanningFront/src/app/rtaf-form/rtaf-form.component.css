@@ -74,21 +74,6 @@
     color: #333;
 }
 
-.logout-button {
-    padding: 10px;
-    background-color: #00b8de;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-}
-
-.logout-button:hover {
-    background-color: #666;
-}
-
 .module {
     background-color: #00b9de14;
     padding: 10px;

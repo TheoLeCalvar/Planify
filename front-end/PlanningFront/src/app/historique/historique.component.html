@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-sm-1"></div>
     <div class="col-sm-10">
-        <button (click)="goToFormulaire()">New</button>
+        <button (click)="goToFormulaire()" [disabled]="disabledButtonCreateNewCalendar" *ngIf="showButtonCreateNewCalendar()">Créer un nouveau calendrier</button>
         <br/>
         <br/>
         <table class="table">
@@ -17,16 +17,10 @@
                 <th> Action </th>
             </tr>
             <tr *ngFor="let row of dataTable" class="table-row">
-                <td>{{ row.creationDate }}</td>
+                <td>{{ row.creationDateFormat }}</td>
                 <td>
-                    <!--button class="view-button"
-                    [disabled]="!isTeachersListEmpty"
-                    *ngIf="isTeachersListEmpty"
-                    (click)="viewCalendar(row.id)"
-                    >
-                    Voir
-                    </button-->
-                    <button class="buttonSolve" [ngStyle]="{'background-color': !isTeachersListEmpty ? 'grey' : 'blue'}" [ngClass]="{'disabled-button': !isTeachersListEmpty}" [disabled]="!isTeachersListEmpty" (click)="solve()">Solve</button>
+                    <button [disabled]="!isTeachersListEmpty" (click)="solve()" *ngIf="showButtonSolve(row)">Solve</button>
+                    <button (click)="downloadCsv(row)" *ngIf="showButtonDownloadCsv(row)">Télécharger le csv</button>
                 </td>
             </tr>
         </table>

@@ -1,91 +1,75 @@
-.title{
+.title {
     text-align: center;
     color: #00b8de;
 }
 
 .w-25 {
-  width: 25% !important;
+    width: 25% !important;
 }
 
 .hr {
     width: 100%;
-    height:3px;
+    height: 3px;
     background-color: #00b8de;
 }
 
-.border{
-    border: #00b8de ;
+.border {
+    border: #00b8de;
 }
 
-.mat-calendar-body-cell.selected
-{
-  background-color:#00b8de!important;
-  border-radius: 50%
+.mat-calendar-body-cell.selected {
+    background-color: #00b8de!important;
+    border-radius: 50%
 }
-.drop-calendar
-{
-  width:30rem
+
+.drop-calendar {
+    width: 30rem
 }
+
 .table {
-  width: 100%;
-  border: 1px solid black;
+    width: 100%;
+    border: 1px solid black;
 }
 
 .table-header {
-  background-color: lightgray;
+    background-color: lightgray;
 }
 
 .table-header th {
-  padding: 10px;
-  border-right: 1px solid black;
+    padding: 10px;
+    border-right: 1px solid black;
 }
 
 .table-row {
-  border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
 }
 
 .table-row td {
-  padding: 10px;
-  border-right: 1px solid lightgray;
+    padding: 10px;
+    border-right: 1px solid lightgray;
 }
 
 .delete-button {
-  background-color: red !important;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    background-color: red !important;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-
 .user-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .user-name {
-  margin-right: 10px;
-  padding: 10px;
-  background-color: #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-.logout-button {
-  padding: 10px;
-  background-color: #00b8de;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-}
-
-.logout-button:hover {
-  background-color: #666;
+    margin-right: 10px;
+    padding: 10px;
+    background-color: #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
 }

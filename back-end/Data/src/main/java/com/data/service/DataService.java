@@ -3,6 +3,7 @@ package com.data.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,15 +32,15 @@ public class DataService {
 
 	public String listAll() {
 		List<DataCalendar> list = dataCalendarRepo.findAll();
-		String res = "[";
+		ArrayList<String> res = new ArrayList<>();
 		for (DataCalendar dataCalendar : list) {
 			String teacherWaitingList = dataCalendar.getTeacherWaitingList().stream().map(Object::toString)
 					.collect(Collectors.joining("\",\""));
-			res += "{\"id\":\"" + dataCalendar.getId() + "\",\"creationDate\":" + dataCalendar.getCreationDate()
+			res.add("{\"id\":\"" + dataCalendar.getId() + "\",\"creationDate\":" + dataCalendar.getCreationDate()
 					+ ",\"existCalendarFile\":" + dataCalendar.existCalendarFile() + ",\"teacherWaitingList\":["
-					+ (teacherWaitingList.length() > 0 ? "\"" + teacherWaitingList + "\"" : "") + "]}";
+					+ (teacherWaitingList.length() > 0 ? "\"" + teacherWaitingList + "\"" : "") + "]}");
 		}
-		return res + "]";
+		return res.toString();
 	}
 	
 	public DataCalendar get(String id) {
