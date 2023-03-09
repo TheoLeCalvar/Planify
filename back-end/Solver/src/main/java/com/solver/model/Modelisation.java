@@ -279,23 +279,23 @@ public void Contraintes_Automate2_v2() {
 		
 		ArrayList<Integer> elgauche=new ArrayList<Integer>();
 		ArrayList<Integer> eldroite=new ArrayList<Integer>();
-		
-		model.arithm(sortedstarts[15], ">", sortedstarts[14]).post();
+		//System.out.println(sortedplanning[8]+"  "+sortedplanning[7]);
+		//model.arithm(sortedstarts[9], "<", sortedstarts[7]).post();
 
 		
 		for(HashMap<Integer,Integer> i : contraintes.keySet()) {
 			for(Integer elgauche1 : i.keySet()) {
 				elgauche.add(this.Nb_Seance(elgauche1)+i.get(elgauche1)-1);
-		//		System.out.println("sortedplanning n"+ (this.Nb_Seance(elgauche1)+i.get(elgauche1))+ "  "+sortedplanning[(this.Nb_Seance(elgauche1)+i.get(elgauche1))].getValue());
-		//		System.out.println("sortedstarts n"+ (this.Nb_Seance(elgauche1)+i.get(elgauche1))+ "  "+sortedstarts[(this.Nb_Seance(elgauche1)+i.get(elgauche1))].getValue());
+				System.out.println("sortedplanning n"+ (this.Nb_Seance(elgauche1)+i.get(elgauche1)-1));
+				System.out.println("sortedstarts n"+ (this.Nb_Seance(elgauche1)+i.get(elgauche1)-1));
 					
 		}
 		}
 		for(HashMap<Integer, Integer> j:contraintes.values()) {
 			for(Integer elgauche2 : j.keySet()) {
 				eldroite.add(this.Nb_Seance(elgauche2)+j.get(elgauche2)-1);
-		//		System.out.println("sortedplanning n"+ (this.Nb_Seance(elgauche2)+j.get(elgauche2))+ "  "+sortedplanning[(this.Nb_Seance(elgauche2)+j.get(elgauche2))].getValue());
-		//		System.out.println("sortedstarts n"+ (this.Nb_Seance(elgauche2)+j.get(elgauche2))+ "  "+sortedstarts[(this.Nb_Seance(elgauche2)+j.get(elgauche2))].getValue());
+				System.out.println("sortedplanning n"+ (this.Nb_Seance(elgauche2)+j.get(elgauche2)-1)+ "  ");
+				System.out.println("sortedstarts n"+ (this.Nb_Seance(elgauche2)+j.get(elgauche2)-1)+ "  ");
 			}
 		}
 
@@ -303,7 +303,7 @@ public void Contraintes_Automate2_v2() {
 			System.out.println("test fin "+elgauche.get(i));
 			//sortedplan[1].eq(2).post();
 			//model.arithm(sortedstarts[0],"=", 1).post();
-			//model.arithm(sortedstarts[elgauche.get(i)], "<", sortedstarts[eldroite.get(i)]).post();
+			model.arithm(sortedstarts[elgauche.get(i)], "<", sortedstarts[eldroite.get(i)]).post();
 		}
 		this.ss=sortedstarts;
 		this.sp=sortedplanning;
@@ -349,19 +349,19 @@ public void Contraintes_Automate2_v2() {
 
 	public void addConstraints() {
 		test_key();
-		Contrainte_DispoN();
-		Contrainte_DispoB();
+		//Contrainte_DispoN();
+		//Contrainte_DispoB();
 		Contrainte_nbcoursN();
 		Contrainte_nbcoursB();
-		Contrainte_Equilibrage0N();
-		Contrainte_Equilibrage0B();
+		//Contrainte_Equilibrage0N();
+		//Contrainte_Equilibrage0B();
 		Contrainte_mercredi_soir0N();
 		Contrainte_mercredi_soir0B();
 		Contrainte_Dispo_ModuleN();
 		Contrainte_Dispo_ModuleB();
 		Contrainte_Sync();
-		Contraintes_Automate1_v2();
-		Contraintes_Automate2_v2();
+		//Contraintes_Automate1_v2();
+		//Contraintes_Automate2_v2();
 	}
 
 	public void solve() {
@@ -592,11 +592,15 @@ public void Contraintes_Automate2_v2() {
 	 */
 	
 	public int Nb_Seance(int i) {
-		int k=donnee.Nb_0B();
-		for(int j=1;j<i;j++) {
-			k+=donnee.getListe_Module().get(j).getSlotsNumber();
+		if (i==0) {
+			return 0;
+		} else {
+			int k=donnee.Nb_0B();
+			for(int j=1;j<i;j++) {
+				k+=donnee.getListe_Module().get(j).getSlotsNumber();
+			}
+			return k;
 		}
-		return k;
 	}
 	/*
 public void ecrireB() throws IOException {
@@ -696,17 +700,17 @@ public void ecrireB() throws IOException {
 		mails.put(Localisation.Brest, "responsableBrest@test.com");
 		
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-		modulesUeA.add(new Module("moduleA1", 6, mails, false)); //6
-		modulesUeA.add(new Module("moduleA2", 6, mails, false)); //6
-		modulesUeA.add(new Module("moduleA3", 6, mails, false)); //6
+		modulesUeA.add(new Module("moduleA1", 1, mails, false)); //6
+		modulesUeA.add(new Module("moduleA2", 1, mails, false)); //6
+		modulesUeA.add(new Module("moduleA3", 1, mails, false)); //6
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-		modulesUeB.add(new Module("moduleB1", 11, mails, false));//11
-		modulesUeB.add(new Module("moduleB2", 11, mails, false));
-		modulesUeB.add(new Module("moduleB3", 11, mails, false));
+		modulesUeB.add(new Module("moduleB1", 1, mails, false));//11
+		modulesUeB.add(new Module("moduleB2", 1, mails, false));
+		modulesUeB.add(new Module("moduleB3", 1, mails, false));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
-		modulesUeC.add(new Module("moduleB1", 4, mails, true));//4
-		modulesUeC.add(new Module("moduleB2", 4, mails, false));//4
-		modulesUeC.add(new Module("moduleB3", 3, mails, false));//3
+		modulesUeC.add(new Module("moduleB1", 0, mails, true));//4
+		modulesUeC.add(new Module("moduleB2", 0, mails, false));//4
+		modulesUeC.add(new Module("moduleB3", 0, mails, false));//3
 
 		 
 		
@@ -725,7 +729,7 @@ public void ecrireB() throws IOException {
 		unavailabilitiesBrest.add(new Unavailability("2022-12-20", slots));
 		unavailabilities.put(Localisation.Brest, unavailabilitiesBrest);
 		
-		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14"); //14
+		Request request = new Request(2, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14"); //14
 		
 //		*******************************************************************************************************
 
@@ -748,32 +752,48 @@ public void ecrireB() throws IOException {
 		Map<String, User> userList = new HashMap<>();
 		userList.put(userNantes.getMail(), userNantes);
 		userList.put(userBrest.getMail(), userBrest);
-		
 		Modelisation test = new Modelisation(data, userList);
 		HashMap<Integer, Integer> gauche = new HashMap<Integer, Integer>(1);
 		HashMap<Integer, Integer> droite = new HashMap<Integer, Integer>(1);
-		Integer gaucheg = 5;
+		
+		Integer gaucheg = 2;
 		Integer gauched = 1;
-		Integer droiteg=2;
+		Integer droiteg=1;
 		Integer droited =1;
+		
+		HashMap<Integer, Integer> gauche2 = new HashMap<Integer, Integer>(1);
+		HashMap<Integer, Integer> droite2 = new HashMap<Integer, Integer>(1);
+		
+		
+		Integer gaucheg2 = 3;
+		Integer gauched2 = 1;
+		Integer droiteg2=0;
+		Integer droited2 =3;
+		
+		
 		gauche.put(gaucheg, gauched);
+		gauche2.put(gaucheg2, gauched2);
 		droite.put(droiteg, droited);
+		droite2.put(droiteg2, droited2);
+
 		HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes = new HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>>(1);
+		System.out.println("testdelamuerte"+ test.Nb_Seance(0));
 		contraintes.put(gauche, droite);
+		contraintes.put(gauche2, droite2);
 		test.contraintes_keysort=contraintes;
 		test.BuildModel();
 		test.addConstraints();
 		test.solve();
 		System.out.println((test.contraintes_keysort.keySet()));
-		System.out.println("ss: "+ test.ss[15] + ", ss: "+ test.ss[14]);
-		/*
+		//System.out.println("ss: "+ test.ss[15] + ", ss: "+ test.ss[14]);
+		
 	    System.out.println("heyy  " + test.planning.length +"   "+ test.ss.length +"   "+ test.sp.length +"   "+ test.s.length);
 		for (int i=0; i<data.getCalendrierN().getNb_Creneaux(); i++) {
 			System.out.println("sortedstarts "+test.ss[i].getValue()+"sortedplanning "+test.sp[i].getValue());			
 		}
 		for (int i=0; i<data.getCalendrierN().getNb_Creneaux(); i++) {
-			System.out.println("starts "+test.s[i].getValue()+ "plan ");//test.p[i].getValue());			
-		}*/
+		//	System.out.println("starts "+test.s[i].getValue()+ "plan "+ test.p[i].getValue());			
+		}
 		test.getSolutionN();
 		test.getSolutionB();
 		//test.ecrireN();
