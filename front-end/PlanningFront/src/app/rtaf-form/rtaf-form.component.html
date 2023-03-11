@@ -26,7 +26,7 @@
             <div class="w-25">
                 <mat-form-field>
                     <mat-label>Date du début</mat-label>
-                    <input matInput [matDatepicker]="picker" placeholder="Choisir date du début" [(ngModel)]="debut" (dateChange)="changeDate('change', $event)">
+                    <input matInput [matDatepicker]="picker" placeholder="Choisir date du début" [(ngModel)]="debut" (dateChange)="changeDate()">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -174,7 +174,7 @@
             <div class="col-sm-3">
                 <mat-form-field>
                     <mat-label>Choisir date indisponible</mat-label>
-                    <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
+                    <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent()">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker [startAt]="startAt" #picker1></mat-datepicker>
                 </mat-form-field>

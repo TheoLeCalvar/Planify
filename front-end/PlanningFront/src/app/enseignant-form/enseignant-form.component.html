@@ -20,7 +20,7 @@
             <div class="col-sm-3">
                 <mat-form-field>
                     <mat-label>Choisir date indisponible</mat-label>
-                    <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent('change', $event)">
+                    <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent()">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
