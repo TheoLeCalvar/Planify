@@ -40,52 +40,34 @@ export class EnseignantFormComponent implements OnInit {
     }
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-
         this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
-
-        console.log(this.indisponibilityDateString);
-
     }
 
     addFunction(){
-        console.log("date indisponible: ", this.indisponibilityDateString);
         let selectedCreneaux = [];
         for(let item of this.items){
             if(item.isChecked){
                 selectedCreneaux.push(item.label)
             }
         }
-        console.log("creneaux: ", selectedCreneaux);
         this.indisponibility= {
             date: this.indisponibilityDateString,
             slots : selectedCreneaux
         }
-        console.log(this.indisponibility);
-
-
         this.tableData.push(this.indisponibility);
-        console.log(this.tableData)
-        
     }
+
     deleteRow(row: any) {
         const index = this.tableData.indexOf(row);
         this.tableData.splice(index, 1);
-        console.log("apres suppression");
-        console.log(this.tableData);
     }
 
     clickFunction() {
-        console.log("user mail :", this.userMail);
-        console.log("etalement du cours: ", this.etalement);
-        console.log("les indisponibilités",this.tableData);
-
         let userPreferences : User = {
             mail: this.userMail,
             unavailabilities : this.tableData,
             spreadWeeks:this.etalement
         }
-
-        console.log(userPreferences);
 
         this.dataService.addPreferences(userPreferences).subscribe(
             (dataForm: any) => {
@@ -95,7 +77,6 @@ export class EnseignantFormComponent implements OnInit {
               console.log(erreur)
             }
         ) 
-
     }
 
 }

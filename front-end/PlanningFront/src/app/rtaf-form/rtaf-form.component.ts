@@ -54,44 +54,36 @@ export class RtafFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.userMail = sessionStorage.getItem("userMail") || "";
-        //get user list 
         this.userService.getUsers().subscribe(
-            (data) => {
-            console.log(data)
-            //populate TeachersNantesName and TeachersBrestName lists
-            data.forEach(e => {
-                console.log("user", e);
-                if(e.localisation === "Nantes"){
-                    this.TeachersNantesName.push(e.mail);
-                }
-                else if(e.localisation === "Brest"){
-                    this.TeachersBrestName.push(e.mail);
-                }
-
-            });
-        });
+            (users) => {
+                users = users.filter(user => user.role === 'Enseignant');
+                users.forEach(user => {
+                    if(user.localisation === "Nantes"){
+                        this.TeachersNantesName.push(user.mail);
+                    } else if(user.localisation === "Brest"){
+                        this.TeachersBrestName.push(user.mail);
+                    }
+                });
+            }
+        );
     }
 
     changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
         this.startDateString = formatDate(this.debut, 'yyyy-MM-dd', 'en-US');
         this.startAt = new Date(this.debut);
         this.startAt.setDate(this.startAt.getDate() + 1);
-
-        console.log(this.startDateString);
     }
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
         this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
-
-        console.log(this.indisponibilityDateString);
     }
 
-
+// TODO: is it necessary ?
     selectWeekChange() {
         console.log(this.selectedNumberWeek);
     }
+
     selectModuleUEAChange(){
-        console.log(this.selectedNumberModuleUEA);
         this.modulesUEA = [];
         for(let i=1; i <= this.selectedNumberModuleUEA ; i++){
             this.modulesUEA.push({
@@ -103,12 +95,10 @@ export class RtafFormComponent implements OnInit {
                 },
                 isSync: false
             })
-
         }
     }
 
     selectModuleUEBChange(){
-        console.log(this.selectedNumberModuleUEB);
         this.modulesUEB = [];
         for(let i=1; i <= this.selectedNumberModuleUEB ; i++){
             this.modulesUEB.push({
@@ -124,7 +114,6 @@ export class RtafFormComponent implements OnInit {
     }
 
     selectModuleUECChange(){
-        console.log(this.selectedNumberModuleUEC);
         this.modulesUEC = [];
         for(let i=1; i <= this.selectedNumberModuleUEC ; i++){
             this.modulesUEC.push({
@@ -139,41 +128,25 @@ export class RtafFormComponent implements OnInit {
         }
     }
 
-
     addFunction(){
-        console.log("date indisponible: ", this.indisponibilityDateString);
         let selectedCreneaux = [];
         for(let item of this.items){
             if(item.isChecked){
                 selectedCreneaux.push(item.label)
             }
         }
-        console.log("creneaux: ", selectedCreneaux);
         this.indisponibility= {
             date: this.indisponibilityDateString,
             slots : selectedCreneaux
         }
-        console.log(this.indisponibility);
-
         this.tableData.push(this.indisponibility);
-        console.log(this.tableData)
-        
     }
     deleteRow(row: any) {
         const index = this.tableData.indexOf(row);
         this.tableData.splice(index, 1);
-        console.log("apres suppression");
-        console.log(this.tableData);
     }
 
     clickFunction() {
-        console.log("number of week :",this.selectedNumberWeek);
-        console.log("start date: ", this.startDateString);
-        console.log("modules UEA",this.modulesUEA);
-        console.log("modules UEB",this.modulesUEB);
-        console.log("modules UEC",this.modulesUEC);
-        console.log("les indisponibilités",this.tableData);
-
         let data : Data = {
             weeksNumber : this.selectedNumberWeek,
             startDate: this.startDateString,
@@ -185,8 +158,6 @@ export class RtafFormComponent implements OnInit {
                 Nantes: this.tableData
             }
         }
-
-        console.log(data);
 
         this.dataService.addData(data).subscribe(
             (dataForm: any) => {

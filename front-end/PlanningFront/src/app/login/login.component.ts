@@ -20,7 +20,6 @@ export class LoginComponent  implements OnInit {
   Login() {
     this.userService.getUserByMail(this.mail).subscribe({
       next: (user: User) => {
-        console.log(user);
         if (!!user && !!user.mail && !!user.role) {
           sessionStorage.setItem('userMail', user.mail);
           sessionStorage.setItem('userRole', user.role);
