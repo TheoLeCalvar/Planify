@@ -1,6 +1,5 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit,ViewEncapsulation  } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Data } from '../Models/Data';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
@@ -31,10 +30,10 @@ export class RtafFormComponent implements OnInit {
     startDateString : string; 
     indisponibilityDateString : string; 
 
-    selectedNumberWeek: number =0 ;
-    selectedNumberModuleUEA : number =0;
-    selectedNumberModuleUEB : number =0;
-    selectedNumberModuleUEC : number =0;
+    selectedNumberWeek =0 ;
+    selectedNumberModuleUEA  =0;
+    selectedNumberModuleUEB  =0;
+    selectedNumberModuleUEC  =0;
 
     modulesUEA: Module[] = [];
     modulesUEB: Module[] = [];
@@ -68,13 +67,13 @@ export class RtafFormComponent implements OnInit {
         );
     }
 
-    changeDate(type: string, event: MatDatepickerInputEvent<Date>) {
+    changeDate() {
         this.startDateString = formatDate(this.debut, 'yyyy-MM-dd', 'en-US');
         this.startAt = new Date(this.debut);
         this.startAt.setDate(this.startAt.getDate() + 1);
     }
 
-    addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    addEvent() {
         this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
     }
 
@@ -129,8 +128,8 @@ export class RtafFormComponent implements OnInit {
     }
 
     addFunction(){
-        let selectedCreneaux = [];
-        for(let item of this.items){
+        const selectedCreneaux = [];
+        for(const item of this.items){
             if(item.isChecked){
                 selectedCreneaux.push(item.label)
             }
@@ -141,13 +140,14 @@ export class RtafFormComponent implements OnInit {
         }
         this.tableData.push(this.indisponibility);
     }
-    deleteRow(row: any) {
+
+    deleteRow(row: Indisponibilite) {
         const index = this.tableData.indexOf(row);
         this.tableData.splice(index, 1);
     }
 
     clickFunction() {
-        let data : Data = {
+        const data : Data = {
             weeksNumber : this.selectedNumberWeek,
             startDate: this.startDateString,
             modulesUeA : this.modulesUEA,
@@ -160,7 +160,7 @@ export class RtafFormComponent implements OnInit {
         }
 
         this.dataService.addData(data).subscribe(
-            (dataForm: any) => {
+            () => {
               console.log("OK")
             },
             erreur =>{

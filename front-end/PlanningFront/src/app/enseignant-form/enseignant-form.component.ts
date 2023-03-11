@@ -1,6 +1,5 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Indisponibilite } from '../Models/Indisponibilite';
 import { User } from '../Models/User';
 import { DataService } from '../Services/data.service';
@@ -39,13 +38,13 @@ export class EnseignantFormComponent implements OnInit {
         this.userMail = sessionStorage.getItem("userMail") || "";
     }
 
-    addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    addEvent() {
         this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
     }
 
     addFunction(){
-        let selectedCreneaux = [];
-        for(let item of this.items){
+        const selectedCreneaux = [];
+        for(const item of this.items){
             if(item.isChecked){
                 selectedCreneaux.push(item.label)
             }
@@ -57,20 +56,20 @@ export class EnseignantFormComponent implements OnInit {
         this.tableData.push(this.indisponibility);
     }
 
-    deleteRow(row: any) {
+    deleteRow(row: Indisponibilite) {
         const index = this.tableData.indexOf(row);
         this.tableData.splice(index, 1);
     }
 
     clickFunction() {
-        let userPreferences : User = {
+        const userPreferences : User = {
             mail: this.userMail,
             unavailabilities : this.tableData,
             spreadWeeks:this.etalement
         }
 
         this.dataService.addPreferences(userPreferences).subscribe(
-            (dataForm: any) => {
+            () => {
               console.log("OK")
             },
             (erreur) =>{

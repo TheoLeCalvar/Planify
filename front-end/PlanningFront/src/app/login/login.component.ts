@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../Models/User';
 import { UserService } from '../Services/user.service';
@@ -9,13 +9,11 @@ import { UserService } from '../Services/user.service';
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent  implements OnInit {
+export class LoginComponent {
 
   mail: string;
 
   constructor(private userService: UserService, private router: Router) {}
-
-  ngOnInit(): void {}
 
   Login() {
     this.userService.getUserByMail(this.mail).subscribe({
@@ -31,7 +29,7 @@ export class LoginComponent  implements OnInit {
         sessionStorage.removeItem('userRole');
         console.log(erreur)
       }
-    })
+    });
   }
 
 }

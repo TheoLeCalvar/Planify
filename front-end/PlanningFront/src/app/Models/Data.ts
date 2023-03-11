@@ -10,5 +10,5 @@ export class Data {
     unavailabilities : {
         Brest: Indisponibilite[],
         Nantes: Indisponibilite[]
-    } 
+    };
 }

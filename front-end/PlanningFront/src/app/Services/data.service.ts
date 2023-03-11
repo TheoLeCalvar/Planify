@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import{HttpClient, HttpHeaders} from '@angular/common/http';
 import { Data } from '../Models/Data';
 import { User } from '../Models/User';
+import { History } from '../Models/History';
 
 const config = {
   headers: new HttpHeaders({
@@ -22,22 +23,22 @@ export class DataService {
   constructor(private http:HttpClient) { }
 
   addData(data: Data) {
-    return this.http.post<String>(`${this.baseUrl}/save-data-calendar`, data, config);
+    return this.http.post<string>(`${this.baseUrl}/save-data-calendar`, data, config);
   }
   addPreferences(user:User){
-    return this.http.post<String>(`${this.baseUrl}/save-preferences`, user, config);
+    return this.http.post<string>(`${this.baseUrl}/save-preferences`, user, config);
   }
 
   listData(){
-    return this.http.get<Data[]>(`${this.baseUrl}/list`, config)
+    return this.http.get<History[]>(`${this.baseUrl}/list`, config)
   }
 
   solve() {
-    return this.http.post<String>(`${this.baseUrl}/solver`, config);
+    return this.http.post<string>(`${this.baseUrl}/solver`, config);
   }
 
   getCalendarFile(fileName: string) {
-    window.open(this.baseUrl+"/file/"+fileName, "_blank");
+    window.open(`${this.baseUrl}/file/${fileName}`, "_blank");
   }
 
 }

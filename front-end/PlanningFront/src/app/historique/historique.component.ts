@@ -4,25 +4,26 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../Services/user.service';
 import { DataService } from '../Services/data.service';
 import { formatDate } from '@angular/common';
+import { History } from '../Models/History';
 
 @Component({
   selector: 'app-historique',
   templateUrl: './historique.component.html',
   styleUrls: ['./historique.component.css']
 })
-export class HistoriqueComponent {
+export class HistoriqueComponent implements OnInit {
 
-    dataTable: any[];
+    dataTable: History[];
     userMail: string;
     isTeachersListEmpty: boolean;
     disabledButtonCreateNewCalendar: boolean; 
 
     constructor(private http: HttpClient, private userService: UserService, private router: Router, private dataService:DataService) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.userMail = sessionStorage.getItem('userMail') || '';
         this.dataService.listData().subscribe({
-          next: (data: any) => {
+          next: (data: History[]) => {
             this.dataTable = data;
             this.dataTable.sort((calendarA, calendarB) => calendarA.creationDate < calendarB.creationDate ? 1 : -1);
             this.dataTable.forEach(calendar => {
@@ -40,7 +41,7 @@ export class HistoriqueComponent {
         }) 
     }
 
-    showButtonSolve(calendar: any) {
+    showButtonSolve(calendar: History) {
       return calendar.isFirstItem && !this.dataTable[0].existCalendarFile;
     }
 
@@ -48,11 +49,11 @@ export class HistoriqueComponent {
       return sessionStorage.getItem("userRole") === "ResponsableTAF";
     }
 
-    showButtonDownloadCsv(calendar: any) {
+    showButtonDownloadCsv(calendar: History) {
       return calendar.existCalendarFile;
     }
 
-    showTeacherList(calendar: any) {
+    showTeacherList(calendar: History) {
       return this.showButtonSolve(calendar) && !this.isTeachersListEmpty;
     }
 
@@ -60,13 +61,13 @@ export class HistoriqueComponent {
       this.router.navigate(['/responsableTAF']);
     }
 
-    downloadCsv(row: any){
-      this.dataService.getCalendarFile(row.creationDate);
+    downloadCsv(row: History) {
+      this.dataService.getCalendarFile(row.creationDate.toString());
     }
     
-    solve(){
+    solve() {
       this.dataService.solve().subscribe({
-        next: (dataForm: any) => {
+        next: () => {
           console.log("OK");
         },
         error: erreur => {

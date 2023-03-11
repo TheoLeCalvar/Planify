@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import{HttpClient, HttpHeaders} from '@angular/common/http';
 import { User } from '../Models/User';
 
-let config = {
+const config = {
   headers: new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': "*",
@@ -16,7 +16,7 @@ let config = {
 })
 export class UserService {
 
-    baseUrl : string = "http://localhost:3202/user/";
+    baseUrl = "http://localhost:3202/user/";
 
     constructor(private http:HttpClient) { }
 
