@@ -18,6 +18,8 @@ export class HistoriqueComponent implements OnInit {
     isTeachersListEmpty: boolean;
     disabledButtonCreateNewCalendar: boolean; 
 
+    loading: boolean = false;
+
     constructor(private http: HttpClient, private userService: UserService, private router: Router, private dataService:DataService) { }
 
     ngOnInit(): void {
@@ -66,14 +68,20 @@ export class HistoriqueComponent implements OnInit {
     }
     
     solve() {
-      this.dataService.solve().subscribe({
-        next: () => {
-          console.log("OK");
-        },
-        error: erreur => {
-          console.log(erreur);
-        }
-      });
+        this.loading = true;
+        this.dataService.solve().subscribe({
+            next: () => {
+            console.log("OK");
+            },
+            error: erreur => {
+            console.log(erreur);
+            }
+        });
+    }
+
+    onProcessComplete() {
+        // Handle the completion of the backend process
+        this.loading = false;
     }
 
 }

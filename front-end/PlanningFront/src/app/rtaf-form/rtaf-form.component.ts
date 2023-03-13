@@ -5,6 +5,7 @@ import { Indisponibilite } from '../Models/Indisponibilite';
 import { Module } from '../Models/Module';
 import { DataService } from '../Services/data.service';
 import { UserService } from '../Services/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-rtaf-form',
@@ -49,7 +50,7 @@ export class RtafFormComponent implements OnInit {
     ];
  
 
-    constructor(private  dataService: DataService, private userService: UserService) {}
+    constructor(private  dataService: DataService, private userService: UserService, private snackBar: MatSnackBar) {}
 
     ngOnInit(): void {
         this.userMail = sessionStorage.getItem("userMail") || "";
@@ -57,11 +58,14 @@ export class RtafFormComponent implements OnInit {
             (users) => {
                 users = users.filter(user => user.role === 'Enseignant');
                 users.forEach(user => {
-                    if(user.localisation === "Nantes"){
-                        this.TeachersNantesName.push(user.mail);
-                    } else if(user.localisation === "Brest"){
-                        this.TeachersBrestName.push(user.mail);
+                    if (user.role !== "ResponsableTAF"){
+                        if(user.localisation === "Nantes"){
+                            this.TeachersNantesName.push(user.mail);
+                        } else if(user.localisation === "Brest"){
+                            this.TeachersBrestName.push(user.mail);
+                        }
                     }
+                    
                 });
             }
         );
@@ -161,10 +165,20 @@ export class RtafFormComponent implements OnInit {
 
         this.dataService.addData(data).subscribe(
             () => {
-              console.log("OK")
+                this.snackBar.open('Bien envoyé!', 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    horizontalPosition: 'center'
+                });
+                console.log("OK")
             },
-            erreur =>{
-              console.log(erreur)
+            (erreur) =>{
+                this.snackBar.open("error", 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    horizontalPosition: 'center'
+                });
+                console.log(erreur)
             }
         ) 
     }

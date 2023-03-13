@@ -24,6 +24,7 @@ import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { HistoriqueComponent } from './historique/historique.component';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -51,7 +52,7 @@ import { HistoriqueComponent } from './historique/historique.component';
     MatDatepickerModule,
     MatInputModule,
     MatMomentDateModule,
-  
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

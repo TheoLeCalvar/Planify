@@ -4,6 +4,7 @@ import { Indisponibilite } from '../Models/Indisponibilite';
 import { User } from '../Models/User';
 import { DataService } from '../Services/data.service';
 import { UserService } from '../Services/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-enseignant-form',
@@ -32,7 +33,7 @@ export class EnseignantFormComponent implements OnInit {
 
     tableData : Indisponibilite[] = [];
 
-    constructor(private userService: UserService, private  dataService: DataService) {}
+    constructor(private userService: UserService, private  dataService: DataService, private snackBar: MatSnackBar) {}
 
     ngOnInit(): void {
         this.userMail = sessionStorage.getItem("userMail") || "";
@@ -70,10 +71,20 @@ export class EnseignantFormComponent implements OnInit {
 
         this.dataService.addPreferences(userPreferences).subscribe(
             () => {
-              console.log("OK")
+                this.snackBar.open('Bien envoyé!', 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    horizontalPosition: 'center'
+                });
+                console.log("OK")
             },
             (erreur) =>{
-              console.log(erreur)
+                this.snackBar.open("error", 'Close', {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    horizontalPosition: 'center'
+                });
+                console.log(erreur)
             }
         ) 
     }
