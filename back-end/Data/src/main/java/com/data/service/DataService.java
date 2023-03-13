@@ -69,6 +69,7 @@ public class DataService {
 		}
 		User userDB = restTemplate.getForEntity(Constants.getUrlUser() + "/" + user.getMail(), User.class).getBody();
 		userDB.setUnavailabilities(user.getUnavailabilities());
+		userDB.setSpreadWeeks(user.getSpreadWeeks());
 		restTemplate.postForEntity(Constants.getUrlUser() + "/save", userDB, User.class).getBody();
 
 		DataCalendar dataCalendar = dataCalendarRepo.findTopByOrderByCreationDateDesc();

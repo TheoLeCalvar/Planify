@@ -37,4 +37,8 @@ public class User {
 		this.unavailabilities = unavailabilities;
 	}
 
+	public void setSpreadWeeks(int spreadWeeks) {
+		this.spreadWeeks = spreadWeeks;
+	}
+
 }
