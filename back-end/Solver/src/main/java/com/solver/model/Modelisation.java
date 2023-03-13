@@ -3,23 +3,18 @@ package com.solver.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
-import org.chocosolver.solver.search.strategy.Search;
 import org.chocosolver.solver.variables.IntVar;
 
 import com.solver.util.Localisation;
 import com.solver.util.Role;
-
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
 public class Modelisation {
 
@@ -38,7 +33,7 @@ public class Modelisation {
 	private IntVar[] nb_SeancesB;
 	private IntVar[] nb0parjourB;
 	private Donnee donnee;
-	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
+//	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
 	private Map<String, User> userList;
 	
 	
@@ -400,7 +395,6 @@ public class Modelisation {
 		solver.printShortFeatures();
 		solver.showShortStatistics();
 		//solver.setSearch(Search.inputOrderLBSearch(planning), Search.inputOrderLBSearch(planningB)); Stratégie à privilégier pour utiliser KeySort
-		solver.showDashboard();
 		solver.findSolution();
 	}
 	

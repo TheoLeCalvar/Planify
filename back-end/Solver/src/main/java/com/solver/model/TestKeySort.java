@@ -2,22 +2,18 @@ package com.solver.model;
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.function.BiPredicate;
 import java.util.stream.IntStream;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.search.strategy.Search;
-import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-
-import java.lang.Math;
 
 public class TestKeySort {
 	public static void main(String[] args) {
 		int EXPERT = 3;
-		int beginnerWorkingTime = 6;
-		int expertWorkingTime = 9;
+//		int beginnerWorkingTime = 6;
+//		int expertWorkingTime = 9;
 		Model model = new Model("keysort");
 		int n = 10;
 		Random rnd= new Random();
