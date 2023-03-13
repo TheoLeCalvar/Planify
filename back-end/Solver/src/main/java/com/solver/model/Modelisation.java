@@ -3,6 +3,7 @@ package com.solver.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +13,13 @@ import java.util.stream.IntStream;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
+import org.chocosolver.solver.search.strategy.Search;
 import org.chocosolver.solver.variables.IntVar;
 
 import com.solver.util.Localisation;
 import com.solver.util.Role;
+
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
 public class Modelisation {
 
@@ -30,15 +34,19 @@ public class Modelisation {
 	private IntVar[][] agendajourB;
 	private IntVar[] Nb_SeancesB;
 	private IntVar[] nb0parjourB;
-	
+	private IntVar[] ss;
+	private IntVar[] sp;
+	private IntVar[] p;
+	private IntVar[] s;
 	private Donnee donnee;
+	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
 	private Map<String, User> userList;
 
 	public Modelisation(Donnee donnee, Map<String, User> userList) {
 		this.donnee = donnee;
 		this.userList = userList;
 	}
-
+	
 	public void BuildModel() {
 		model = new Model();
 		solver = model.getSolver();
@@ -234,24 +242,73 @@ public void Contraintes_Automate2_v2() {
 		}
 	}
 	
-	public void precedence() {
+	public void test_key() {
+		HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes = this.contraintes_keysort ;
+	
 		ArrayList<Integer> l = new ArrayList<Integer>();
+		ArrayList<Integer> l1 = new ArrayList<Integer>();
+	
 		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
-			l.add(i);
+		    l.add(i);
 		}
+		for(int i=0;i<donnee.Nb_0B();i++) {
+			l1.add(0);
+		}
+		for (int i=1; i<donnee.Nb_cour_different();i++) {
+		    for(int j=0;j<donnee.getListe_Module().get(i).getSlotsNumber();j++) {
+		    	l1.add(j);
+		    }
+		    
+		}
+		
+		//IntVar[] plan = IntStream.range(0, donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> model.intVar( "S_"+ i, l1.get(i))).toArray(IntVar[]::new);
+
 		IntVar[] starts = IntStream.range(0, donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> model.intVar( "S_"+ i, l.get(i))).toArray(IntVar[]::new);
+		IntVar[] planning = this.planning;
 		IntVar[] sortedplanning = model.intVarArray("SP", donnee.getCalendrierN().getNb_Creneaux(), 0,donnee.Nb_cour_different());
-		IntVar[] permutation = model.intVarArray("P", donnee.getCalendrierN().getNb_Creneaux(),0,donnee.getCalendrierN().getNb_Creneaux());
-		model.keySort(IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{starts[i],planning[i]} ).toArray(IntVar[][]::new), permutation, IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{starts[i],sortedplanning[i]} ).toArray(IntVar[][]::new),2).post();
+		IntVar[] sortedstarts = model.intVarArray("SS", donnee.getCalendrierN().getNb_Creneaux(), 0,donnee.getCalendrierN().getNb_Creneaux()-1);		
+		//IntVar[] permutation = model.intVarArray("Perm", donnee.getCalendrierN().getNb_Creneaux(),1,donnee.getCalendrierN().getNb_Creneaux());
+		model.keySort(
+		        IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{planning[i],starts[i]}).toArray(IntVar[][]::new),
+		        //permutation,
+		        null,
+		        IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{sortedplanning[i], sortedstarts[i]}).toArray(IntVar[][]::new),
+		        2
+		        ).post();
 
 		
-		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
-			System.out.print(planning[i].getValue());
+		ArrayList<Integer> elgauche=new ArrayList<Integer>();
+		ArrayList<Integer> eldroite=new ArrayList<Integer>();
+		//System.out.println(sortedplanning[8]+"  "+sortedplanning[7]);
+		//model.arithm(sortedstarts[9], "<", sortedstarts[7]).post();
+
+		
+		for(HashMap<Integer,Integer> i : contraintes.keySet()) {
+			for(Integer elgauche1 : i.keySet()) {
+				elgauche.add(this.Nb_Seance(elgauche1)+i.get(elgauche1)-1);
+				System.out.println("sortedplanning n"+ (this.Nb_Seance(elgauche1)+i.get(elgauche1)-1));
+				System.out.println("sortedstarts n"+ (this.Nb_Seance(elgauche1)+i.get(elgauche1)-1));
+					
 		}
-		System.out.println(" ");
-		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
-			System.out.print(sortedplanning[i].getValue());
 		}
+		for(HashMap<Integer, Integer> j:contraintes.values()) {
+			for(Integer elgauche2 : j.keySet()) {
+				eldroite.add(this.Nb_Seance(elgauche2)+j.get(elgauche2)-1);
+				System.out.println("sortedplanning n"+ (this.Nb_Seance(elgauche2)+j.get(elgauche2)-1)+ "  ");
+				System.out.println("sortedstarts n"+ (this.Nb_Seance(elgauche2)+j.get(elgauche2)-1)+ "  ");
+			}
+		}
+
+		for (int i=0; i<elgauche.size(); i++) {
+			System.out.println("test fin "+elgauche.get(i));
+			//sortedplan[1].eq(2).post();
+			//model.arithm(sortedstarts[0],"=", 1).post();
+			model.arithm(sortedstarts[elgauche.get(i)], "<", sortedstarts[eldroite.get(i)]).post();
+		}
+		this.ss=sortedstarts;
+		this.sp=sortedplanning;
+		this.s=starts;
+		//this.p=plan;
 	}
 	
 	public void Contrainte_Dispo_ModuleN() {
@@ -291,22 +348,27 @@ public void Contraintes_Automate2_v2() {
 	}
 
 	public void addConstraints() {
-		Contrainte_DispoN();
-		Contrainte_nbcoursN();
-		Contrainte_Equilibrage0N();
-		Contrainte_mercredi_soir0N();
-		Contrainte_Dispo_ModuleN();
-		Contrainte_DispoB();
-		Contrainte_nbcoursB();
-		Contrainte_Equilibrage0B();
-		Contrainte_mercredi_soir0B();
-		Contrainte_Dispo_ModuleB();
+		//test_key();
 		Contrainte_Sync();
+		Contrainte_DispoN();
+		Contrainte_DispoB();
+		Contrainte_nbcoursN();
+		Contrainte_nbcoursB();
+		Contrainte_Equilibrage0N();
+		Contrainte_Equilibrage0B();
+		Contrainte_mercredi_soir0N();
+		Contrainte_mercredi_soir0B();
+		Contrainte_Dispo_ModuleN();
+		Contrainte_Dispo_ModuleB();
 		Contraintes_Automate1_v2();
 		Contraintes_Automate2_v2();
 	}
 
 	public void solve() {
+		solver.printShortFeatures();
+		solver.showShortStatistics();
+		//solver.setSearch(Search.inputOrderLBSearch(planning), Search.inputOrderLBSearch(planningB));
+		solver.showDashboard();
 		solver.findSolution();
 	}
 	
@@ -319,6 +381,8 @@ public void Contraintes_Automate2_v2() {
 		}
 		return "-";	
 	}
+	
+	
 	
 	public String Jour(int i) {
 		
@@ -351,7 +415,7 @@ public void Contraintes_Automate2_v2() {
 		
 		}
 	
-	
+		
 	public String getSolutionN() {
 		
 		String res = "";
@@ -423,7 +487,6 @@ public void Contraintes_Automate2_v2() {
 		return res;
 	}
 
-	
 	public void ecrire(String fileName) throws IOException {
 		String SEPARATOR = "\n";
 		String DELIMITER = ",";
@@ -508,8 +571,20 @@ public void Contraintes_Automate2_v2() {
 		
         fileWriter.close();
 
-		}
+	}
 
+	
+	public int Nb_Seance(int i) {
+		if (i==0) {
+			return 0;
+		} else {
+			int k=donnee.Nb_0B();
+			for(int j=1;j<i;j++) {
+				k+=donnee.getListe_Module().get(j).getSlotsNumber();
+			}
+			return k;
+		}
+	}
 		
 	public static void main(String[] args) throws IOException {
 //		Request ***********************************************************************************************
@@ -518,17 +593,19 @@ public void Contraintes_Automate2_v2() {
 		mails.put(Localisation.Brest, "responsableBrest@test.com");
 		
 		ArrayList<Module> modulesUeA = new ArrayList<Module>();
-		modulesUeA.add(new Module("moduleA1", 7, mails, false));
-		modulesUeA.add(new Module("moduleA2", 7, mails, false));
-		modulesUeA.add(new Module("moduleA3", 8, mails, false));
+		modulesUeA.add(new Module("moduleA1", 7, mails, false)); //7
+		modulesUeA.add(new Module("moduleA2", 7, mails, false)); //7
+		modulesUeA.add(new Module("moduleA3", 8, mails, false)); //8
 		ArrayList<Module> modulesUeB = new ArrayList<Module>();
-		modulesUeB.add(new Module("moduleB1", 11, mails, false));
+		modulesUeB.add(new Module("moduleB1", 11, mails, false));//11
 		modulesUeB.add(new Module("moduleB2", 11, mails, false));
 		modulesUeB.add(new Module("moduleB3", 11, mails, false));
 		ArrayList<Module> modulesUeC = new ArrayList<Module>();
-		modulesUeC.add(new Module("moduleB1", 4, mails, true));
-		modulesUeC.add(new Module("moduleB2", 4, mails, false));
-		modulesUeC.add(new Module("moduleB3", 3, mails, false));
+		modulesUeC.add(new Module("moduleB1", 4, mails, true));//4
+		modulesUeC.add(new Module("moduleB2", 4, mails, false));//4
+		modulesUeC.add(new Module("moduleB3", 3, mails, false));//3
+
+		 
 		
 		Map<Localisation, ArrayList<Unavailability>> unavailabilities = new HashMap<>();
 		ArrayList<Integer> slots = new ArrayList<>();
@@ -545,7 +622,7 @@ public void Contraintes_Automate2_v2() {
 		unavailabilitiesBrest.add(new Unavailability("2022-12-20", slots));
 		unavailabilities.put(Localisation.Brest, unavailabilitiesBrest);
 		
-		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14", 12345);
+		Request request = new Request(14, modulesUeA, modulesUeB, modulesUeC, unavailabilities, "2022-12-14", 12345); //14
 		
 //		*******************************************************************************************************
 
@@ -568,15 +645,52 @@ public void Contraintes_Automate2_v2() {
 		Map<String, User> userList = new HashMap<>();
 		userList.put(userNantes.getMail(), userNantes);
 		userList.put(userBrest.getMail(), userBrest);
-		
 		Modelisation test = new Modelisation(data, userList);
+		HashMap<Integer, Integer> gauche = new HashMap<Integer, Integer>(1);
+		HashMap<Integer, Integer> droite = new HashMap<Integer, Integer>(1);
+		
+		Integer gaucheg = 2;
+		Integer gauched = 1;
+		Integer droiteg=1;
+		Integer droited =1;
+		
+		HashMap<Integer, Integer> gauche2 = new HashMap<Integer, Integer>(1);
+		HashMap<Integer, Integer> droite2 = new HashMap<Integer, Integer>(1);
+		
+		
+		Integer gaucheg2 = 3;
+		Integer gauched2 = 1;
+		Integer droiteg2=0;
+		Integer droited2 =3;
+		
+		
+		gauche.put(gaucheg, gauched);
+		gauche2.put(gaucheg2, gauched2);
+		droite.put(droiteg, droited);
+		droite2.put(droiteg2, droited2);
+
+		HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes = new HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>>(1);
+		System.out.println("testdelamuerte"+ test.Nb_Seance(0));
+		contraintes.put(gauche, droite);
+		contraintes.put(gauche2, droite2);
+		test.contraintes_keysort=contraintes;
 		test.BuildModel();
 		test.addConstraints();
 		test.solve();
+		System.out.println((test.contraintes_keysort.keySet()));
+		//System.out.println("ss: "+ test.ss[15] + ", ss: "+ test.ss[14]);
+		
+	   // System.out.println("heyy  " + test.planning.length +"   "+ test.ss.length +"   "+ test.sp.length +"   "+ test.s.length);
+		for (int i=0; i<data.getCalendrierN().getNb_Creneaux(); i++) {
+			//System.out.println("sortedstarts "+test.ss[i].getValue()+"sortedplanning "+test.sp[i].getValue());			
+		}
+		for (int i=0; i<data.getCalendrierN().getNb_Creneaux(); i++) {
+		//	System.out.println("starts "+test.s[i].getValue()+ "plan "+ test.p[i].getValue());			
+		}
 		test.getSolutionN();
 		test.getSolutionB();
 		test.ecrire(request.getCreationDate() + ".csv");
-
+		test.model.getSolver();
 		
 //		*******************************************************************************************************
 	}
