@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { UserService } from '../Services/user.service';
 import { DataService } from '../Services/data.service';
 import { formatDate } from '@angular/common';
 import { History } from '../Models/History';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-historique',
@@ -17,10 +16,9 @@ export class HistoriqueComponent implements OnInit {
     userMail: string;
     isTeachersListEmpty: boolean;
     disabledButtonCreateNewCalendar: boolean; 
+    loading = false;
 
-    loading: boolean = false;
-
-    constructor(private http: HttpClient, private userService: UserService, private router: Router, private dataService:DataService) { }
+    constructor(private router: Router, private dataService:DataService, private snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
         this.userMail = sessionStorage.getItem('userMail') || '';
@@ -37,8 +35,12 @@ export class HistoriqueComponent implements OnInit {
               this.disabledButtonCreateNewCalendar = !this.dataTable[0].existCalendarFile;
             }
           },
-          error: erreur => {
-            console.log(erreur)
+          error: () => {
+            this.snackBar.open("Une erreur s'est produite", 'Close', {
+              duration: 5000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center'
+            });
           }
         }) 
     }
@@ -71,17 +73,17 @@ export class HistoriqueComponent implements OnInit {
         this.loading = true;
         this.dataService.solve().subscribe({
             next: () => {
-            console.log("OK");
+              this.ngOnInit();
+              this.loading = false;
             },
-            error: erreur => {
-            console.log(erreur);
+            error: () => {
+              this.snackBar.open("Une erreur s'est produite", 'Close', {
+                duration: 5000,
+                verticalPosition: 'top',
+                horizontalPosition: 'center'
+              });
             }
         });
-    }
-
-    onProcessComplete() {
-        // Handle the completion of the backend process
-        this.loading = false;
     }
 
 }

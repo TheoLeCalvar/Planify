@@ -13,10 +13,6 @@
     background-color: #00b8de;
 }
 
-.border {
-    border: #00b8de;
-}
-
 .mat-calendar-body-cell.selected {
     background-color: #00b8de!important;
     border-radius: 50%
@@ -47,6 +43,11 @@
 .table-row td {
     padding: 10px;
     border-right: 1px solid lightgray;
+}
+
+.send-button {
+    background-color: #00b5d6;
+    color: white;
 }
 
 .delete-button {

@@ -81,11 +81,6 @@ export class RtafFormComponent implements OnInit {
         this.indisponibilityDateString = formatDate(this.indisponible, 'yyyy-MM-dd', 'en-US');
     }
 
-// TODO: is it necessary ?
-    selectWeekChange() {
-        console.log(this.selectedNumberWeek);
-    }
-
     selectModuleUEAChange(){
         this.modulesUEA = [];
         for(let i=1; i <= this.selectedNumberModuleUEA ; i++){
@@ -161,26 +156,24 @@ export class RtafFormComponent implements OnInit {
                 Brest: this.tableData,
                 Nantes: this.tableData
             }
-        }
+        };
 
-        this.dataService.addData(data).subscribe(
-            () => {
+        this.dataService.addData(data).subscribe({
+            next: () => {
                 this.snackBar.open('Bien envoyé!', 'Close', {
                     duration: 3000,
                     verticalPosition: 'top',
                     horizontalPosition: 'center'
                 });
-                console.log("OK")
             },
-            (erreur) =>{
-                this.snackBar.open("error", 'Close', {
-                    duration: 3000,
+            error: () => {
+                this.snackBar.open("Une erreur s'est produite", 'Close', {
+                    duration: 5000,
                     verticalPosition: 'top',
                     horizontalPosition: 'center'
                 });
-                console.log(erreur)
             }
-        ) 
+        });
     }
 
 }

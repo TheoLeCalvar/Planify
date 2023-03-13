@@ -12,7 +12,7 @@
         <div class="mb-3 row center">
             <label for="dureePlanning" class="w-25 col-form-label text-end">Durée du planning (nombre de semaines) : </label>
             <div class="w-25">
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberWeek" (change)="selectWeekChange()">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedNumberWeek">
                     <option selected>Choisir le nombre de semaines</option>
                     <option value="13">13</option>
                     <option value="14">14</option>
@@ -206,7 +206,7 @@
         <br />
         <hr class="hr" />
         <div class="mb-3 row" style="justify-content: center;">
-            <button (click)="clickFunction()" class="btn border title w-25"> Envoyer </button>
+            <button (click)="clickFunction()" class="btn border send-button w-25"> Envoyer </button>
         </div>
         <br />
     </div>

@@ -69,24 +69,22 @@ export class EnseignantFormComponent implements OnInit {
             spreadWeeks:this.etalement
         }
 
-        this.dataService.addPreferences(userPreferences).subscribe(
-            () => {
+        this.dataService.addPreferences(userPreferences).subscribe({
+            next: () => {
                 this.snackBar.open('Bien envoyé!', 'Close', {
-                    duration: 3000,
+                    duration: 5000,
                     verticalPosition: 'top',
                     horizontalPosition: 'center'
                 });
-                console.log("OK")
             },
-            (erreur) =>{
-                this.snackBar.open("error", 'Close', {
-                    duration: 3000,
+            error: () =>{
+                this.snackBar.open("Une erreur s'est produite", 'Close', {
+                    duration: 5000,
                     verticalPosition: 'top',
                     horizontalPosition: 'center'
                 });
-                console.log(erreur)
             }
-        ) 
+        });
     }
 
 }
