@@ -15,6 +15,7 @@ box "Back-End" #EEF5EE
     entity UserService
     database dataCalendar #LightBlue
     database user #LightBlue
+    participant volumeDocker
 end box
 
 alt ResponsableTAF
@@ -55,11 +56,12 @@ alt Si la liste d'attende est vide
     DataService -> dataCalendar: GET - DataCalendar
     dataCalendar -> DataService: DataCalendar
     DataService -> SolverService: Solve(DataCalendar)
-    SolverService -> DataService: Calendrier
-    DataService -> dataCalendar: DataCalendar avec Calendrier
+    SolverService -> volumeDocker: Enregistre le fichier avec le calendrier
+    SolverService -> DataService: fileName
+    DataService -> dataCalendar: DataCalendar avec existCalendarFile = true
     dataCalendar -> DataService: OK
-    DataService -> FrontEnd: Calendrier
-    FrontEnd -> ResponsableTAF: Calendrier
+    DataService -> FrontEnd: fileName
+    FrontEnd -> ResponsableTAF: fileName
 end
 
 @enduml
