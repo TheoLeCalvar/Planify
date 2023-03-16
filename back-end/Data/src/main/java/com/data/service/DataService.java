@@ -42,7 +42,7 @@ public class DataService {
 		}
 		return res.toString();
 	}
-	
+
 	public DataCalendar get(String id) {
 		return dataCalendarRepo.findById(id).get();
 	}

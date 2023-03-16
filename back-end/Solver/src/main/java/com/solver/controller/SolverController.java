@@ -24,11 +24,11 @@ public class SolverController {
 
 	@PostMapping(path = "", produces = "text/plain")
 	public ResponseEntity<String> solver(@RequestBody Request request) {
-			try {
-				return new ResponseEntity<String>(service.solver(request), HttpStatus.OK);
-			} catch (IOException e) {
-				return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			}
+		try {
+			return new ResponseEntity<String>(service.solver(request), HttpStatus.OK);
+		} catch (IOException e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }
