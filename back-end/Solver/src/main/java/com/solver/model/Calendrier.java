@@ -5,15 +5,18 @@ import java.util.ArrayList;
 public class Calendrier {
 
 	private int Nb_Semaines;
-	private ArrayList<Integer> Dispo; // Liste du nombre de créneaux contenant 1 si il sagit d'un créneaux dispo et 0 sinon
+	// Liste du nombre de créneaux contenant 1 si il sagit d'un créneaux dispo et 0 sinon
+	private ArrayList<Integer> Dispo;
 
-	public Calendrier(int n, ArrayList<Integer> list) { // COnstructeur prenant en entrée: le nombre n de semaines et une liste d'indispo
+	// COnstructeur prenant en entrée: le nombre n de semaines et une liste d'indispo
+	public Calendrier(int n, ArrayList<Integer> list) {
 		this.Dispo = list;
 		this.Nb_Semaines = n;
 	}
 
+	// Constructeur prenant que le nombre de semaine ( Cas où il n' y a pas d'indispo)
 	public Calendrier(int n) {
-		this.Dispo = new ArrayList<Integer>(n * 6 * 2); // Constructeur prenant que le nombre de semaine ( Cas où il n' y a pas d'indispo)
+		this.Dispo = new ArrayList<Integer>(n * 6 * 2);
 		for (int i = 0; i < n * 6 * 2; i++) {
 			this.Dispo.add(1);
 		}
@@ -54,7 +57,8 @@ public class Calendrier {
 		return this.Nb_Semaines * 2;
 	}
 
-	public boolean Creneaux_dispo(int i) { // Prend en entrée un créneaux et vérifie si il est dispo==true ou non==false
+	// Prend en entrée un créneaux et vérifie si il est dispo==true ou non==false
+	public boolean Creneaux_dispo(int i) {
 		if (this.getDispo().get(i) == 1) {
 			return true;
 		} else {

@@ -33,7 +33,7 @@ public class Modelisation {
 	private IntVar[] nb_SeancesB;
 	private IntVar[] nb0parjourB;
 	private Donnee donnee;
-//	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
+	//	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
 	private Map<String, User> userList;
 	
 	
@@ -44,7 +44,6 @@ public class Modelisation {
 	private IntVar[] p;
 	private IntVar[] s;
 	 */
-
 	public Modelisation(Donnee donnee, Map<String, User> userList) {
 		this.donnee = donnee;
 		this.userList = userList;
@@ -72,10 +71,10 @@ public class Modelisation {
 		
 
 	}
+	
 	/*
 	 * Contrainte permettant de remplir toutes les variables avec le bon nombre de cours/
 	 */
-
 	public void Contrainte_nbcoursN() { 
 		// On pose la contrainte sur la variable nb_Seances
 		model.arithm(nb_Seances[0], "=", donnee.Nb_0N()).post();

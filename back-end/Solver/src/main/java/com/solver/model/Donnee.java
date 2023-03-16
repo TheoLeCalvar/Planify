@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class Donnee {
 
 	private ArrayList<UE> Liste_UE;
-	private Calendrier calendrierN; //Calendrier général Nantes
-	private Calendrier calendrierB; //Calendrier Général Brest
+	private Calendrier calendrierN; // Calendrier général Nantes
+	private Calendrier calendrierB; // Calendrier Général Brest
 	private String debut;
 	private ArrayList<Module> liste_modules;
 
@@ -34,19 +34,19 @@ public class Donnee {
 			}
 		}
 	}
-	
+
 	public Donnee(String debut) {
 		this.calendrierN = new Calendrier(14);
 		this.calendrierB = new Calendrier(14);
 		this.debut = debut;
-		
+
 	}
 
 	public ArrayList<UE> getListe_UE() {
 		return Liste_UE;
 	}
-	
-	public ArrayList<Module> getListe_Module(){
+
+	public ArrayList<Module> getListe_Module() {
 		return liste_modules;
 	}
 
@@ -69,7 +69,7 @@ public class Donnee {
 	public int Nb_0N() {
 		return getCalendrierN().getNb_Creneaux() - Nb_cours();
 	}
-	
+
 	public int Nb_0B() {
 		return getCalendrierB().getNb_Creneaux() - Nb_cours();
 	}
@@ -77,7 +77,7 @@ public class Donnee {
 	public int Nb_0JourN() {
 		return Nb_0N() / getCalendrierN().getNb_Jours();
 	}
-	
+
 	public int Nb_0JourB() {
 		return Nb_0B() / getCalendrierB().getNb_Jours();
 	}
@@ -85,7 +85,7 @@ public class Donnee {
 	public Calendrier getCalendrierN() {
 		return calendrierN;
 	}
-	
+
 	public Calendrier getCalendrierB() {
 		return calendrierB;
 	}
@@ -93,73 +93,77 @@ public class Donnee {
 	public void setCalendrierN(Calendrier calendrier) {
 		this.calendrierN = calendrier;
 	}
+
 	public void setCalendrierB(Calendrier calendrier) {
 		this.calendrierB = calendrier;
 	}
 
-//	le return est le disponibilités ou l'indisponilités? 
-	public ArrayList<Integer> Traduction(ArrayList<Unavailability> a){
+	// le return est le disponibilités ou l'indisponilités?
+	public ArrayList<Integer> Traduction(ArrayList<Unavailability> a) {
 		ArrayList<LocalDate> d = new ArrayList<LocalDate>();
-		for(Unavailability el :a) {
-		d.add((LocalDate.of(Integer.valueOf(el.getDate().substring(0,4)),Integer.valueOf(el.getDate().substring(5,7)), Integer.valueOf(el.getDate().substring(8,10)))));
+		for (Unavailability el : a) {
+			d.add((LocalDate.of(Integer.valueOf(el.getDate().substring(0, 4)),
+					Integer.valueOf(el.getDate().substring(5, 7)), Integer.valueOf(el.getDate().substring(8, 10)))));
 		}
-		LocalDate local_debut= (LocalDate.of(Integer.valueOf(debut.substring(0,4)),Integer.valueOf(debut.substring(5,7)), Integer.valueOf(debut.substring(8,10))));
-		ArrayList<Integer> l_int= new ArrayList<Integer>();
-		ArrayList<Integer> l_final= new ArrayList<Integer>();
-		for(LocalDate date:d) {
+		LocalDate local_debut = (LocalDate.of(Integer.valueOf(debut.substring(0, 4)),
+				Integer.valueOf(debut.substring(5, 7)), Integer.valueOf(debut.substring(8, 10))));
+		ArrayList<Integer> l_int = new ArrayList<Integer>();
+		ArrayList<Integer> l_final = new ArrayList<Integer>();
+		for (LocalDate date : d) {
 			Duration dure = Duration.between(local_debut.atTime(0, 0), date.atTime(0, 0));
 			Integer i = (int) (long) dure.toDays();
 			System.out.println(i);
-			l_int.add((i/7)*2+(i%7));
+			l_int.add((i / 7) * 2 + (i % 7));
 		}
 
-			for(int i:l_int) {
-				for (Unavailability el : a) {
-					ArrayList<Integer> slot =el.getSlots();
-				 {
-					for(Integer k : slot) {
-					l_final.add(i*6+k);
-				}
-				}}}
-			ArrayList<Integer>l_creneau=new ArrayList<Integer>();
-			//changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
-			for(int l=0;l<this.getCalendrierN().getNb_Creneaux();l++) {
-					if(l_final.contains(l)) {
-					l_creneau.add(0);
+		for (int i : l_int) {
+			for (Unavailability el : a) {
+				ArrayList<Integer> slot = el.getSlots();
+				{
+					for (Integer k : slot) {
+						l_final.add(i * 6 + k);
 					}
-					else {l_creneau.add(1);
 				}
 			}
-			return l_creneau;
+		}
+		ArrayList<Integer> l_creneau = new ArrayList<Integer>();
+		// changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
+		for (int l = 0; l < this.getCalendrierN().getNb_Creneaux(); l++) {
+			if (l_final.contains(l)) {
+				l_creneau.add(0);
+			} else {
+				l_creneau.add(1);
 			}
-public static void main(String args[]) {
-	String s ="2022-12-21";
-	String s2 ="2022-12-22";
-	String s3 ="2022-12-28";
-
-	ArrayList<Integer> i = new ArrayList<Integer>();
-	i.add(2);
-	i.add(4);
-	Unavailability un = new Unavailability(s,i);
-	Unavailability un1 = new Unavailability(s3,i);
-	Unavailability un2 = new Unavailability(s2,i);
-
-	
-	ArrayList<Unavailability> e= new ArrayList<Unavailability>();
-	e.add(un);
-	e.add(un1);
-	e.add(un2);
-	String s1="2022-12-14";
-	Donnee t = new Donnee(s1);
-		 System.out.println(t.Traduction(e));
+		}
+		return l_creneau;
 	}
 
-public String getDebut() {
-	return debut;
+	public static void main(String args[]) {
+		String s = "2022-12-21";
+		String s2 = "2022-12-22";
+		String s3 = "2022-12-28";
+
+		ArrayList<Integer> i = new ArrayList<Integer>();
+		i.add(2);
+		i.add(4);
+		Unavailability un = new Unavailability(s, i);
+		Unavailability un1 = new Unavailability(s3, i);
+		Unavailability un2 = new Unavailability(s2, i);
+
+		ArrayList<Unavailability> e = new ArrayList<Unavailability>();
+		e.add(un);
+		e.add(un1);
+		e.add(un2);
+		String s1 = "2022-12-14";
+		Donnee t = new Donnee(s1);
+		System.out.println(t.Traduction(e));
+	}
+
+	public String getDebut() {
+		return debut;
+	}
+
+	public void setDebut(String debut) {
+		this.debut = debut;
+	}
 }
-
-public void setDebut(String debut) {
-	this.debut = debut;
-}}
-		
-
