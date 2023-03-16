@@ -59,15 +59,15 @@ public class Modelisation {
 		 * Celles pour Nantes ne sont pas indicées; celles pour Brest portent le même nom et finissent par "B"
 		 */
 		
-		planning = model.intVarArray("planning_Nantes", donnee.getCalendrierN().getNb_Creneaux(), 0, donnee.Nb_cour_different()); // Liste de tous les créneaux, contenant, pour chaque créneau, le cours affecté.
-		agendajour = model.intVarMatrix("agenda-Jour_Nantes", donnee.getCalendrierN().getNb_Jours(), 6, 0, donnee.Nb_cour_different()); // Vue matricielle du "planning" contenant le nombre de jours (colonnes), et pour chaque jour, 6 créneaux, qui contiennent les cours affectés.
-		nb_Seances = model.intVarArray("nb_Seances_Nantes", donnee.Nb_cour_different(), 0, donnee.getCalendrierN().getNb_Creneaux()); // Liste contenant le nombre de séances par cours différent (nb_Seances[O] contient le nombre de créneaux vides.
-		nb0parjour = model.intVarArray("Nombre de 0 par jour_Nantes", donnee.getCalendrierN().getNb_Jours(), 0, 6); // Liste contenant le nombre de cours vides à attribuer par jour (pour équilibrer).
+		planning = model.intVarArray("planning_Nantes", donnee.getCalendrierNantes().getNb_Creneaux(), 0, donnee.Nb_cour_different()); // Liste de tous les créneaux, contenant, pour chaque créneau, le cours affecté.
+		agendajour = model.intVarMatrix("agenda-Jour_Nantes", donnee.getCalendrierNantes().getNb_Jours(), 6, 0, donnee.Nb_cour_different()); // Vue matricielle du "planning" contenant le nombre de jours (colonnes), et pour chaque jour, 6 créneaux, qui contiennent les cours affectés.
+		nb_Seances = model.intVarArray("nb_Seances_Nantes", donnee.Nb_cour_different(), 0, donnee.getCalendrierNantes().getNb_Creneaux()); // Liste contenant le nombre de séances par cours différent (nb_Seances[O] contient le nombre de créneaux vides.
+		nb0parjour = model.intVarArray("Nombre de 0 par jour_Nantes", donnee.getCalendrierNantes().getNb_Jours(), 0, 6); // Liste contenant le nombre de cours vides à attribuer par jour (pour équilibrer).
 		
-		planningB = model.intVarArray("planning_Brest", donnee.getCalendrierB().getNb_Creneaux(), 0, donnee.Nb_cour_different()); 
-		agendajourB = model.intVarMatrix("agenda-Jour_Brest", donnee.getCalendrierB().getNb_Jours(), 6, 0, donnee.Nb_cour_different()); 
-		nb_SeancesB = model.intVarArray("nb_Seances_Brest", donnee.Nb_cour_different(), 0, donnee.getCalendrierB().getNb_Creneaux()); 
-		nb0parjourB = model.intVarArray("Nombre de 0 par jour_Brest", donnee.getCalendrierB().getNb_Jours(), 0, 6); 
+		planningB = model.intVarArray("planning_Brest", donnee.getCalendrierBrest().getNb_Creneaux(), 0, donnee.Nb_cour_different()); 
+		agendajourB = model.intVarMatrix("agenda-Jour_Brest", donnee.getCalendrierBrest().getNb_Jours(), 6, 0, donnee.Nb_cour_different()); 
+		nb_SeancesB = model.intVarArray("nb_Seances_Brest", donnee.Nb_cour_different(), 0, donnee.getCalendrierBrest().getNb_Creneaux()); 
+		nb0parjourB = model.intVarArray("Nombre de 0 par jour_Brest", donnee.getCalendrierBrest().getNb_Jours(), 0, 6); 
 		
 
 	}
@@ -87,7 +87,7 @@ public class Modelisation {
 			model.count(i, planning, nb_Seances[i]).post();
 		}
 		// On remplit la variable agendajour en fonction de la variable planning
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 			for (int j = 0; j < 6; j++) {
 				model.arithm(agendajour[i][j], "=", planning[6 * i + j]).post();
 			}
@@ -106,7 +106,7 @@ public class Modelisation {
 			model.count(i, planningB, nb_SeancesB[i]).post();
 		}
 		// On remplit la variable agendajour en fonction de la variable planning
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			for (int j = 0; j < 6; j++) {
 				model.arithm(agendajourB[i][j], "=", planningB[6 * i + j]).post();
 			}
@@ -119,12 +119,12 @@ public class Modelisation {
 
 	public void Contrainte_Equilibrage0N() { 
 		// On remplit la variable nb0parjour qui correspond au nombre de 0 par jour
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 			model.arithm(nb0parjour[i], ">=", donnee.Nb_0JourN()).post();
 		}
 
 		// On place le bon nombre de séances vides dans la variable agendaJour
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 			model.count(0, agendajour[i], nb0parjour[i]).post();
 		}
 		// On s'assure que la somme de séances vides est bien égale à Nb_0
@@ -134,12 +134,12 @@ public class Modelisation {
 	
 	public void Contrainte_Equilibrage0B() { 
 		// On remplit la variable nb0parjour qui correspond au nombre de 0 par jour
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			model.arithm(nb0parjourB[i], ">=", donnee.Nb_0JourB()).post();
 		}
 
 		// On place le bon nombre de séances vides dans la variable agendaJour
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			model.count(0, agendajourB[i], nb0parjourB[i]).post();
 		}
 		// On s'assure que la somme de séances vides est bien égale à Nb_0
@@ -152,12 +152,12 @@ public class Modelisation {
 	 */
 
 	public void Contrainte_mercredi_soir0N() { 
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours() / 2; i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours() / 2; i++) {
 			model.arithm(agendajour[2 * i + 1][5], "=", 0).post();
 		}
 	}
 	public void Contrainte_mercredi_soir0B() { 
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours() / 2; i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours() / 2; i++) {
 			model.arithm(agendajourB[2 * i + 1][5], "=", 0).post();
 		}
 	}
@@ -184,12 +184,12 @@ public class Modelisation {
 		for(int i=0;i<l.size();i++) {
 			l_auto.add(new FiniteAutomaton((l.get(i)).toString(),0,6)); // Ajout des expressions régulières à l'automate
 		}
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) { // Ajout des contraintes "automate" au modèle
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) { // Ajout des contraintes "automate" au modèle
 			for(int j=0;j<l.size();j++) {
 				model.regular(agendajour[i],l_auto.get(j)).post(); 
 			}
 		}
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			for(int j=0;j<l.size();j++) {
 				model.regular(agendajourB[i],l_auto.get(j)).post();
 			}
@@ -228,11 +228,11 @@ public class Modelisation {
 			 * Ajout des automates au modèle
 			 */
 			for(int i=0;i<lN.size();i++) {
-					l_autoN.add(new FiniteAutomaton((lN.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
+					l_autoN.add(new FiniteAutomaton((lN.get(i)).toString(),donnee.getCalendrierNantes().getNb_Creneaux(),donnee.getCalendrierNantes().getNb_Creneaux()));
 		
 				}
 			for(int i=0;i<lB.size();i++) {
-				l_autoB.add(new FiniteAutomaton((lB.get(i)).toString(),donnee.getCalendrierN().getNb_Creneaux(),donnee.getCalendrierN().getNb_Creneaux()));
+				l_autoB.add(new FiniteAutomaton((lB.get(i)).toString(),donnee.getCalendrierNantes().getNb_Creneaux(),donnee.getCalendrierNantes().getNb_Creneaux()));
 		
 				}
 			lN = new ArrayList<StringBuilder>();
@@ -250,16 +250,16 @@ public class Modelisation {
 	 * Contraintes de disponibilités du calendrier général pour Brest et Nantes.
 	 */
 	public void Contrainte_DispoN() {
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
-			if (!donnee.getCalendrierN().Creneaux_dispo(i)) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Creneaux(); i++) {
+			if (!donnee.getCalendrierNantes().Creneaux_dispo(i)) {
 				model.arithm(planning[i], "=", 0).post();
 			}
 		}
 	}
 	
 	public void Contrainte_DispoB() {
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
-			if (!donnee.getCalendrierB().Creneaux_dispo(i)) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Creneaux(); i++) {
+			if (!donnee.getCalendrierBrest().Creneaux_dispo(i)) {
 				model.arithm(planningB[i], "=", 0).post();
 			}
 		}
@@ -339,7 +339,7 @@ public class Modelisation {
 			model.arithm(nb_Seances[i], "=", donnee.getListe_Module().get(i).getSlotsNumber()).post();
 		}
 		
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Creneaux(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Creneaux(); i++) {
 			for (int j = 1; j < donnee.getListe_Module().size(); j++) {
 				String mailNantes = donnee.getListe_Module().get(j).getMails().get(Localisation.Nantes);
 				if(!userList.get(mailNantes).getUnavailabilitiesTraduction().get(i).equals(1)) {
@@ -350,7 +350,7 @@ public class Modelisation {
 	}
 	
 	public void Contrainte_Dispo_ModuleB() {
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Creneaux(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Creneaux(); i++) {
 			for (int j = 1; j < donnee.getListe_Module().size(); j++) {
 				String mailBrest = donnee.getListe_Module().get(j).getMails().get(Localisation.Brest);
 				if(!userList.get(mailBrest).getUnavailabilitiesTraduction().get(i).equals(1)) {
@@ -366,7 +366,7 @@ public class Modelisation {
 	public void Contrainte_Sync() {
 		for (int i = 1; i < donnee.getListe_Module().size(); i++) {
 			if(donnee.getListe_Module().get(i).getIsSync()) {
-				for (int j = 0; j < donnee.getCalendrierB().getNb_Creneaux(); j++) {
+				for (int j = 0; j < donnee.getCalendrierBrest().getNb_Creneaux(); j++) {
 					model.ifThen(model.arithm(planning[j], "=", i), model.arithm(planningB[j], "=", i));
 				}
 			}
@@ -538,7 +538,7 @@ public class Modelisation {
 
 		fileWriter.write(DELIMITER);
 
-        for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+        for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
         	
 
         	fileWriter.write(Jour(i));
@@ -551,7 +551,7 @@ public class Modelisation {
 			fileWriter.write(DELIMITER);
 
 
-			for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+			for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 		        String res = "";
 
 				res+= num_nom(agendajour[i][j].getValue());
@@ -572,7 +572,7 @@ public class Modelisation {
 
 		fileWriter.write(DELIMITER);
 
-        for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+        for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
         	
 
         	fileWriter.write(Jour(i));
@@ -585,7 +585,7 @@ public class Modelisation {
 			fileWriter.write(DELIMITER);
 
 
-			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+			for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 		        String res = "";
 
 				res+= num_nom(agendajourB[i][j].getValue());

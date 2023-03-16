@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class Donnee {
 
 	private ArrayList<UE> Liste_UE;
-	private Calendrier calendrierN; // Calendrier général Nantes
-	private Calendrier calendrierB; // Calendrier Général Brest
+	private Calendrier calendrierNantes;
+	private Calendrier calendrierBrest;
 	private String debut;
 	private ArrayList<Module> liste_modules;
 
@@ -22,10 +22,10 @@ public class Donnee {
 		this.Liste_UE.add(ueb);
 		this.Liste_UE.add(uec);
 		this.debut = debut;
-		this.calendrierN = new Calendrier(Nb_Semaines);
-		this.calendrierB = new Calendrier(Nb_Semaines);
-		this.calendrierN = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesN));
-		this.calendrierB = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesB));
+		this.calendrierNantes = new Calendrier(Nb_Semaines);
+		this.calendrierBrest = new Calendrier(Nb_Semaines);
+		this.calendrierNantes = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesN));
+		this.calendrierBrest = new Calendrier(Nb_Semaines, Traduction(unavailabilitiesB));
 		this.liste_modules = new ArrayList<>();
 		this.liste_modules.add(null);
 		for (UE ue : this.Liste_UE) {
@@ -36,8 +36,8 @@ public class Donnee {
 	}
 
 	public Donnee(String debut) {
-		this.calendrierN = new Calendrier(14);
-		this.calendrierB = new Calendrier(14);
+		this.calendrierNantes = new Calendrier(14);
+		this.calendrierBrest = new Calendrier(14);
 		this.debut = debut;
 
 	}
@@ -67,35 +67,27 @@ public class Donnee {
 	}
 
 	public int Nb_0N() {
-		return getCalendrierN().getNb_Creneaux() - Nb_cours();
+		return getCalendrierNantes().getNb_Creneaux() - Nb_cours();
 	}
 
 	public int Nb_0B() {
-		return getCalendrierB().getNb_Creneaux() - Nb_cours();
+		return getCalendrierBrest().getNb_Creneaux() - Nb_cours();
 	}
 
 	public int Nb_0JourN() {
-		return Nb_0N() / getCalendrierN().getNb_Jours();
+		return Nb_0N() / getCalendrierNantes().getNb_Jours();
 	}
 
 	public int Nb_0JourB() {
-		return Nb_0B() / getCalendrierB().getNb_Jours();
+		return Nb_0B() / getCalendrierBrest().getNb_Jours();
 	}
 
-	public Calendrier getCalendrierN() {
-		return calendrierN;
+	public Calendrier getCalendrierNantes() {
+		return calendrierNantes;
 	}
 
-	public Calendrier getCalendrierB() {
-		return calendrierB;
-	}
-
-	public void setCalendrierN(Calendrier calendrier) {
-		this.calendrierN = calendrier;
-	}
-
-	public void setCalendrierB(Calendrier calendrier) {
-		this.calendrierB = calendrier;
+	public Calendrier getCalendrierBrest() {
+		return calendrierBrest;
 	}
 
 	// le return est le disponibilités ou l'indisponilités?
@@ -128,7 +120,7 @@ public class Donnee {
 		}
 		ArrayList<Integer> l_creneau = new ArrayList<Integer>();
 		// changer 120 avec le nombre de creneaux total ( utiliser class creneaux )
-		for (int l = 0; l < this.getCalendrierN().getNb_Creneaux(); l++) {
+		for (int l = 0; l < this.getCalendrierNantes().getNb_Creneaux(); l++) {
 			if (l_final.contains(l)) {
 				l_creneau.add(0);
 			} else {
@@ -163,7 +155,4 @@ public class Donnee {
 		return debut;
 	}
 
-	public void setDebut(String debut) {
-		this.debut = debut;
-	}
 }
