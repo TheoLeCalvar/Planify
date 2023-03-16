@@ -27,16 +27,8 @@ public class Calendrier {
 		return Nb_Semaines;
 	}
 
-	public void setNb_Semaines(int nb_Semaines) {
-		Nb_Semaines = nb_Semaines;
-	}
-
 	public ArrayList<Integer> getDispo() {
 		return Dispo;
-	}
-
-	public void setIndispo(ArrayList<Integer> dispo) {
-		Dispo = dispo;
 	}
 
 	public int getNb_Creneaux() {

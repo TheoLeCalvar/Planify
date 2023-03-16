@@ -35,13 +35,6 @@ public class Donnee {
 		}
 	}
 
-	public Donnee(String debut) {
-		this.calendrierNantes = new Calendrier(14);
-		this.calendrierBrest = new Calendrier(14);
-		this.debut = debut;
-
-	}
-
 	public ArrayList<UE> getListe_UE() {
 		return Liste_UE;
 	}
@@ -128,27 +121,6 @@ public class Donnee {
 			}
 		}
 		return l_creneau;
-	}
-
-	public static void main(String args[]) {
-		String s = "2022-12-21";
-		String s2 = "2022-12-22";
-		String s3 = "2022-12-28";
-
-		ArrayList<Integer> i = new ArrayList<Integer>();
-		i.add(2);
-		i.add(4);
-		Unavailability un = new Unavailability(s, i);
-		Unavailability un1 = new Unavailability(s3, i);
-		Unavailability un2 = new Unavailability(s2, i);
-
-		ArrayList<Unavailability> e = new ArrayList<Unavailability>();
-		e.add(un);
-		e.add(un1);
-		e.add(un2);
-		String s1 = "2022-12-14";
-		Donnee t = new Donnee(s1);
-		System.out.println(t.Traduction(e));
 	}
 
 	public String getDebut() {

@@ -14,19 +14,6 @@ public class User {
 	private ArrayList<Integer> unavailabilitiesTraduction;
 	private int spreadWeeks;
 
-	public User() {
-		super();
-	}
-
-	public User(String mail, Role role, ArrayList<Unavailability> unavailables, Localisation localisation,
-			int spreadWeeks) {
-		this.mail = mail;
-		this.role = role;
-		this.unavailabilities = unavailables;
-		this.localisation = localisation;
-		this.spreadWeeks = spreadWeeks;
-	}
-
 	public String getMail() {
 		return mail;
 	}
@@ -51,28 +38,8 @@ public class User {
 		return spreadWeeks;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public void setUnavailabilities(ArrayList<Unavailability> unavailables) {
-		this.unavailabilities = unavailables;
-	}
-
-	public void setLocalisation(Localisation localisation) {
-		this.localisation = localisation;
-	}
-
 	public void setUnavailabilitiesTraduction(ArrayList<Integer> unavailabilitiesTraduction) {
 		this.unavailabilitiesTraduction = unavailabilitiesTraduction;
-	}
-
-	public void setSpreadWeeks(int spreadWeeks) {
-		this.spreadWeeks = spreadWeeks;
 	}
 
 }
