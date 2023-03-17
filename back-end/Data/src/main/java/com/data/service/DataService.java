@@ -56,7 +56,7 @@ public class DataService {
 		dataCalendarRepo.deleteById(id);
 	}
 
-	public void saveDataCalendar(DataCalendar dataCalendar) {
+	public void creationCalendar(DataCalendar dataCalendar) {
 		dataCalendar.setCreationDate(System.currentTimeMillis());
 		dataCalendar.generateTeacherWaitingList();
 		save(dataCalendar);

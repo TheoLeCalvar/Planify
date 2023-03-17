@@ -69,7 +69,7 @@ public class DataController {
 
 	@PostMapping(path = "/save-data-calendar", produces = "application/json")
 	public void saveDataCalendar(@Valid @RequestBody DataCalendar data) {
-		service.saveDataCalendar(data);
+		service.creationCalendar(data);
 	}
 
 	@PostMapping(path = "/save-preferences", produces = "application/json")
