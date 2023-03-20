@@ -20,7 +20,7 @@ public class Modelisation {
 	private Solver solver;
 
 	/*
-	 * Création des variables de décision
+	 * variables de décision
 	 */
 	private IntVar[] planning;
 	private IntVar[][] agendajour;
@@ -30,16 +30,23 @@ public class Modelisation {
 	private IntVar[][] agendajourB;
 	private IntVar[] nb_SeancesB;
 	private IntVar[] nb0parjourB;
+
+	/*
+	 * variables d'instance
+	 */
 	private Donnee donnee;
 	private Map<String, User> userList;
-
-
+	
 	/*
 	 * Variables créées pour KeySort; non utilisées dans la version finale
 	private IntVar[] ss;
 	private IntVar[] sp;
 	private IntVar[] p;
 	private IntVar[] s;
+	 */
+
+	/*
+	 * Constructeur de la classe donnée
 	 */
 	public Modelisation(Donnee donnee, Map<String, User> userList) {
 		this.donnee = donnee;
