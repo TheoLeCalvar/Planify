@@ -4,17 +4,17 @@ As part of the PROCOM project proposed by IMT Atlantique, our project aims to de
 
 ## File tree
 
-* [back-end/](.\back-end) &#8594; Folder with back-end services
-  * [Data/](.\back-end\Data) &#8594; Data service
-  * [Solver/](.\back-end\Solver) &#8594; Solver service
-  * [User/](.\back-end\User) &#8594; User service
-  * [create-test-users.sh](.\back-end\create-test-users.sh) &#8594; File to create users in database for testing
-  * [diagram.puml](.\back-end\diagram.puml) &#8594; Sequence diagram
-  * [docker-compose.yml](.\back-end\docker-compose.yml) &#8594; Docker-compose file for deployment 
-  * [README.md](.\back-end\README.md)
-* [front-end/](.\front-end)
-  * [PlanningFront/](.\front-end\PlanningFront) &#8594; Folder with Angular project (front-end)
-* [README.md](.\README.md)
+* [back-end/](back-end) &#8594; Folder with back-end services
+  * [Data/](back-end\Data) &#8594; Data service
+  * [Solver/](back-end\Solver) &#8594; Solver service
+  * [User/](back-end\User) &#8594; User service
+  * [create-test-users.sh](back-end\create-test-users.sh) &#8594; File to create users in database for testing
+  * [diagram.puml](back-end\diagram.puml) &#8594; Sequence diagram
+  * [docker-compose.yml](back-end\docker-compose.yml) &#8594; Docker-compose file for deployment 
+  * [README.md](back-end\README.md)
+* [front-end/](front-end)
+  * [PlanningFront/](front-end\PlanningFront) &#8594; Folder with Angular project (front-end)
+* [README.md](README.md)
 
 This is a general readme, if you want more specific information about a service or front-end, see the specific readme (in each folder).
 
