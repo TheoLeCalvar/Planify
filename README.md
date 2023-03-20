@@ -1,5 +1,10 @@
-# ProCom
+# Planify
 Creation of a timetable
+
+
+## :sparkles: Features ##
+
+:heavy_check_mark: IHM for timetable application
 
 ## TODO FRONT-END
 
