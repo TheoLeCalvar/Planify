@@ -1,8 +1,7 @@
 # Planify
 As part of the PROCOM project proposed by IMT Atlantique, our project aims to develop an application that assists in creating a timetable for the TAF DCL.
 
-## Prérequis front-end
-Install Node.js which includes Node Package Manager
+
 ## TODO FRONT-END
 
 - Add validations in form fields
