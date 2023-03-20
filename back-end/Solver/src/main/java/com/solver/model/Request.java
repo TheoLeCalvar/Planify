@@ -18,6 +18,7 @@ public class Request {
 	public Request(int weeksNumber, ArrayList<Module> modulesUeA, ArrayList<Module> modulesUeB,
 			ArrayList<Module> modulesUeC, Map<Localisation, ArrayList<Unavailability>> unavailabilities,
 			String startDate, long creationDate) {
+		
 		this.weeksNumber = weeksNumber;
 		this.modulesUeA = modulesUeA;
 		this.modulesUeB = modulesUeB;

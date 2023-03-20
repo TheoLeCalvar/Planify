@@ -22,7 +22,7 @@ public class Modelisation {
 	private Solver solver;
 	
 	/*
-	 * Création des variables de décision
+	 * variables de décision
 	 */
 	private IntVar[] planning;
 	private IntVar[][] agendajour;
@@ -32,8 +32,12 @@ public class Modelisation {
 	private IntVar[][] agendajourB;
 	private IntVar[] nb_SeancesB;
 	private IntVar[] nb0parjourB;
-	private Donnee donnee;
 //	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
+
+	/*
+	 * variables d'instance
+	 */
+	private Donnee donnee;
 	private Map<String, User> userList;
 	
 	
@@ -45,6 +49,12 @@ public class Modelisation {
 	private IntVar[] s;
 	 */
 
+	
+	
+	/*
+	 * Constructeur de la classe donnée
+	 */
+	
 	public Modelisation(Donnee donnee, Map<String, User> userList) {
 		this.donnee = donnee;
 		this.userList = userList;
@@ -72,6 +82,7 @@ public class Modelisation {
 		
 
 	}
+	
 	/*
 	 * Contrainte permettant de remplir toutes les variables avec le bon nombre de cours/
 	 */
@@ -442,6 +453,8 @@ public class Modelisation {
 		}
 	/*
 	 * Pour tester, méthodes utiles pour "imprimer" le calendrier obtenu à Nantes (getSolutionN) et Brest (getSolutionB)
+	 * */
+	
 	public String getSolutionN() {
 		
 		String res = "";
@@ -512,7 +525,6 @@ public class Modelisation {
 		
 		return res;
 	}
-	 */
 	
 	/*
 	 * Méthode permettant de créer et remplir un fichier csv avec le planning trouvé.
@@ -715,6 +727,8 @@ public class Modelisation {
 		test.BuildModel();
 		test.addConstraints();
 		test.solve();
+		test.getSolutionB();
+		test.getSolutionN();
 		test.ecrire(request.getCreationDate() + ".csv");
 		test.model.getSolver();
 		
