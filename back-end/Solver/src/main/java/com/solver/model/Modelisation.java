@@ -22,7 +22,7 @@ public class Modelisation {
 	private Solver solver;
 	
 	/*
-	 * Création des variables de décision
+	 * variables de décision
 	 */
 	private IntVar[] planning;
 	private IntVar[][] agendajour;
@@ -32,10 +32,11 @@ public class Modelisation {
 	private IntVar[][] agendajourB;
 	private IntVar[] nb_SeancesB;
 	private IntVar[] nb0parjourB;
+	/*
+	 * variables d'instance
+	 */
 	private Donnee donnee;
-	//	private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> contraintes_keysort;
 	private Map<String, User> userList;
-	
 	
 	/*
 	 * Variables créées pour KeySort; non utilisées dans la version finale
@@ -44,13 +45,16 @@ public class Modelisation {
 	private IntVar[] p;
 	private IntVar[] s;
 	 */
+
+	/*
+	 * Constructeur de la classe donnée
+	 */
 	public Modelisation(Donnee donnee, Map<String, User> userList) {
 		this.donnee = donnee;
 		this.userList = userList;
 	}
 	
 	public void BuildModel() {
-
 		model = new Model();
 		solver = model.getSolver();
 		
@@ -277,7 +281,7 @@ public class Modelisation {
 		ArrayList<Integer> l = new ArrayList<Integer>();
 		ArrayList<Integer> l1 = new ArrayList<Integer>();
 	
-		for (int i=0; i<donnee.getCalendrierN().getNb_Creneaux();i++) {
+		for (int i=0; i<donnee.getCalendrierNantes().getNb_Creneaux();i++) {
 		    l.add(i);
 		}
 		for(int i=0;i<donnee.Nb_0B();i++) {
@@ -291,15 +295,15 @@ public class Modelisation {
 		}
 		
 
-		IntVar[] starts = IntStream.range(0, donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> model.intVar( "S_"+ i, l.get(i))).toArray(IntVar[]::new);
+		IntVar[] starts = IntStream.range(0, donnee.getCalendrierNantes().getNb_Creneaux()).mapToObj(i -> model.intVar( "S_"+ i, l.get(i))).toArray(IntVar[]::new);
 		IntVar[] planning = this.planning;
-		IntVar[] sortedplanning = model.intVarArray("SP", donnee.getCalendrierN().getNb_Creneaux(), 0,donnee.Nb_cour_different());
-		IntVar[] sortedstarts = model.intVarArray("SS", donnee.getCalendrierN().getNb_Creneaux(), 0,donnee.getCalendrierN().getNb_Creneaux()-1);		
+		IntVar[] sortedplanning = model.intVarArray("SP", donnee.getCalendrierNantes().getNb_Creneaux(), 0,donnee.Nb_cour_different());
+		IntVar[] sortedstarts = model.intVarArray("SS", donnee.getCalendrierNantes().getNb_Creneaux(), 0,donnee.getCalendrierNantes().getNb_Creneaux()-1);		
 		model.keySort(
-		        IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{planning[i],starts[i]}).toArray(IntVar[][]::new),
+		        IntStream.range(0,donnee.getCalendrierNantes().getNb_Creneaux()).mapToObj(i -> new IntVar[]{planning[i],starts[i]}).toArray(IntVar[][]::new),
 		        //permutation,
 		        null,
-		        IntStream.range(0,donnee.getCalendrierN().getNb_Creneaux()).mapToObj(i -> new IntVar[]{sortedplanning[i], sortedstarts[i]}).toArray(IntVar[][]::new),
+		        IntStream.range(0,donnee.getCalendrierNantes().getNb_Creneaux()).mapToObj(i -> new IntVar[]{sortedplanning[i], sortedstarts[i]}).toArray(IntVar[][]::new),
 		        2
 		        ).post();
 
@@ -441,6 +445,8 @@ public class Modelisation {
 		}
 	/*
 	 * Pour tester, méthodes utiles pour "imprimer" le calendrier obtenu à Nantes (getSolutionN) et Brest (getSolutionB)
+	 * */
+	
 	public String getSolutionN() {
 		
 		String res = "";
@@ -448,23 +454,23 @@ public class Modelisation {
 			res += nb_Seances[i] + "\n";
 		}
 		
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 			res += nb0parjour[i] + "\n";
 		}
 		
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 			for (int j = 0; j < 6; j++) {
 				res += agendajour[i][j] + "\n";
 			}
 		}
 		
 		res += "\n\n";
-		for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 			res += "Jour " + i + ":  ";
 		}
 		res += "\n";
 		for (int j = 0; j < 6; j++) {
-			for (int i = 0; i < donnee.getCalendrierN().getNb_Jours(); i++) {
+			for (int i = 0; i < donnee.getCalendrierNantes().getNb_Jours(); i++) {
 				res+= agendajour[i][j].getValue()+"        ";
 			}
 			res += "\n";
@@ -485,23 +491,23 @@ public class Modelisation {
 			res += nb_SeancesB[i] + "\n";
 		}
 		
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			res += nb0parjourB[i] + "\n";
 		}
 		
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			for (int j = 0; j < 6; j++) {
 				res += agendajourB[i][j] + "\n";
 			}
 		}
 		
 		res += "\n\n";
-		for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+		for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 			res += "Jour " + i + ":  ";
 		}
 		res += "\n";
 		for (int j = 0; j < 6; j++) {
-			for (int i = 0; i < donnee.getCalendrierB().getNb_Jours(); i++) {
+			for (int i = 0; i < donnee.getCalendrierBrest().getNb_Jours(); i++) {
 				res+= agendajourB[i][j].getValue()+"        ";
 			}
 			res += "\n";
@@ -511,7 +517,6 @@ public class Modelisation {
 		
 		return res;
 	}
-	 */
 	
 	/*
 	 * Méthode permettant de créer et remplir un fichier csv avec le planning trouvé.
@@ -714,6 +719,8 @@ public class Modelisation {
 		test.BuildModel();
 		test.addConstraints();
 		test.solve();
+		test.getSolutionB();
+		test.getSolutionN();
 		test.ecrire(request.getCreationDate() + ".csv");
 		test.model.getSolver();
 		

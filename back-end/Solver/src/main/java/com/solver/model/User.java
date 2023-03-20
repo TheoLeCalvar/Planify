@@ -14,10 +14,6 @@ public class User {
 	private ArrayList<Integer> unavailabilitiesTraduction;
 	private int spreadWeeks;
 
-	public User() {
-		super();
-	}
-
 	public User(String mail, Role role, ArrayList<Unavailability> unavailables, Localisation localisation,
 			int spreadWeeks) {
 		this.mail = mail;

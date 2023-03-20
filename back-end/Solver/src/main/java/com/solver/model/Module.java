@@ -11,6 +11,7 @@ public class Module {
 	private Map<Localisation, String> mails;
 	private boolean isSync;
 
+	
 	public Module(String name, int slotsNumber, Map<Localisation, String> mails, boolean isSync) {
 		super();
 		this.name = name;
