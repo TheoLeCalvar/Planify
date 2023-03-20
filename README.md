@@ -10,7 +10,7 @@ Creation of a timetable
 - Show current preferences
 - Improve error control
 - Add visualization of file csv on app
-
+- Add a main form which allows one of the two TAF supervisors (reponsable TAF) to fill in the general informations. Then, After submitting the main form, two separate forms will be displayed for each supervisor to enter the unavailability periods for their respective campuses in Nantes and Brest.
 ## TODO BACK-END
 
 - Add notification by e-mail
