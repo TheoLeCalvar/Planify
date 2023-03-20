@@ -1,5 +1,5 @@
-# ProCom
-Creation of a timetable
+# Planify
+As part of the PROCOM project proposed by IMT Atlantique, our project aims to develop an application that assists in creating a timetable for the TAF DCL.
 
 ## TODO FRONT-END
 
