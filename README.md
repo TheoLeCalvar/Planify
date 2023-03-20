@@ -2,7 +2,7 @@
   <img src="./.github/app.gif" alt="UE AD A1 REST" />
 </div>
 
-<h1 align="center">Planify</h1>
+<h1 align="center">Planify font-end</h1>
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
@@ -19,10 +19,13 @@
 
 ## :dart: About ##
 
-This is a simple microservice application to manage movies reservation implemented using Flask and REST technology
+This is the IHM of Planify application.
 ## :sparkles: Features ##
 
-:heavy_check_mark: CRUD for movies reservation
+:heavy_check_mark: 
+- Login interface
+- TAF manager interface: where the manager can fill in general schedule data and availability for both Nantes and Brest campuses. The manager can also access the History interface, where they can find a list of generated calendars.
+- Teacher/lecturer interface: where each teacher can fill in the scheduling information for their module and their availability. The teacher also has access to the History table, where they can find a list of generated calendars.
 
 ## TODO FRONT-END
 
