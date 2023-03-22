@@ -1,0 +1,39 @@
+<app-menu [mail]="userMail"></app-menu>
+<br/>
+<br/>
+<br/>
+
+<h1 class="title">Historique</h1>
+<hr class="hr">
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <button (click)="goToFormulaire()" [disabled]="disabledButtonCreateNewCalendar" *ngIf="showButtonCreateNewCalendar()">Créer un nouveau calendrier</button>
+        <br/>
+        <br/>
+        <table class="table">
+            <tr class="table-header">
+                <th>Date de création</th>
+                <th> Action </th>
+            </tr>
+            <tr *ngFor="let row of dataTable" class="table-row">
+                <td>{{ row.creationDateFormat }}</td>
+                <td>
+                    <button [disabled]="!isTeachersListEmpty" (click)="solve()" *ngIf="showButtonSolve(row)">Solve</button>
+                    <button (click)="downloadCsv(row)" *ngIf="showButtonDownloadCsv(row)">Télécharger le csv</button>
+                    <div *ngIf="showTeacherList(row)">
+                        <a>Attendre des préférences de la part de :</a>
+                        <br /><br />
+                        <ul *ngFor="let mail of row.teacherWaitingList">
+                            <li>{{ mail }}</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<ng-container *ngIf="loading">
+    <div class="overlay"></div>
+    <div class="spinner"></div>
+</ng-container>

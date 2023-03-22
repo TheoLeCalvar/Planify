@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  data:
+    container_name: data
+    build: ./Data/
+    restart: always
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/Planning
+    depends_on:
+      - mongo
+    ports:
+      - "3200:3200"
+    volumes:
+      - db-data:/var/lib/data/files
+  solver:
+    container_name: solver
+    build: ./Solver/
+    ports:
+      - "3201:3201"
+    volumes:
+      - db-data:/var/lib/data/files
+  user:
+    container_name: user
+    build: ./User/
+    restart: always
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/Planning
+    depends_on:
+      - mongo
+    ports:
+      - "3202:3202"
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always # voir si c'est necessaire dans ce cas
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/var/lib/data
+
+volumes:
+  db-data:

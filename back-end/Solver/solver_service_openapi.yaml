@@ -1,0 +1,112 @@
+---
+openapi: 3.0.0
+info:
+  title: Solver API
+  description: This is the API of the Solver service
+  contact:
+    email: sebastian.romero@imt-atlantique.net
+  version: 1.0.0
+servers:
+- url: http://localhost:3201
+  description: For local tests
+paths:
+  /solver:     
+    post:
+      summary: execute solver to find a calendar
+      description: Execute solver to find a calendar
+      operationId: solver
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+      responses:
+        "200":
+          description: return calendar
+components:
+  schemas:
+    Request:
+      required:
+      - weeksNumber
+      - startDate
+      - modulesUeA
+      - modulesUeB
+      - modulesUeC
+      - unavailabilities
+      type: object
+      properties:
+        weeksNumber:
+          type: number
+          example: 14
+        startDate:
+          type: string
+          example: 2022-12-20
+        modulesUeA:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+        modulesUeB:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+        modulesUeC:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+        unavailabilities:
+          required:
+          - Nantes
+          - Brest
+          type: object
+          properties:
+            Nantes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Unavailability'
+            Brest:
+              type: array
+              items:
+                $ref: '#/components/schemas/Unavailability'
+    Module:
+      required:
+      - name
+      - slotsNumber
+      - mails
+      type: object
+      properties:
+        name:
+          type: string
+          example: module1
+        slotsNumber:
+          type: number
+          example: 7
+        mails:
+          required:
+          - Nantes
+          - Brest
+          type: object
+          properties:
+            Nantes:
+              type: string
+              example: mail1@test.com
+            Brest:
+              type: string
+              example: mail2@test.com
+        isSync:
+          type: boolean
+          example: true
+    Unavailability:
+      required:
+      - date
+      - slots
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2023-02-14
+        slots:
+          type: array
+          items:
+            type: number
+            example: 1

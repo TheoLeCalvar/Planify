@@ -1,0 +1,59 @@
+<app-menu [mail]="userMail"></app-menu>
+<br/>
+<br/>
+<br/>
+
+<h1 class="title">Enseignant Chercheur</h1>
+<hr class="hr">
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <div class="mb-3 row center">
+
+            <label class="w-25 col-form-label text-end">Etalement du cours (nombre de semaines) :</label>
+            <input class="w-25" type="text" aria-label="Default select example" [(ngModel)]="etalement" />
+
+        </div>
+
+        <div class="mb-3 row">
+            <label for="disponibilités" class="col-sm-3 col-form-label text-end">Les indisponibilités: </label>
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <mat-label>Choisir date indisponible</mat-label>
+                    <input matInput [matDatepicker]="picker1" placeholder="Choisir date indisponible" [(ngModel)]="indisponible" (dateChange)="addEvent()">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <button style="float:right" (click)="addFunction()" class="btn border title">Ajouter</button>
+            </div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-7">
+                <div *ngFor="let item of items">
+                    <input type="checkbox" [(ngModel)]="item.isChecked"> {{ item.label }} {{item.temps}}
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table">
+                <tr class="table-header">
+                    <th>Date de l'indisponibilité</th>
+                    <th>Les créneaux</th>
+                    <th></th>
+                </tr>
+                <tr *ngFor="let row of tableData" class="table-row">
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.slots }}</td>
+                    <td><button class="delete-button" (click)="deleteRow(row)">Supprimer</button></td>
+                </tr>
+            </table>
+        </div>
+        <br />
+        <hr class="hr" />
+        <div class="mb-3 row" style="justify-content: center;">
+            <button (click)="clickFunction()" class="btn border send-button w-25"> Envoyer </button>
+        </div>
+        <br />
+    </div>
+</div>

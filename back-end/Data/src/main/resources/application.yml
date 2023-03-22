@@ -1,0 +1,11 @@
+# Spring properties
+spring:
+  application:
+    name: data-calendar.com       # Service registers under this name
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/data-calendar
+
+# HTTP Server
+server:
+  port: 3200   # HTTP (Tomcat) port

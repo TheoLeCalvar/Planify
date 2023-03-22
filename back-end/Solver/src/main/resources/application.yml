@@ -1,0 +1,8 @@
+# Spring properties
+spring:
+  application:
+    name: solver.com       # Service registers under this name
+
+# HTTP Server
+server:
+  port: 3201   # HTTP (Tomcat) port

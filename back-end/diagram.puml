@@ -1,0 +1,67 @@
+@startuml Diagramme
+
+title Diagramme de sequences
+
+actor ResponsableTAF
+actor Enseignant
+
+box "Front-End" #FFEEEE
+    entity FrontEnd
+end box
+
+box "Back-End" #EEF5EE
+    entity DataService
+    entity SolverService
+    entity UserService
+    database dataCalendar #LightBlue
+    database user #LightBlue
+    participant volumeDocker
+end box
+
+alt ResponsableTAF
+    ResponsableTAF -> FrontEnd: Submit()
+    FrontEnd -> DataService: Information générale
+    DataService -> dataCalendar: Information générale
+    dataCalendar -> DataService: OK
+    DataService -> DataService
+    note right
+        Notifier tous les enseignants
+    end note
+    DataService -> FrontEnd: OK
+    FrontEnd -> ResponsableTAF: OK
+end
+
+alt Enseignant
+    Enseignant -> FrontEnd: Submit()
+    FrontEnd -> DataService: Préférences
+    DataService -> UserService: mail
+    UserService -> user: GET - Utilisateur par mail
+    user -> UserService: Utilisateur
+    UserService -> DataService: Utilisateur
+    DataService -> UserService: Utilisateur avec de préférences
+    UserService -> user: Mise à jour de préférences
+    user -> UserService: OK
+    UserService -> DataService: OK
+    DataService -> dataCalendar: GET - liste d'attente
+    dataCalendar -> DataService: liste d'attente
+    DataService -> dataCalendar: Mise à jour de la liste d'attente
+    dataCalendar -> DataService: OK
+    DataService -> FrontEnd: OK
+    FrontEnd -> Enseignant: OK
+end
+
+alt Si la liste d'attende est vide
+    ResponsableTAF -> FrontEnd: Solve()
+    FrontEnd -> DataService: Solve
+    DataService -> dataCalendar: GET - DataCalendar
+    dataCalendar -> DataService: DataCalendar
+    DataService -> SolverService: Solve(DataCalendar)
+    SolverService -> volumeDocker: Enregistre le fichier avec le calendrier
+    SolverService -> DataService: fileName
+    DataService -> dataCalendar: DataCalendar avec existCalendarFile = true
+    dataCalendar -> DataService: OK
+    DataService -> FrontEnd: fileName
+    FrontEnd -> ResponsableTAF: fileName
+end
+
+@enduml
