@@ -2,6 +2,10 @@
 
 As part of the PROCOM project proposed by IMT Atlantique, our project aims to develop an application that assists in creating a timetable for the TAF DCL.
 
+## Documentation
+
+Link with documentation in LaTex: https://www.overleaf.com/8255417117zgkydfwjgjmp 
+
 ## File tree
 
 * [back-end/](back-end) &#8594; Folder with back-end services
@@ -39,3 +43,5 @@ This is a general readme, if you want more specific information about a service 
 #### SOLVER
 
 > **Note**: In the master and dev branches we find the clean code versions, and in the ChocoModel branch we find a code version of the Solver service with commented code of the unfinished KeySort implementation. 
+
+- Manage precedence efficiently; either by working on the search strategy of the KeySort method, or by finding a way other than KeySort to create precedence between modules.
