@@ -36,6 +36,6 @@ This is a general readme, if you want more specific information about a service 
 - Add notification by e-mail
 - Add more validations (to make it more robust)
 
-### SOLVER
+#### SOLVER
 
-- 
+> **Note**: In the master and dev branches we find the clean code versions, and in the ChocoModel branch we find a code version of the Solver service with commented code of the unfinished KeySort implementation. 
